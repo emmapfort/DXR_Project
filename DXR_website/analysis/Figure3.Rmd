@@ -67,19 +67,14 @@ Define my custom plot theme
 # 
 #       #text and font
 #       axis.text = element_text(color = "black",
-#                                family = "Arial",
 #                                size = 7),
 #       axis.title = element_text(color = "black",
-#                                 family = "Arial",
 #                                 size = 9),
 #       legend.text = element_text(color = "black",
-#                                  family = "Arial",
 #                                  size = 7),
 #       legend.title = element_text(color = "black",
-#                                   family = "Arial",
 #                                   size = 9),
 #       plot.title = element_text(color = "black",
-#                                 family = "Arial",
 #                                 size = 10),
 # 
 #       #blank background and border
@@ -88,13 +83,13 @@ Define my custom plot theme
 # 
 #       #gridlines for alignment
 #       panel.grid.major = element_line(color = "grey80", linewidth = 0.5),  #grey major grid for align in illus
-#       panel.grid.minor = element_line(color = "grey90", linewidth = 0.5) #grey minor grid for align in illus
+#       panel.grid.minor = element_line(color = "grey80", linewidth = 0.5)   #grey minor grid for align in illus
 #     )
 # }
 
-# saveRDS(plot_theme_custom, "data/plot_theme_custom.RDS")
+# saveRDS(plot_theme_custom, "data/plot_theme_custom_update.RDS")
 
-theme_custom <- readRDS("data/plot_theme_custom.RDS")
+theme_custom <- readRDS("data/plot_theme_custom_update.RDS")
 
 ```
 
@@ -1813,14 +1808,16 @@ motif1_mat_GOKEGG_RUV <- gost(query = acute_genes_matrix,
                           user_threshold = 0.05,
                           significant = TRUE,
                           custom_bg = all_genes,
-                          correction_method = c("fdr"),
-                          sources = c("GO:BP", "KEGG"))
+                          correction_method = c("fdr"), #in this case p_value = adj.p
+                          sources = c("GO:BP", "KEGG")) 
 
 motif1_GOKEGG_genes_RUV <- gostplot(motif1_mat_GOKEGG_RUV, capped = FALSE, interactive = TRUE)
 motif1_GOKEGG_genes_RUV
 
 table_motif1_GOKEGG_genes_RUV <- motif1_mat_GOKEGG_RUV$result %>% 
-  dplyr::select(c(source, term_id, term_name, intersection_size, term_size, p_value))
+  dplyr::select(c(source, term_id, term_name, 
+                  intersection_size, term_size, p_value,
+                  intersection))
 
 table_motif1_GOKEGG_genes_RUV %>% 
   mutate_at(.vars = 6, .funs = scales::label_scientific(digits=4)) %>% 
@@ -1831,16 +1828,17 @@ table_motif1_GOKEGG_genes_RUV %>%
 
 #GO:BP
 table_motif1_genes_GOBP_RUV <- table_motif1_GOKEGG_genes_RUV %>% 
-  dplyr::filter(source=="GO:BP") %>% 
+  dplyr::filter(source == "GO:BP") %>% 
   dplyr::select(p_value, term_name, intersection_size) %>% 
-  dplyr::slice_min(., n=20, order_by=p_value) %>% 
+  dplyr::slice_min(., n = 10, order_by = p_value) %>% 
   mutate(log_val = -log10(p_value))
 
-table_motif1_genes_GOBP_RUV %>% ggplot(., aes(x = log_val, y = reorder(term_name, p_value))) +
+table_motif1_genes_GOBP_RUV %>% 
+  ggplot(., aes(x = log_val, y = reorder(term_name, p_value))) +
   geom_point() +
   ggtitle("M1 Enriched GO:BP Terms RUVs")+
   xlab(expression("-log"[10]~"p-value"))+
-  guides(col="none", size= guide_legend(title = "# of intersected \n terms"))+
+  guides(col = "none", size = guide_legend(title = "# of intersected \n terms"))+
   ylab("GO:BP term")+
   scale_y_discrete(labels = scales::label_wrap(30))+
   theme_custom()
@@ -1849,7 +1847,7 @@ table_motif1_genes_GOBP_RUV %>% ggplot(., aes(x = log_val, y = reorder(term_name
 table_motif1_genes_KEGG_RUV <- table_motif1_GOKEGG_genes_RUV %>% 
   dplyr::filter(source=="KEGG") %>% 
   dplyr::select(p_value, term_name, intersection_size) %>% 
-  dplyr::slice_min(., n=20, order_by=p_value) %>% 
+  dplyr::slice_min(., n = 10, order_by = p_value) %>% 
   mutate(log_val = -log10(p_value))
 
 table_motif1_genes_KEGG_RUV %>%
@@ -1886,7 +1884,8 @@ motif2_GOKEGG_genes_RUV <- gostplot(motif2_mat_GOKEGG_RUV, capped = FALSE, inter
 motif2_GOKEGG_genes_RUV
 
 table_motif2_GOKEGG_genes_RUV <- motif2_mat_GOKEGG_RUV$result %>%
-  dplyr::select(c(source, term_id, term_name, intersection_size, term_size, p_value))
+  dplyr::select(c(source, term_id, term_name, intersection_size, 
+                  term_size, p_value, intersection))
 
 table_motif2_GOKEGG_genes_RUV %>% 
   mutate_at(.vars = 6, .funs = scales::label_scientific(digits=4)) %>% 
@@ -1899,14 +1898,15 @@ table_motif2_GOKEGG_genes_RUV %>%
 table_motif2_genes_GOBP_RUV <- table_motif2_GOKEGG_genes_RUV %>% 
   dplyr::filter(source=="GO:BP") %>% 
   dplyr::select(p_value, term_name, intersection_size) %>% 
-  dplyr::slice_min(., n=20, order_by=p_value) %>% 
+  dplyr::slice_min(., n = 10, order_by = p_value) %>% 
   mutate(log_val = -log10(p_value))
 
-table_motif2_genes_GOBP_RUV %>% ggplot(., aes(x = log_val, y = reorder(term_name, p_value), col= intersection_size)) +
+table_motif2_genes_GOBP_RUV %>% ggplot(., aes(x = log_val, y = reorder(term_name, p_value), col= p_value)) +
   geom_point(aes(size = intersection_size)) +
   ggtitle("M2 Enriched GO:BP Terms RUVs")+
   xlab(expression("-log"[10]~"p-value"))+
-  guides(col="none", size= guide_legend(title = "# of intersected \n terms"))+
+  guides(size= guide_legend(title = "# of intersected \n terms"),
+         col = guide_legend(title = "adj. p-value"))+
   ylab("GO:BP term")+
   scale_y_discrete(labels = scales::label_wrap(30))+
   theme_bw()+
@@ -1919,16 +1919,17 @@ table_motif2_genes_GOBP_RUV %>% ggplot(., aes(x = log_val, y = reorder(term_name
 
 #KEGG
 table_motif2_genes_KEGG_RUV <- table_motif2_GOKEGG_genes_RUV %>% 
-  dplyr::filter(source=="KEGG") %>% 
-  dplyr::select(p_value, term_name, intersection_size) %>% 
-  dplyr::slice_min(., n=20, order_by=p_value) %>% 
+  dplyr::filter(source == "KEGG") %>% 
+  dplyr::select(source, term_id, term_name, intersection_size, 
+                  term_size, intersection, p_value) %>% 
+  dplyr::slice_min(., n = 10, order_by = p_value) %>% 
   mutate(log_val = -log10(p_value))
 
-table_motif2_genes_KEGG_RUV %>% ggplot(., aes(x = log_val, y = reorder(term_name, p_value), col= intersection_size)) +
+table_motif2_genes_KEGG_RUV %>% ggplot(., aes(x = log_val, y = reorder(term_name, p_value), col= p_value)) +
   geom_point(aes(size = intersection_size)) +
   ggtitle("M2 DEGs Enriched KEGG Terms RUVs")+
   xlab(expression("-log"[10]~"p-value"))+
-  guides(col="none", size= guide_legend(title = "# of intersected \n terms"))+
+  guides(size= guide_legend(title = "# of intersected \n terms"))+
   ylab("KEGG term")+
   scale_y_discrete(labels = scales::label_wrap(30))+
   theme_custom()+
@@ -2003,3 +2004,175 @@ print(kegg_m2_plot)
 
 
 ```
+
+
+# Figure 3E + F - Revised
+
+We have revised this figure to include the adj. p value (color) and the number of genes in each term (size). 
+
+```{r Fig 3E 3F Revisions, message=FALSE, warning=FALSE}
+
+#plot the revised versions with adj. p as color and intersection_size as size of points
+kegg_m1_plot_rev <- table_motif1_genes_KEGG_RUV %>%
+  ggplot(aes(x = log_val, y = reorder(term_name, p_value), col = p_value)) +
+  geom_point(aes(size = intersection_size)) +
+  ggtitle("Enriched Pathways: Acute") +
+  xlab(expression("-log"[10]~"adj. p-value")) +
+  ylab("KEGG Term") +
+  scale_y_discrete(labels = scales::label_wrap(30)) +
+  guides(size = guide_legend(title = "# of \nterm \ngenes")) +
+  theme_custom()+
+  theme(axis.line = element_blank(),
+        panel.border = element_rect(
+          color = "black",
+          fill = NA,
+          linewidth = 1
+        ),
+        axis.ticks = element_line(linewidth = .5)
+        )
+
+
+kegg_m2_plot_rev <- table_motif2_genes_KEGG_RUV %>%
+  ggplot(aes(x = log_val, y = reorder(term_name, p_value), col = p_value)) +
+  geom_point(aes(size = intersection_size)) +
+  ggtitle("Enriched Pathways: Chronic") +
+  xlab(expression("-log"[10]~"adj. p-value")) +
+  ylab("KEGG Term") +
+  scale_y_discrete(labels = scales::label_wrap(30)) +
+  guides(size = guide_legend(title = "# of \n term \ngenes")) +
+  theme_custom()+
+  theme(axis.line = element_blank(),
+        panel.border = element_rect(
+          color = "black",
+          fill = NA,
+          linewidth = 1
+        ),
+        axis.ticks = element_line(linewidth = .5)
+        )
+
+print(kegg_m1_plot_rev)
+print(kegg_m2_plot_rev)
+
+#now save these plots for figure generation
+
+# save_plot(kegg_m1_plot_rev,
+#           filename = "Fig3E_Acute_KEGG_Revised_EMP",
+#           folder = output_folder,
+#           height = 5,
+#           width = 5.25)
+
+# save_plot(kegg_m2_plot_rev,
+#           filename = "Fig3F_Chronic_KEGG_Revised_EMP",
+#           folder = output_folder,
+#           height = 5,
+#           width = 5.25)
+
+#now save these as pdfs
+#acute cluster (motif1)
+# cairo_pdf(
+#   file.path(output_folder, "KEGG_Acute_Revised_Fig3E_EMP_260310.pdf"),
+#   width = 8,
+#   height = 8
+# )
+# print(kegg_m1_plot_rev)
+# dev.off()
+
+#chronic cluster (motif2)
+# cairo_pdf(
+#   file.path(output_folder, "KEGG_Chronic_Revised_Fig3F_EMP_260310.pdf"),
+#   width = 8,
+#   height = 8
+# )
+# print(kegg_m2_plot_rev)
+# dev.off()
+
+
+```
+
+
+# Figure 3E + 3F - Acute & Chronic Gene Tables
+
+```{r Fig 3E 3F Gene tables function, warning=FALSE, message=FALSE}
+#create a function to pull out intersection data and make gene tables
+
+make_KEGG_gene_table <- function(data, n_terms = 10, output_file = NULL) {
+  #step 1 - filter to KEGG and select relevant values
+  term_list <- as.data.frame(
+    data %>% 
+      dplyr::filter(source == "KEGG") %>% 
+      dplyr::select(term_id, term_name, intersection_size, intersection, p_value) %>% 
+      dplyr::slice_min(n = n_terms, order_by = p_value) %>% 
+      dplyr::mutate(log_val = -log10(p_value))
+  )
+  #ensure that the Entrez_ID lists are in character format
+  term_list$intersection <- as.character(term_list$intersection)
+  
+  #step 2 - expand out the list of genes into a full table
+  gene_table <- do.call(rbind, lapply(1:nrow(term_list), function(i) {
+    ids <- trimws(strsplit(term_list$intersection[i], ",")[[1]])
+    data.frame(
+      Entrez_ID = ids,
+      term_id = term_list$term_id[i],
+      term_name = term_list$term_name[i],
+      adj_p = term_list$p_value[i],
+      log_val = term_list$log_val[i],
+      int_size = term_list$intersection_size[i],
+      stringsAsFactors = FALSE
+    )
+  }))
+  
+  #step 3 - add SYMBOL
+  symbol_map <- AnnotationDbi::mapIds( 
+    org.Hs.eg.db,
+    keys = gene_table$Entrez_ID,
+    column = "SYMBOL",
+    keytype = "ENTREZID",
+    multiVals = "first"
+  )
+  
+  #step 4 - assign symbols and ensure format is in order
+  gene_table$Symbol <- symbol_map[gene_table$Entrez_ID]
+  
+  gene_table <- gene_table[, c("term_name", "term_id", "int_size", #to check correct #
+                               "Entrez_ID", "Symbol",
+                               "adj_p", "log_val")]
+
+  #step 5 - reorder for clarity based on adj. p values
+  gene_table <- gene_table[order(gene_table$adj_p, gene_table$Entrez_ID), ]
+  rownames(gene_table) <- NULL  #reset row numbers after reordering
+  
+  #step 6 - export to csv + provide filename when calling
+  if (!is.null(output_file)) {
+    full_path <- file.path(output_folder, output_file)
+    write.csv(gene_table, file = full_path, row.names = FALSE)
+    message("Table written to: ", full_path)
+  }
+  #print the table
+  return(gene_table)
+}
+
+#now use this function to pull out your gene tables for both sets
+
+# Acute_m1_KEGG_gene_table <- make_KEGG_gene_table(
+#   table_motif1_GOKEGG_genes_RUV,
+#   output_file = "Fig3E_Acute_gene_table_EMP_260310.csv")
+
+# saveRDS(Acute_m1_KEGG_gene_table, "data/Fig3/Fig3E_Acute_KEGG_gene_list.RDS")
+
+#read in the final version for Fig 6B
+Acute_m1_KEGG_gene_table <- readRDS("data/Fig3/Fig3E_Acute_KEGG_gene_list.RDS")
+
+# Chronic_m2_KEGG_gene_table <- make_KEGG_gene_table(
+#   table_motif2_GOKEGG_genes_RUV,
+#   output_file = "Fig3F_Chronic_gene_table_EMP_260310.csv")
+
+# saveRDS(Chronic_m2_KEGG_gene_table, "data/Fig3/Fig3F_Chronic_KEGG_gene_list.RDS")
+
+Chronic_m2_KEGG_gene_table <- readRDS("data/Fig3/Fig3F_Chronic_KEGG_gene_list.RDS")
+
+#print the gene tables
+print(Acute_m1_KEGG_gene_table)
+print(Chronic_m2_KEGG_gene_table)
+
+```
+
