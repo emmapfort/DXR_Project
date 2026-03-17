@@ -280,6 +280,7 @@ nonproChronic_gene_list <- proChronic_df_all %>%
 length(proChronic_gene_list)
 length(nonproChronic_gene_list)
 
+# saveRDS(proChronic_df_all, "data/Fig6/Chronic_df_all_defined.RDS")
 # saveRDS(proChronic_gene_list, "data/Fig6/proChronic_gene_list.RDS")
 # saveRDS(nonproChronic_gene_list, "data/Fig6/non-proChronic_gene_list.RDS")
 
@@ -988,7 +989,7 @@ print(plot_proChronic_fin_summary)
 ```{r Assess Directionality of proChronic, message=FALSE, warning=FALSE}
 #I want to take my set of proSus genes and stratify by response direction
 
-#pull the proSus genes from the df
+#pull the ProChronic genes from the df
 proChronic_only_df <- proChronic_df %>% 
   filter(
     Response == "ProChronic"
@@ -1026,6 +1027,8 @@ length(proChronic_down_genes)
 
 #pull out the log2cpm genes that are upregulated
 
+# saveRDS(proChronic_up_genes, "data/Fig6/proChronic_up_genes.RDS")
+# saveRDS(proChronic_down_genes, "data/Fig6/proChronic_down_genes.RDS")
 ```
 
 
