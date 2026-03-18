@@ -95,8 +95,8 @@ Define my custom plot theme
 
 # saveRDS(plot_theme_custom, "data/plot_theme_custom.RDS")
 
-theme_custom <- readRDS("data/plot_theme_custom.RDS")
-
+# theme_custom <- readRDS("data/plot_theme_custom.RDS")
+theme_custom <- readRDS("data/plot_theme_custom_update.RDS")
 ```
 
 
@@ -748,12 +748,12 @@ combined_toptables_dxr_RUV <- bind_rows(
 
 ```{r Scatterplots Timepoint Comparisons, warning=FALSE, message=FALSE}
 
-# Define the timepoints from your data
+#define the timepoints from your data
 timepoints <- c("t0", "t24", "t144")
 
 comparison_order <- c("t0 vs t24", "t24 vs t144", "t0 vs t144")
 
-# Make all pairwise combinations
+#make all pairwise combinations
 pairs_df <- t(combn(timepoints, 2)) %>%
   as.data.frame(stringsAsFactors = FALSE) %>%
   setNames(c("time_x", "time_y"))
@@ -765,7 +765,7 @@ logFC_wide_RUV <- combined_toptables_dxr_RUV %>%
   drop_na() %>% 
   column_to_rownames("Entrez_ID") 
 
-# Function to prepare scatter data for each pair
+#create a function to prepare scatter data for each pair
 prepare_pair_data <- function(time_x, time_y, df) {
   rho <- cor(df[[time_x]], df[[time_y]], method = "spearman")
   df %>%
@@ -785,7 +785,7 @@ comparison_colors <- c(
   "t0 vs t144" = "#5780C5"
 )
 
-# Build combined plotting dataset
+#build combined plotting dataset
 scatter_df <- map2_df(pairs_df$time_x, pairs_df$time_y,
                       ~prepare_pair_data(.x, .y, logFC_wide_RUV)) %>%
   mutate(comparison = factor(comparison, levels = comparison_order))
@@ -843,6 +843,75 @@ scatterplot_fig2d_tall
 # ggsave("Fig2D_Scatterplot_fixedlims_EMP_251121.png", scatterplot_fig2d_wide, width = 12, height = 4, dpi = 300, type = "cairo", path = "C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Fig pdfs")
 
 
+```
+
+
+# Scatterplots for Revisions - mean CPM
+
+```{r scatterplots for revisions, include=FALSE, message=FALSE, warning=FALSE}
+#in order to ensure that lowly abundant transcripts are not driving this response
+
+# #calculate mean log2CPM per gene from UNFILTERED data
+# mean_cpm <- rowMeans(counts_cpm_unfilt) %>%
+#   as.data.frame() %>%
+#   rownames_to_column("Entrez_ID") %>%
+#   setNames(c("Entrez_ID", "mean_log2CPM"))
+# 
+# #join mean log2CPM to my logFC data
+# ma_df <- combined_toptables_dxr_RUV %>%
+#   mutate(Entrez_ID = as.character(Entrez_ID)) %>%
+#   left_join(mean_cpm %>% mutate(Entrez_ID = as.character(Entrez_ID)),
+#             by = "Entrez_ID") %>%
+#   drop_na(mean_log2CPM, logFC)
+# 
+# #efine timepoint colors
+# timepoint_colors <- c(
+#   "t0"   = "#4167BD",
+#   "t24"  = "#5780C5",
+#   "t144" = "#72AEE0"
+# )
+# 
+# #make plot per timepoint
+# make_cpm_plot <- function(df_sub) {
+#   tp <- df_sub$Time[1]
+#   
+#   ggplot(df_sub, aes(y = mean_log2CPM, x = logFC)) +
+#     geom_point_rast(alpha = 0.5, raster.dpi = 300,
+#                     color = timepoint_colors[tp]) +
+#     geom_smooth(method = "lm", se = FALSE,
+#                 linetype = "dashed", color = "black") +
+#     # geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+#     coord_fixed(ratio = 1) +
+#     labs(
+#       x = paste0("log2FC ", tp, " (DOX vs. VEH)"),
+#       y = "mean log2CPM"
+#     ) +
+#     theme_custom() +
+#     theme(
+#       axis.line = element_line(linewidth = 1, color = "black"),
+#       axis.ticks.length = unit(0.05, "in"),
+#       axis.text = element_text(color = "black"),
+#       panel.background = element_blank(),
+#       panel.border = element_blank(),
+#       legend.position = "none"
+#     )
+# }
+# 
+# #split by timepoint and build plots
+# split_tp <- split(ma_df, ma_df$Time)
+# cpm_plot_list <- lapply(split_tp, make_cpm_plot)
+# 
+# # Step 6: Print separately
+# ma_plot_list[["t0"]]
+# ma_plot_list[["t24"]]
+# ma_plot_list[["t144"]]
+# 
+# # Step 7: Combined versions
+# ma_plot_wide <- wrap_plots(ma_plot_list, ncol = length(ma_plot_list))
+# ma_plot_tall <- wrap_plots(ma_plot_list, nrow = length(ma_plot_list))
+# 
+# ma_plot_wide
+# ma_plot_tall
 ```
 
 
