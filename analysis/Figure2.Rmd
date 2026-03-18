@@ -674,9 +674,9 @@ ggVennDiagram(
 #use the eulerr package to do so
 
 venn_prop_RUV <- euler(list(
-  "t0" = DEG_t0_RUV,
-  "t24" = DEG_t24_RUV,
-  "t144" = DEG_t144_RUV
+  "tx+0" = DEG_t0_RUV,
+  "tx+24" = DEG_t24_RUV,
+  "tx+144" = DEG_t144_RUV
 ))
 
 plot(venn_prop_RUV,
@@ -686,9 +686,28 @@ plot(venn_prop_RUV,
      quantities = list(cex = 0.75),
      main = "")
 
-
+#missing genes due to shape constraints
 
 ```
+
+## Figure 2C Revised 
+
+```{r revised fig2c, message=FALSE, warning=FALSE}
+venn_prop_RUV_rev <- euler(list(
+  "tx+0" = DEG_t0_RUV,
+  "tx+24" = DEG_t24_RUV,
+  "tx+144" = DEG_t144_RUV
+),
+shape = "ellipse")
+
+plot(venn_prop_RUV_rev,
+     fills = list(fill = c("#263CA5", "#5B8FD1", "#89C5E5"), 
+                  alpha = 1),
+     labels = list(font = 4),
+     quantities = list(cex = 0.75),
+     main = "")
+```
+
 
 ## Load in DEGs
 
