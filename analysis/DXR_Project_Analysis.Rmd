@@ -836,7 +836,6 @@ prcomp_res_filt <- prcomp(t(filcpm_matrix %>% as.matrix()), center =  TRUE)
 Metadata <- read.csv("data/Metadata_update.csv")
 #84-1 is now Ind4
 
-
 #add in labels for individual numbers
 ind_num <- c("1", "1", "1", "1", "1", "1", 
              "2", "2", "2", "2", "2", "2", 
@@ -845,6 +844,8 @@ ind_num <- c("1", "1", "1", "1", "1", "1",
              "5", "5", "5", "5", "5", "5", 
              "6", "6", "6", "6", "6", "6", 
              "6R", "6R", "6R", "6R", "6R", "6R")
+
+View(Metadata)
 
 # saveRDS(ind_num, "data/new/ind_num.RDS")
 
@@ -1114,6 +1115,7 @@ Metadata_2$Ind <- as.character(Metadata_2$Ind)
 
 Metadata_2 <- readRDS("data/Metadata_2_norep_update.RDS")
 ```
+
 #Perform Differential Expression Analysis 
 ```{r Differential Expression Analysis}
 
@@ -1598,7 +1600,7 @@ RUV_filt_counts <- counts_raw_matrix %>%
 
 #add in the annotation files
 ind_num <- readRDS("data/new/ind_num.RDS")
-annot <- read.csv("data/Metadata_update.csv")
+annot <- read.csv("C:/Users/emmap/RDirectory/Recovery_RNAseq/Recovery_5FU/data/Metadata_update.csv")
 #same as Metadata
 
 
@@ -2658,7 +2660,7 @@ Toptable_RUV_144R <- read_csv("data/new/DEGs/Toptable_RUV_144R_final.csv",
 #   V.D144R_RUV = Toptable_RUV_144R
 # ), file = "data/new/Toptable_list_RUVk1_Symbols.RDS")
 
-Toptable_list_RUVk1_symbols <- readRDS("data/new/Toptable_list_RUVk1_Symbols.RDS")
+Toptable_list_RUVk1_symbols <- readRDS("C:/Users/emmap/RDirectory/Recovery_RNAseq/Recovery_5FU/data/new/Toptable_list_RUVk1_Symbols.RDS")
 
 ```
 
@@ -2700,7 +2702,7 @@ generate_volcano_plot <- function(toptable, title) {
                                   "Not Significant" = "gray",
                                   "Downregulated" = "red"), 
                        labels = legend_lab) +
-    xlim(-10, 10) +
+    # xlim(-10, 10) +
     labs(title = title, 
          x = expression(x = "log"[2]*"FC"), 
          y = expression(y = "-log"[10]*"P-value")) +
@@ -2717,6 +2719,8 @@ volcano_plots <- list(
   "V.D24R" = generate_volcano_plot(Toptable_V.D24R, "Volcano Plot DOX 24hr Recovery (adj P-val<0.05)"),
   "V.D144R" = generate_volcano_plot(Toptable_V.D144R, "Volcano Plot DOX 144hr Recovery (adj P-val<0.05)")
 )
+
+
 
 # Display each volcano plot
 for (plot_name in names(volcano_plots)) {
@@ -13064,7 +13068,7 @@ for (gene in initial_test_genes2_fin_RUV_clust) {
 
 # saveRDS(motif1_genes_matrix_RUV, "data/new/RUV/CMF/motif1_genes_matrix_RUV.RDS")
 
-motif1_genes_matrix_RUV <- readRDS("data/new/RUV/CMF/motif1_genes_matrix_RUV.RDS")
+motif1_genes_matrix_RUV <- readRDS("C:/Users/emmap/RDirectory/Recovery_RNAseq/Recovery_5FU/data/new/RUV/CMF/motif1_genes_matrix_RUV.RDS")
 length(motif1_genes_matrix_RUV)
 #7602 genes in this set for motif 1
 

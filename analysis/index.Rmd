@@ -1,17 +1,28 @@
 ---
-title: "Home"
+title: "Figure Analysis"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: true
-    toc_float: 
-      collapsed: true
-      smooth_scroll: true
-    theme: journal
+    toc: false
 editor_options:
   chunk_output_type: inline
 ---
 
-Welcome to my research website.
+# Welcome!
 
-This project aims to understand the effects of Doxorubicin, an anthracycline used for chemotherapy, after a recovery period.
+This website contains the analysis leading up to and behind each figure. Click below to view my code and see my workflow. Main figures and supplementary figures are ordered chronologically with each piece labelled in the table of contents.
+
+## Flow Cytometry, Dose-response, yH2AX IF
+
+- [Initial Experiments: Figure 1](Figure1.html)
+
+## RNA-seq Analysis Workflow
+
+- [Quality Control: Fig S1](QC.html)
+- [RUVs Correction: Figs S2, S3](RUVs.html)
+- [Differential Expression (RUVs Corrected): Figs 2, S4](Figure2.html)
+- [Cormotif Analysis: Figs S5, 3, S6](Figure3.html)
+- [TOP2i Comparisons: Figs S7, 4](Figure4.html)
+- [DOX-induced Cardiotoxicity (DIC) Genes: Figs 5, S8](Figure5.html)
+- [Characterize Chronic Response: Fig 6](Figure6.html)
+- [Risk Genes in Chronic Response: Fig 7](Figure7.html)

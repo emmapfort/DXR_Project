@@ -648,3 +648,81 @@ for (p in c(nonproChronic_plots_hf)) print(p)
 #I plotted TIRAP as an example of a gene that overlaps with non-proChronic in the HF GWAS set
 
 ```
+
+
+# Table 1: Chronic response genes include candidate biomarkers and disease genes.
+
+```{r Biomarker Candidate Genes table, message=FALSE, warning=FALSE}
+#I want to pull the genes I found above into a table
+
+proChronic_df_all <- readRDS("data/Fig6/Chronic_df_all_defined.RDS")
+proChronic_up_genes <- readRDS("data/Fig6/proChronic_up_genes.RDS")
+
+candidate_genes_short <- c("ASTN1", "EPS8L2", "CEMIP", "P3H2", "CACNA2D3",
+                           "PDE11A", "ACHE", "CPE", "PTCHD4", "ABCA12",
+                           "CDKN1A", "CIT", "TRAIP")
+
+candidate_gene_table <- proChronic_df_all %>% 
+  dplyr::filter(SYMBOL %in% candidate_genes_short) %>% 
+  dplyr::mutate(
+    HF_gene = ifelse(Entrez_ID %in% hf_gwas_genes_list, "yes", "no"),
+    Biomarker_candidate = ifelse(Entrez_ID %in% proChronic_up_genes, "yes", "no"),
+    SYMBOL = factor(SYMBOL, levels = candidate_genes_short),
+    Direction = case_when(
+  !is.na(absFC_t0) & !is.na(absFC_t24) & !is.na(absFC_t144) &
+    absFC_t0 < absFC_t24 & absFC_t24 < absFC_t144 ~ "up_up",
+  !is.na(absFC_t0) & !is.na(absFC_t24) & !is.na(absFC_t144) &
+    absFC_t0 > absFC_t24 & absFC_t24 > absFC_t144 ~ "down_down",
+  TRUE ~ paste(
+    ifelse(absFC_t0  < absFC_t24,  "up", "down"),  #t0 vs t24
+    ifelse(absFC_t24 < absFC_t144, "up", "down"),  #t24 vs t144
+    sep = "_"
+  )
+  )) %>% 
+  dplyr::arrange(SYMBOL) %>% 
+  dplyr::select(SYMBOL, Response, Direction, Biomarker_candidate, HF_gene)
+
+print(candidate_gene_table)
+
+# saveRDS(candidate_gene_table, "data/Fig7/candidate_gene_table_short.RDS")
+
+# write.csv(candidate_gene_table, "data/Fig7/Table1_Candidate_gene_table_EMP_260312.csv")
+
+#make a longer version with all of the genes mentioned in the manuscript
+
+candidate_genes_long <- c(
+  "CDKN1A", "CDC20", "E2F2", "POLD3", "FEN1", "MCM2", "CCNB2", "FAS", "CDK1",
+  "RAD51", "BRCA1", "BLM", "CHEK1", "MAP2K6", "NEFL", "XPC", "BAX", "ORC1",
+  "KNL1", "EXO1", "MCM7", "TNFRSF9", "ITGA8", "EDNRB", "NGF", "CDK2",
+  "FGFR3", "ASTN1", "EPS8L2", "CEMIP", "P3H2", "CACNA2D3", "PDE11A", "ACHE",
+  "CPE", "PTCHD4", "ABCA12", "CIT", "TRAIP"
+)
+
+candidate_gene_table_long <- proChronic_df_all %>% 
+  dplyr::filter(SYMBOL %in% candidate_genes_long) %>% 
+  dplyr::mutate(
+    HF_gene = ifelse(Entrez_ID %in% hf_gwas_genes_list, "yes", "no"),
+    Biomarker_candidate = ifelse(Entrez_ID %in% proChronic_up_genes, "yes", "no"),
+    SYMBOL = factor(SYMBOL, levels = candidate_genes_long),
+    Direction = case_when(
+  !is.na(absFC_t0) & !is.na(absFC_t24) & !is.na(absFC_t144) &
+    absFC_t0 < absFC_t24 & absFC_t24 < absFC_t144 ~ "up_up",
+  !is.na(absFC_t0) & !is.na(absFC_t24) & !is.na(absFC_t144) &
+    absFC_t0 > absFC_t24 & absFC_t24 > absFC_t144 ~ "down_down",
+  TRUE ~ paste(
+    ifelse(absFC_t0  < absFC_t24,  "up", "down"),  #t0 vs t24
+    ifelse(absFC_t24 < absFC_t144, "up", "down"),  #t24 vs t144
+    sep = "_"
+  )
+  )) %>% 
+  dplyr::arrange(SYMBOL) %>% 
+  dplyr::select(SYMBOL, Response, Direction, Biomarker_candidate, HF_gene)
+
+print(candidate_gene_table_long)
+
+# saveRDS(candidate_gene_table_long, "data/Fig7/candidate_gene_table_long.RDS")
+
+# write.csv(candidate_gene_table_long, "data/Fig7/Table1_Candidate_gene_table_long_EMP_260312.csv")
+
+
+```

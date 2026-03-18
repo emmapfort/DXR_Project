@@ -8,6 +8,8 @@ output:
     toc_float: true
     theme: flatly
     highlight: textmate
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -34,6 +36,7 @@ Load necessary libraries for analysis.
 
 ```{r Necessary Libraries, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(tidyr)
 library(readxl)
 library(readr)
 library(reshape2)
@@ -94,7 +97,9 @@ Define my custom plot theme
 
 # saveRDS(plot_theme_custom, "data/plot_theme_custom.RDS")
 
-theme_custom <- readRDS("data/plot_theme_custom.RDS")
+# theme_custom <- readRDS("data/plot_theme_custom.RDS")
+theme_custom <- readRDS("data/plot_theme_custom_update.RDS")
+
 
 ```
 
@@ -275,6 +280,7 @@ nonproChronic_gene_list <- proChronic_df_all %>%
 length(proChronic_gene_list)
 length(nonproChronic_gene_list)
 
+# saveRDS(proChronic_df_all, "data/Fig6/Chronic_df_all_defined.RDS")
 # saveRDS(proChronic_gene_list, "data/Fig6/proChronic_gene_list.RDS")
 # saveRDS(nonproChronic_gene_list, "data/Fig6/non-proChronic_gene_list.RDS")
 
@@ -469,7 +475,8 @@ proChronic_GOKEGG_genes_RUV <- gostplot(proChronic_GOKEGG_RUV, capped = FALSE, i
 proChronic_GOKEGG_genes_RUV
 
 table_proChronic_GOKEGG_genes_RUV <- proChronic_GOKEGG_RUV$result %>% 
-  dplyr::select(c(source, term_id, term_name, intersection_size, term_size, p_value))
+  dplyr::select(c(source, term_id, term_name, intersection_size, term_size, p_value,
+                  intersection))
 
 table_proChronic_GOKEGG_genes_RUV %>% 
   mutate_at(.vars = 6, .funs = scales::label_scientific(digits=4)) %>% 
@@ -529,7 +536,48 @@ print(proChronic_table_genes_KEGG_plot)
 
 ```
 
+# Figure 6B - Revised Version
 
+
+```{r Fig6B Revised, warning=FALSE, message=FALSE}
+
+#revise this by adding adj.p = color, intersection size = size of points
+
+table_proChronic_genes_KEGG_RUV <- table_proChronic_GOKEGG_genes_RUV %>% 
+  dplyr::filter(source=="KEGG") %>% 
+  dplyr::select(p_value, term_name, intersection_size) %>% 
+  dplyr::slice_min(., n=10, order_by=p_value) %>% 
+  mutate(log_val = -log10(p_value))
+
+proChronic_table_genes_KEGG_plot_rev <- table_proChronic_genes_KEGG_RUV %>% 
+  ggplot(aes(x = log_val, y = reorder(term_name, p_value), col = p_value)) +
+  geom_point(aes(size = intersection_size)) +
+  ggtitle("Enriched Pathways: ProChronic")+
+  xlab(expression("-log"[10]~"adj. p-value"))+
+  ylab("KEGG term")+
+  scale_y_discrete(labels = scales::label_wrap(30))+
+  guides(size = guide_legend(title = "# of \nterm \ngenes")) +
+  theme_custom() +
+  theme(axis.line = element_blank(),
+        panel.border = element_rect(
+          color = "black",
+          fill = NA,
+          linewidth = 1
+        ),
+        axis.ticks = element_line(linewidth = .5)
+        )
+
+print(proChronic_table_genes_KEGG_plot_rev)
+
+# save_plot(
+#   plot = proChronic_table_genes_KEGG_plot_rev,
+#   filename = "Fig6B_Revised_proChronic_KEGG_EMP",
+#   folder = output_folder,
+#   height = 4,
+#   width = 5.75
+# )
+
+```
 
 # Figure 6C - Non-progressive Chronic response genes line plot
 
@@ -691,7 +739,8 @@ nonproChronic_GOKEGG_genes_RUV <- gostplot(nonproChronic_GOKEGG_RUV,
 nonproChronic_GOKEGG_genes_RUV
 
 table_nonproChronic_GOKEGG_genes_RUV <- nonproChronic_GOKEGG_RUV$result %>% 
-  dplyr::select(c(source, term_id, term_name, intersection_size, term_size, p_value))
+  dplyr::select(c(source, term_id, term_name, intersection_size, term_size,
+                  p_value, intersection))
 
 table_nonproChronic_GOKEGG_genes_RUV %>% 
   mutate_at(.vars = 6, .funs = scales::label_scientific(digits=4)) %>% 
@@ -750,6 +799,143 @@ print(nonproChronic_table_genes_KEGG_plot)
 #   folder = output_folder
 # )
 
+#make a table of the genes within each term
+nonproChronic_KEGG_term_genelist <- table_nonproChronic_GOKEGG_genes_RUV %>%
+  dplyr::filter(source=="KEGG") %>% 
+  dplyr::select(term_id, term_name, intersection_size, intersection, p_value) %>% 
+  dplyr::slice_min(., n=10, order_by=p_value) %>% 
+  mutate(log_val = -log10(p_value))
+
+```
+
+
+# Figure 6D - Revised Version
+
+```{r Fig 6D revised}
+
+#plot the revised versions with adj. p as color and intersection_size as size of points
+table_nonproChronic_genes_KEGG_RUV_rev <- table_nonproChronic_GOKEGG_genes_RUV %>% 
+  dplyr::filter(source=="KEGG") %>% 
+  dplyr::select(p_value, term_name, intersection_size) %>% 
+  dplyr::slice_min(., n=10, order_by=p_value) %>% 
+  mutate(log_val = -log10(p_value))
+
+nonproChronic_table_genes_KEGG_plot_rev <- table_nonproChronic_genes_KEGG_RUV %>% 
+  ggplot(aes(x = log_val, y = reorder(term_name, p_value), col =  p_value)) +
+  geom_point(aes(size = intersection_size)) +
+  ggtitle("Enriched Pathways: non-ProChronic")+
+  xlab(expression("-log"[10]~"adj. p-value"))+
+  ylab("KEGG term")+
+  scale_y_discrete(labels = scales::label_wrap(30))+
+  guides(size = guide_legend(title = "# of \nterm \ngenes")) +
+  theme_custom() +
+  theme(axis.line = element_blank(),
+        panel.border = element_rect(
+          color = "black",
+          fill = NA,
+          linewidth = 1
+        ),
+        axis.ticks = element_line(linewidth = .5)
+        )
+
+print(nonproChronic_table_genes_KEGG_plot_rev)
+
+# save_plot(
+#   plot = nonproChronic_table_genes_KEGG_plot_rev,
+#   filename = "Fig6D_Revised_nonproChronic_KEGG_EMP",
+#   folder = output_folder,
+#   height = 4,
+#   width = 5.75
+# )
+
+```
+
+
+# Figure 6B + 6D - Gene Tables
+
+```{r Fig 6B 6D table function, warning=FALSE, message=FALSE}
+
+#use my function from Fig3 to pull out the intersection data and make gene tables
+
+make_KEGG_gene_table <- function(data, n_terms = 10, output_file = NULL) {
+  #step 1 - filter to KEGG and select relevant values
+  term_list <- as.data.frame(
+    data %>% 
+      dplyr::filter(source == "KEGG") %>% 
+      dplyr::select(term_id, term_name, intersection_size, intersection, p_value) %>% 
+      dplyr::slice_min(n = n_terms, order_by = p_value) %>% 
+      dplyr::mutate(log_val = -log10(p_value))
+  )
+  #ensure that the Entrez_ID lists are in character format
+  term_list$intersection <- as.character(term_list$intersection)
+  
+  #step 2 - expand out the list of genes into a full table
+  gene_table <- do.call(rbind, lapply(1:nrow(term_list), function(i) {
+    ids <- trimws(strsplit(term_list$intersection[i], ",")[[1]])
+    data.frame(
+      Entrez_ID = ids,
+      term_id = term_list$term_id[i],
+      term_name = term_list$term_name[i],
+      adj_p = term_list$p_value[i],
+      log_val = term_list$log_val[i],
+      int_size = term_list$intersection_size[i],
+      stringsAsFactors = FALSE
+    )
+  }))
+  
+  #step 3 - add SYMBOL
+  symbol_map <- AnnotationDbi::mapIds( 
+    org.Hs.eg.db,
+    keys = gene_table$Entrez_ID,
+    column = "SYMBOL",
+    keytype = "ENTREZID",
+    multiVals = "first"
+  )
+  
+  #step 4 - assign symbols and ensure format is in order
+  gene_table$Symbol <- symbol_map[gene_table$Entrez_ID]
+  
+  gene_table <- gene_table[, c("term_name", "term_id", "int_size", #to check correct #
+                               "Entrez_ID", "Symbol",
+                               "adj_p", "log_val")]
+
+  #step 5 - reorder for clarity based on adj. p value
+  gene_table <- gene_table[order(gene_table$adj_p, gene_table$Entrez_ID), ]
+  rownames(gene_table) <- NULL  #reset row numbers after reordering
+  
+  #step 6 - export to csv + provide filename when calling
+  if (!is.null(output_file)) {
+    full_path <- file.path(output_folder, output_file)
+    write.csv(gene_table, file = full_path, row.names = FALSE)
+    message("Table written to: ", full_path)
+  }
+  #print the table
+  return(gene_table)
+}
+
+#now use this function to pull out your gene tables for both sets
+
+# proChronic_KEGG_gene_table <- make_KEGG_gene_table(
+#   table_proChronic_GOKEGG_genes_RUV,
+#   output_file = "Fig6B_proChronic_gene_table_EMP_260310.csv")
+
+# saveRDS(proChronic_KEGG_gene_table, "data/Fig6/Fig6B_proChronic_KEGG_gene_list.RDS")
+
+#read in the final version for Fig 6B
+proChronic_KEGG_gene_table <- readRDS("data/Fig6/Fig6B_proChronic_KEGG_gene_list.RDS")
+
+# nonproChronic_KEGG_gene_table <- make_KEGG_gene_table(
+#   table_nonproChronic_GOKEGG_genes_RUV,
+#   output_file = "Fig6D_nonproChronic_gene_table_EMP_260310.csv")
+
+# saveRDS(nonproChronic_KEGG_gene_table, "data/Fig6/Fig6D_nonproChronic_KEGG_gene_list.RDS")
+
+#read in the final version for Fig6D
+nonproChronic_KEGG_gene_table <- readRDS("data/Fig6/Fig6D_nonproChronic_KEGG_gene_list.RDS")
+
+#print the gene tables
+print(proChronic_KEGG_gene_table)
+print(nonproChronic_KEGG_gene_table)
 
 ```
 
@@ -803,7 +989,7 @@ print(plot_proChronic_fin_summary)
 ```{r Assess Directionality of proChronic, message=FALSE, warning=FALSE}
 #I want to take my set of proSus genes and stratify by response direction
 
-#pull the proSus genes from the df
+#pull the ProChronic genes from the df
 proChronic_only_df <- proChronic_df %>% 
   filter(
     Response == "ProChronic"
@@ -841,6 +1027,8 @@ length(proChronic_down_genes)
 
 #pull out the log2cpm genes that are upregulated
 
+# saveRDS(proChronic_up_genes, "data/Fig6/proChronic_up_genes.RDS")
+# saveRDS(proChronic_down_genes, "data/Fig6/proChronic_down_genes.RDS")
 ```
 
 

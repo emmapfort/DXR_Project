@@ -1,19 +1,21 @@
-name: DXR_RNAseq
-output_dir: ../docs_old
-
+name: "DXR_website"
+output_dir: ../docs
 navbar:
-  title: DXR
+  title: "DXR Project"
   left:
-    - text: About
-      href: index.html
+  - text: About
+    href: about.html
+  - text: Analysis
+    href: index.html
+  - text: License
+    href: license.html
   right:
-    - icon: fab fa-github
-      href: https://github.com/emmapfort/DXR_Project
-      text: Source Code
-
+  - icon: fab fa-github
+    href: https://github.com/emmapfort/DXR_Project
+    text: Source Code
 output:
   workflowr::wflow_html:
-    toc: true
+    toc: yes
     toc_float:
       collapsed: false
       smooth_scroll: true

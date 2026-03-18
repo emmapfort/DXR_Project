@@ -3,7 +3,6 @@ title: "License"
 output:
   workflowr::wflow_html:
     toc: false
-    theme: journal
 editor_options:
   chunk_output_type: console
 ---

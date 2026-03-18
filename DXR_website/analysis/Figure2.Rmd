@@ -846,8 +846,6 @@ scatterplot_fig2d_tall
 ```
 
 
-# Scatterplots for Revisions - mean CPM
-
 ```{r scatterplots for revisions, include=FALSE, message=FALSE, warning=FALSE}
 #in order to ensure that lowly abundant transcripts are not driving this response
 

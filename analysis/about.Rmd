@@ -3,12 +3,8 @@ title: "About"
 output:
   workflowr::wflow_html:
     toc: false
-    theme: journal
 editor_options:
   chunk_output_type: console
 ---
 
-<<<<<<< HEAD >>>>>>>
-=======
-
-This project aims to measure cardiomyocyte responses to DNA-damaging agents following acute treatment and after recovery, including Doxorubicin and 5-Fluorouracil. 
+This project aims to measure cardiomyocyte gene expression responses to the DNA-damaging agent Doxorubicin (DOX) following acute treatment and after recovery timepoints. 
