@@ -721,7 +721,7 @@ Set 2: DePianto DJ, Heiden JAV, Morshead KB, Sun KH, Modrusan Z, Teng G, Wolters
 
 
 
-```{r cell type comparisons as in 4B for 5D, warning=FALSE, message=FALSE}
+```{r cell type comparisons as in 4B for 5D, warning=FALSE}
 
 filcpm_mat_genes <- readRDS("data/QC/filcpm_matrix_genes.RDS")
 all_symb_genes <- filcpm_mat_genes$SYMBOL
@@ -828,7 +828,7 @@ cat("Fibro:",      length(Fibro_entrez),       "of", length(depianto_s2_ids), "\
 
 # Test for enrichment
 
-```{r enrichment between chronic and acute revisions, warning=FALSE, message=FALSE}
+```{r enrichment between chronic and acute revisions, warning=FALSE}
 
 #read in my chronic and acute cluster gene lists
 final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
@@ -895,6 +895,7 @@ forest_celltype <- ggplot(forest_summary_celltype,
   theme_custom()
 
 print(forest_celltype)
+forest_celltype
 
 #save plot as a png and pdf
 
