@@ -1592,7 +1592,7 @@ make_cpm_plot <- function(df_sub) {
   means_sub <- cluster_means %>% dplyr::filter(Timepoint == tp)
   
   ggplot(df_sub, aes(x = mean_log2CPM, y = logFC, color = cluster)) +
-    geom_point_rast(alpha = 0.6, size = 1, raster.dpi = 300) +
+    geom_point_rast(alpha = 0.7, size = 2, raster.dpi = 300) +
     #mean logFC lines per cluster as horizontal lines at mean CPM position
     geom_hline(data = means_sub %>% dplyr::filter(cluster == "Acute"),
                aes(yintercept = mean_logFC),
@@ -1653,23 +1653,23 @@ cpm_plot_tall
 #           height = 20,
 #           width = 12)
 
-save_plot(cpm_plot_list$`tx+0`,
-          filename = "meanCPM_Supp9_t0_EMP",
-          folder = output_folder,
-          height = 3,
-          width = 4)
-
-save_plot(cpm_plot_list$`tx+24`,
-          filename = "meanCPM_Supp9_t24_EMP",
-          folder = output_folder,
-          height = 3,
-          width = 4)
-
-save_plot(cpm_plot_list$`tx+144`,
-          filename = "meanCPM_Supp9_t144_EMP",
-          folder = output_folder,
-          height = 3,
-          width = 4)
+# save_plot(cpm_plot_list$`tx+0`,
+#           filename = "meanCPM_Supp9_t0_EMP",
+#           folder = output_folder,
+#           height = 4,
+#           width = 5.5)
+# 
+# save_plot(cpm_plot_list$`tx+24`,
+#           filename = "meanCPM_Supp9_t24_EMP",
+#           folder = output_folder,
+#           height = 4,
+#           width = 5.5)
+# 
+# save_plot(cpm_plot_list$`tx+144`,
+#           filename = "meanCPM_Supp9_t144_EMP",
+#           folder = output_folder,
+#           height = 4,
+#           width = 5.5)
 
 ```
 
