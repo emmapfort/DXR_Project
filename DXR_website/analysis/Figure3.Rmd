@@ -1644,8 +1644,32 @@ cpm_plot_tall
 # save_plot(cpm_plot_wide,
 #           filename = "meanCPM_logFC_Scatterplot_EMP_260316",
 #           folder = output_folder,
-#           height = 6,
-#           width = 10)
+#           height = 12,
+#           width = 20)
+
+# save_plot(cpm_plot_tall,
+#           filename = "meanCPM_logFC_tall_Scatterplot_EMP_260316",
+#           folder = output_folder,
+#           height = 20,
+#           width = 12)
+
+save_plot(cpm_plot_list$`tx+0`,
+          filename = "meanCPM_Supp9_t0_EMP",
+          folder = output_folder,
+          height = 3,
+          width = 4)
+
+save_plot(cpm_plot_list$`tx+24`,
+          filename = "meanCPM_Supp9_t24_EMP",
+          folder = output_folder,
+          height = 3,
+          width = 4)
+
+save_plot(cpm_plot_list$`tx+144`,
+          filename = "meanCPM_Supp9_t144_EMP",
+          folder = output_folder,
+          height = 3,
+          width = 4)
 
 ```
 
