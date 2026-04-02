@@ -367,7 +367,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -378,8 +378,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -392,9 +392,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>DXR_website/</code> <span
@@ -417,21 +417,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -522,15 +519,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree4a0aa675266ed4fa610ce67eae831bf5b4f8f462targetblank4a0aa67a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/emmapfort/DXR_Project/tree/4a0aa675266ed4fa610ce67eae831bf5b4f8f462" target="_blank">4a0aa67</a>
+<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree4a0aa675266ed4fa610ce67eae831bf5b4f8f462targetblank4a0aa67a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -540,7 +537,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/emmapfort/DXR_Project/tree/4a0aa675266ed4fa610ce67eae831bf5b4f8f462" target="_blank">4a0aa67</a>.
+<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -558,7 +555,6 @@ Ignored files:
     Ignored:    .RData
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    DXR_website/analysis/figure/
     Ignored:    code/Flow_Purity_Stressor_Boxplots_EMP_250226.R
     Ignored:    data/CDKN1A_geneplot_Dox.RDS
     Ignored:    data/Cormotif_dox.RDS
@@ -672,10 +668,6 @@ Ignored files:
     Ignored:    data/top.table_V.D24_dox.RDS
     Ignored:    data/top.table_V.D24r_dox.RDS
 
-Unstaged changes:
-    Modified:   DXR_website/analysis/Figure1.Rmd
-    Modified:   DXR_website/analysis/Figure5.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not
@@ -719,6 +711,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/analysis/Figure1.Rmd" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+<td>
+Updated website
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/emmapfort/DXR_Project/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/Figure1.html" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+<td>
+Updated website
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -2980,6 +3006,44 @@ boxplot(dox_ind1$RFLU_fin ~ dox_ind1$Time,
         main = &quot;DOX Ind1 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-1">
+Past versions of "Boxplots Raw Data all Timepoints-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-1"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/Boxplots Raw Data all Timepoints-1.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>##VEHICLE base vs fin Ind1
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
@@ -3003,6 +3067,44 @@ boxplot(veh_ind1$RFLU_fin ~ veh_ind1$Time,
         main = &quot;VEH Ind1 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-2">
+Past versions of "Boxplots Raw Data all Timepoints-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-2"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/Boxplots Raw Data all Timepoints-2.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>###individual 3
 ##DOX base vs fin Ind3
 #create the layout for plots to be side by side for each individiual
@@ -3028,6 +3130,44 @@ boxplot(dox_ind3$RFLU_fin ~ dox_ind3$Time,
         main = &quot;DOX Ind3 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-3">
+Past versions of "Boxplots Raw Data all Timepoints-3.png"
+</button>
+</p>
+<div id="fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-3"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/Boxplots Raw Data all Timepoints-3.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>##VEHICLE base vs fin Ind3
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
@@ -3051,6 +3191,44 @@ boxplot(veh_ind3$RFLU_fin ~ veh_ind3$Time,
         main = &quot;VEH Ind3 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-4">
+Past versions of "Boxplots Raw Data all Timepoints-4.png"
+</button>
+</p>
+<div id="fig-no-spaces-Boxplots-Raw-Data-all-Timepoints-4"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/Boxplots Raw Data all Timepoints-4.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="remove-background-fluorescence" class="section level2">
 <h2>Remove Background Fluorescence</h2>
@@ -3079,6 +3257,43 @@ boxplot(dox_ind1$RFLU_fin_noBG ~ dox_ind1$Time,
         main = &quot;DOX Ind1 Final noBG&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-RFLU-noBG-boxplots-1">
+Past versions of "RFLU noBG boxplots-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-RFLU-noBG-boxplots-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/RFLU noBG boxplots-1.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
@@ -3101,6 +3316,43 @@ boxplot(veh_ind1$RFLU_fin_noBG ~ veh_ind1$Time,
         main = &quot;VEH Ind1 Final noBG&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-RFLU-noBG-boxplots-2">
+Past versions of "RFLU noBG boxplots-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-RFLU-noBG-boxplots-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/RFLU noBG boxplots-2.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>###individual 3
 ##DOX base vs fin Ind3
 #create the layout for plots to be side by side for each individiual
@@ -3126,6 +3378,43 @@ boxplot(dox_ind3$RFLU_fin_noBG ~ dox_ind3$Time,
         main = &quot;DOX Ind3 Final noBG&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-RFLU-noBG-boxplots-3">
+Past versions of "RFLU noBG boxplots-3.png"
+</button>
+</p>
+<div id="fig-no-spaces-RFLU-noBG-boxplots-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/RFLU noBG boxplots-3.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>##VEHICLE base vs fin Ind3
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
@@ -3149,6 +3438,43 @@ boxplot(veh_ind3$RFLU_fin_noBG ~ veh_ind3$Time,
         main = &quot;VEH Ind3 Final noBG&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-RFLU-noBG-boxplots-4">
+Past versions of "RFLU noBG boxplots-4.png"
+</button>
+</p>
+<div id="fig-no-spaces-RFLU-noBG-boxplots-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/RFLU noBG boxplots-4.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="normalize-by-cmm-only-wells" class="section level2">
 <h2>Normalize by CMM-only wells</h2>
@@ -3177,6 +3503,43 @@ boxplot(dox_ind1$RFLU_fin_noBG_normUTX ~ dox_ind1$Time,
         main = &quot;DOX Ind1 Fin noBG normUTX&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-subtract-CMM-only-wells-1">
+Past versions of "subtract CMM only wells-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-subtract-CMM-only-wells-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/subtract CMM only wells-1.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
@@ -3199,6 +3562,43 @@ boxplot(veh_ind1$RFLU_fin_noBG_normUTX ~ veh_ind1$Time,
         main = &quot;VEH Ind1 Fin noBG normUTX&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-subtract-CMM-only-wells-2">
+Past versions of "subtract CMM only wells-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-subtract-CMM-only-wells-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/subtract CMM only wells-2.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>###individual 3
 ##DOX base vs fin Ind3
 #create the layout for plots to be side by side for each individiual
@@ -3224,6 +3624,43 @@ boxplot(dox_ind3$RFLU_fin_noBG_normUTX ~ dox_ind3$Time,
         main = &quot;DOX Ind3 Fin noBG normUTX&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-subtract-CMM-only-wells-3">
+Past versions of "subtract CMM only wells-3.png"
+</button>
+</p>
+<div id="fig-no-spaces-subtract-CMM-only-wells-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/subtract CMM only wells-3.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>##VEHICLE base vs fin Ind3
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
@@ -3247,6 +3684,43 @@ boxplot(veh_ind3$RFLU_fin_noBG_normUTX ~ veh_ind3$Time,
         main = &quot;VEH Ind3 Fin noBG normUTX&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-subtract-CMM-only-wells-4">
+Past versions of "subtract CMM only wells-4.png"
+</button>
+</p>
+<div id="fig-no-spaces-subtract-CMM-only-wells-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/subtract CMM only wells-4.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="divide-treated-by-vehicle" class="section level2">
 <h2>Divide Treated by Vehicle</h2>
@@ -3275,6 +3749,43 @@ boxplot(dox_ind1$RFLU_fin_noBG_normUTX_divVEH ~ dox_ind1$Time,
         main = &quot;DOX/VEH Ind1 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/div%20by%20Vehicle-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-div-by-Vehicle-1">
+Past versions of "div by Vehicle-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-div-by-Vehicle-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/div by Vehicle-1.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>###individual 3
 ##DOX base vs fin Ind3
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
@@ -3299,6 +3810,43 @@ boxplot(dox_ind3$RFLU_fin_noBG_normUTX_divVEH ~ dox_ind3$Time,
         main = &quot;DOX/VEH Ind3 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/div%20by%20Vehicle-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-div-by-Vehicle-2">
+Past versions of "div by Vehicle-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-div-by-Vehicle-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/div by Vehicle-2.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="divide-final-timepoint-by-baseline-1" class="section level2">
 <h2>Divide Final Timepoint by Baseline</h2>
@@ -3330,6 +3878,43 @@ boxplot(dox_ind3$RFLU_ ~ dox_ind3$Time,
         main = &quot;Ind3&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/div%20final%20by%20baseline-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-div-final-by-baseline-1">
+Past versions of "div final by baseline-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-div-final-by-baseline-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/div final by baseline-1.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="plot-final-viability-assay" class="section level2">
 <h2>Plot Final Viability Assay</h2>
@@ -3393,6 +3978,44 @@ plot_dox_viability &lt;- ggplot(dox_combined,
 
 plot_dox_viability</code></pre>
 <p><img src="figure/Figure1.Rmd/move%20to%20a%20ggplot%20object%20for%20cleaner%20plots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-move-to-a-ggplot-object-for-cleaner-plots-1">
+Past versions of "move to a ggplot object for cleaner plots-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-move-to-a-ggplot-object-for-cleaner-plots-1"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/17cca347e5e0b42d650d74887acc584287e3ad48/DXR_website/docs/figure/Figure1.Rmd/move to a ggplot object for cleaner plots-1.png" target="_blank">17cca34</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># save_plot(plot_dox_viability,
 #           filename = &quot;Supp10_Viability_ABJG_Timepoints_EMP&quot;,
 #           folder = output_folder)
