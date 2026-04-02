@@ -35,6 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
@@ -365,7 +367,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -376,8 +378,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -386,13 +388,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-03-18
+<strong>Last updated:</strong> 2026-04-02
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>DXR_website/</code> <span
@@ -415,18 +417,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -517,15 +522,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree34943c6c688e4357bd3d13866576a5142d17a8b9targetblank34943c6a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree4a0aa675266ed4fa610ce67eae831bf5b4f8f462targetblank4a0aa67a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/emmapfort/DXR_Project/tree/34943c6c688e4357bd3d13866576a5142d17a8b9" target="_blank">34943c6</a>
+<a href="https://github.com/emmapfort/DXR_Project/tree/4a0aa675266ed4fa610ce67eae831bf5b4f8f462" target="_blank">4a0aa67</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree34943c6c688e4357bd3d13866576a5142d17a8b9targetblank34943c6a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree4a0aa675266ed4fa610ce67eae831bf5b4f8f462targetblank4a0aa67a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -535,7 +540,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/emmapfort/DXR_Project/tree/34943c6c688e4357bd3d13866576a5142d17a8b9" target="_blank">34943c6</a>.
+<a href="https://github.com/emmapfort/DXR_Project/tree/4a0aa675266ed4fa610ce67eae831bf5b4f8f462" target="_blank">4a0aa67</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -553,6 +558,7 @@ Ignored files:
     Ignored:    .RData
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    DXR_website/analysis/figure/
     Ignored:    code/Flow_Purity_Stressor_Boxplots_EMP_250226.R
     Ignored:    data/CDKN1A_geneplot_Dox.RDS
     Ignored:    data/Cormotif_dox.RDS
@@ -666,14 +672,9 @@ Ignored files:
     Ignored:    data/top.table_V.D24_dox.RDS
     Ignored:    data/top.table_V.D24r_dox.RDS
 
-Untracked files:
-    Untracked:  DXR_website/data/
-
 Unstaged changes:
-    Modified:   DXR_website/.gitignore
-    Modified:   analysis/DXR_Project_Analysis.Rmd
-    Modified:   analysis/Figure2.Rmd
-    Modified:   docs/Figure2.html
+    Modified:   DXR_website/analysis/Figure1.Rmd
+    Modified:   DXR_website/analysis/Figure5.Rmd
 
 </code></pre>
 <p>
@@ -718,6 +719,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/emmapfort/DXR_Project/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/Figure1.html" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -918,7 +936,8 @@ library(RImageJROI) #to read in ROI from ImageJ/Fiji
 library(stringr)
 library(purrr)
 library(rstatix)
-library(ggpubr)</code></pre>
+library(ggpubr)
+library(kableExtra)</code></pre>
 <p>Define my custom plot theme</p>
 <pre class="r"><code># Define the custom theme
 # plot_theme_custom &lt;- function() {
@@ -1068,6 +1087,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Flow Cytometry Barplot-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Flow Cytometry Barplot-1.png" target="_blank">0f7b54c</a>
@@ -2895,6 +2925,627 @@ emmapfort
 #saved code for saving the plots for posterity!</code></pre>
 </div>
 </div>
+<div
+id="supplementary-figure-10---timepoint-specific-ipsc-cm-viability-assay"
+class="section level1">
+<h1>Supplementary Figure 10 - Timepoint-specific iPSC-CM Viability
+Assay</h1>
+<pre class="r"><code>#My colleagues performed a cell viability assay following the recovery timepoints
+#tx+0, tx+24, tx+144
+
+#import the data
+dxr_viability &lt;- read_excel(&quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/DXR_DRC_Time_Combined_75JG_87AB_EMP_251114.xlsx&quot;, 
+    sheet = &quot;EMP_noBG_normVEH&quot;)
+# View(dxr_viability)
+
+#separate out the data
+dox_via &lt;- dxr_viability %&gt;% filter(Drug==&quot;DOX&quot;)
+veh_via &lt;- dxr_viability %&gt;% filter(Drug==&quot;VEH&quot;)
+
+#now separate by individual
+dox_ind1 &lt;- dox_via %&gt;% filter(Individual == &quot;Ind1&quot;) #87-1
+veh_ind1 &lt;- veh_via %&gt;% filter(Individual == &quot;Ind1&quot;)
+
+dox_ind3 &lt;- dox_via %&gt;% filter(Individual == &quot;Ind3&quot;) #75-1
+veh_ind3 &lt;- veh_via %&gt;% filter(Individual == &quot;Ind3&quot;)
+
+#enforce factor order for plotting 
+dox_ind1$Time &lt;- factor(dox_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+dox_ind3$Time &lt;- factor(dox_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+veh_ind1$Time &lt;- factor(veh_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+veh_ind3$Time &lt;- factor(veh_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))</code></pre>
+<div id="boxplots-of-raw-data" class="section level2">
+<h2>Boxplots of Raw Data</h2>
+<pre class="r"><code>##DOX base vs fin Ind1
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - DOX Ind1 87-1&quot;, cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind1 Baseline&quot;
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind1 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>##VEHICLE base vs fin Ind1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - VEH Ind1 87-1&quot;, cex = 1, font = 2)
+
+#ind1 veh baseline
+boxplot(veh_ind1$RFLU_base ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind1 Baseline&quot;
+)
+
+#ind1 veh final
+boxplot(veh_ind1$RFLU_fin ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind1 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - DOX Ind3 75-1&quot;, cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind3 Baseline&quot;
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind3 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - VEH Ind3 75-1&quot;, cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Baseline&quot;
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="remove-background-fluorescence" class="section level2">
+<h2>Remove Background Fluorescence</h2>
+<pre class="r"><code>#now remove the background fluorescence using the PrestoBlue only wells
+
+##Individual 1 87-1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - DOX Ind1 87-1&quot;, cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base_noBG ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind1 Baseline noBG&quot;
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin_noBG ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind1 Final noBG&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - VEH Ind1 87-1&quot;, cex = 1, font = 2)
+
+#ind1 veh baseline
+boxplot(veh_ind1$RFLU_base_noBG ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind1 Baseline noBG&quot;
+)
+
+#ind1 veh final
+boxplot(veh_ind1$RFLU_fin_noBG ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind1 Final noBG&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - DOX Ind3 75-1&quot;, cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind3 Baseline noBG&quot;
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind3 Final noBG&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - VEH Ind3 75-1&quot;, cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base_noBG ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Baseline noBG&quot;
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin_noBG ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Final noBG&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="normalize-by-cmm-only-wells" class="section level2">
+<h2>Normalize by CMM-only wells</h2>
+<pre class="r"><code>#now, I would like to normalize my data by removing any additional background from CMM-only wells seeded with iPSCs
+
+##Individual 1 87-1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - DOX Ind1&quot;, cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base_noBG_normUTX ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind1 Base noBG normUTX&quot;
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin_noBG_normUTX ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind1 Fin noBG normUTX&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - VEH Ind1&quot;, cex = 1, font = 2)
+
+#ind1 veh baseline
+boxplot(veh_ind1$RFLU_base_noBG_normUTX ~ veh_ind1$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind1 Base noBG normUTX&quot;
+)
+
+#ind1 veh final
+boxplot(veh_ind1$RFLU_fin_noBG_normUTX ~ veh_ind1$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind1 Fin noBG normUTX&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - DOX Ind3&quot;, cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG_normUTX ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind3 Base noBG normUTX&quot;
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG_normUTX ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX Ind3 Fin noBG normUTX&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - VEH Ind3&quot;, cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base_noBG_normUTX ~ veh_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Base noBG normUTX&quot;
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin_noBG_normUTX ~ veh_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Fin noBG normUTX&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="divide-treated-by-vehicle" class="section level2">
+<h2>Divide Treated by Vehicle</h2>
+<pre class="r"><code>#now, I would like to normalize my data further by dividing my treated samples by volume-matched vehicle samples
+
+##Individual 1 87-1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - DOX/VEH Ind1&quot;, cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base_noBG_normUTX_divVEH ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX/VEH Ind1 Baseline&quot;
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin_noBG_normUTX_divVEH ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX/VEH Ind1 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/div%20by%20Vehicle-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###individual 3
+##DOX base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - DOX/VEH Ind3&quot;, cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG_normUTX_divVEH ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX/VEH Ind3 Baseline&quot;
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG_normUTX_divVEH ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;DOX/VEH Ind3 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/div%20by%20Vehicle-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="divide-final-timepoint-by-baseline-1" class="section level2">
+<h2>Divide Final Timepoint by Baseline</h2>
+<pre class="r"><code>#now, as the final step I will divide the final timepoint by the baseline measurement to get a 0-100% relative cell viability
+
+#enforce factoring order
+dox_ind1$Time &lt;- factor(dox_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+dox_ind3$Time &lt;- factor(dox_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint&quot;, cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_ ~ dox_ind1$Time,
+        ylim = c(0, 150),
+        ylab = &quot;Percent Viability (%)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;Ind1&quot;
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_ ~ dox_ind3$Time,
+        ylim = c(0, 150),
+        ylab = &quot;Percent Viability (%)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;Ind3&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/div%20final%20by%20baseline-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-final-viability-assay" class="section level2">
+<h2>Plot Final Viability Assay</h2>
+<pre class="r"><code>#now, plot these individuals together in one boxplot
+
+#create dox_combined
+dox_combined &lt;- bind_rows(dox_ind1, dox_ind3)
+
+#define colors
+ind_via_cols &lt;- c(&quot;Ind1&quot; = &quot;#ffa364&quot;, &quot;Ind3&quot; = &quot;#a4d177&quot;)
+time_col &lt;- c(
+  &quot;tx+0&quot;   = &quot;#005A4C&quot;,
+  &quot;tx+24&quot;  = &quot;#328477&quot;,
+  &quot;tx+144&quot; = &quot;#8FB9B1&quot;)
+
+#factor for ordering
+dox_combined$Time &lt;- factor(dox_combined$Time,
+                             levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+
+#perform paired t-test between each timepoint with BH correction
+ttest_dox &lt;- dox_combined %&gt;%
+  pairwise_t_test(RFLU_ ~ Time,
+                  paired = TRUE,
+                  p.adjust.method = &quot;BH&quot;) %&gt;%
+  add_xy_position(x = &quot;Time&quot;) %&gt;%
+  mutate(
+    p.signif = case_when(
+      p.adj &lt; 0.001 ~ &quot;***&quot;,
+      p.adj &lt; 0.01  ~ &quot;**&quot;,
+      p.adj &lt; 0.05  ~ &quot;*&quot;,
+      TRUE          ~ &quot;ns&quot;
+    )
+  )
+
+#create the plot
+plot_dox_viability &lt;- ggplot(dox_combined,
+                              aes(x = Time,
+                                  y = RFLU_)) +
+  geom_boxplot(aes(fill = Time),
+               show.legend = FALSE,
+               outlier.shape = NA) +
+  geom_point(aes(color = Individual),
+             size = 3,
+             alpha = 1,
+             position = position_identity()) +
+  scale_y_continuous(limits = c(0, 150)) +
+  scale_x_discrete(limits = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;)) +
+  scale_color_manual(values = ind_via_cols) +
+  scale_fill_manual(values = time_col) +
+  stat_pvalue_manual(ttest_dox,
+                     label = &quot;p.signif&quot;,
+                     xmin = &quot;xmin&quot;,
+                     xmax = &quot;xmax&quot;,
+                     y.position = &quot;y.position&quot;,
+                     tip.length = 0.02) +
+  labs(title = &quot;DOX Cell Viability by Timepoint&quot;,
+       x = &quot;Timepoint&quot;,
+       y = &quot;Relative Cell Viability (%)&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_dox_viability</code></pre>
+<p><img src="figure/Figure1.Rmd/move%20to%20a%20ggplot%20object%20for%20cleaner%20plots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot_dox_viability,
+#           filename = &quot;Supp10_Viability_ABJG_Timepoints_EMP&quot;,
+#           folder = output_folder)
+
+#print a summary table with the statistics information for later
+ttest_dox %&gt;%
+  dplyr::select(group1, group2, n1, n2, statistic, df, p, p.adj, p.signif) %&gt;%
+  mutate(
+    p     = formatC(p,     format = &quot;e&quot;, digits = 3),
+    p.adj = formatC(p.adj, format = &quot;e&quot;, digits = 3),
+    statistic = round(statistic, 3)
+  ) %&gt;%
+  dplyr::rename(
+    &quot;Group 1&quot;         = group1,
+    &quot;Group 2&quot;         = group2,
+    &quot;n1&quot;              = n1,
+    &quot;n2&quot;              = n2,
+    &quot;t&quot;               = statistic,
+    &quot;df&quot;              = df,
+    &quot;p (raw)&quot;         = p,
+    &quot;p (adj, BH)&quot;     = p.adj,
+    &quot;Sig.&quot;            = p.signif
+  ) %&gt;%
+  kable(align = &quot;c&quot;, caption = &quot;DOX Viability Statistical Summary (Paired t-test, BH Adjusted)&quot;) %&gt;%
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
+                full_width = FALSE)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+DOX Viability Statistical Summary (Paired t-test, BH Adjusted)
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Group 1
+</th>
+<th style="text-align:center;">
+Group 2
+</th>
+<th style="text-align:center;">
+n1
+</th>
+<th style="text-align:center;">
+n2
+</th>
+<th style="text-align:center;">
+t
+</th>
+<th style="text-align:center;">
+df
+</th>
+<th style="text-align:center;">
+p (raw)
+</th>
+<th style="text-align:center;">
+p (adj, BH)
+</th>
+<th style="text-align:center;">
+Sig.
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+tx+0
+</td>
+<td style="text-align:center;">
+tx+24
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+3.840
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+6.000e-03
+</td>
+<td style="text-align:center;">
+6.000e-03
+</td>
+<td style="text-align:center;">
+**
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+tx+0
+</td>
+<td style="text-align:center;">
+tx+144
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+7.966
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+9.370e-05
+</td>
+<td style="text-align:center;">
+2.810e-04
+</td>
+<td style="text-align:center;">
+***
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+tx+24
+</td>
+<td style="text-align:center;">
+tx+144
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+6.656
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+2.890e-04
+</td>
+<td style="text-align:center;">
+4.330e-04
+</td>
+<td style="text-align:center;">
+***
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="figure-1d---dna-damage-quantification" class="section level1">
 <h1>Figure 1D - DNA Damage Quantification</h1>
 <p>yH2AX Quantification (Immunofluorescence Staining).</p>
@@ -3356,6 +4007,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Step 1 - ROI Level All Individuals-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Step 1 - ROI Level All Individuals-1.png" target="_blank">0f7b54c</a>
 </td>
 <td>
@@ -3434,6 +4096,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Step 2 - Collapse by Image-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Step 2 - Collapse by Image-1.png" target="_blank">0f7b54c</a>
@@ -3600,6 +4273,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Step 3 - Images by Consistent Nuclei Count-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Step 3 - Images by Consistent Nuclei Count-1.png" target="_blank">0f7b54c</a>
 </td>
 <td>
@@ -3693,6 +4377,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Step 3 - Images by Consistent Nuclei Count-2.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Step 3 - Images by Consistent Nuclei Count-2.png" target="_blank">0f7b54c</a>
@@ -3801,6 +4496,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Step 4 - Normalization by Max Intensity-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Step 4 - Normalization by Max Intensity-1.png" target="_blank">0f7b54c</a>
 </td>
 <td>
@@ -3900,6 +4606,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Step 5 - Collapse by Individual-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Step 5 - Collapse by Individual-1.png" target="_blank">0f7b54c</a>
@@ -4077,6 +4794,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure1.Rmd/Step 6 - Significance Between Timepoints DOX-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/0f7b54cff0ef1624052bacef58c03f905b67c15c/DXR_website/docs/figure/Figure1.Rmd/Step 6 - Significance Between Timepoints DOX-1.png" target="_blank">0f7b54c</a>
 </td>
 <td>
@@ -4130,41 +4858,43 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggpubr_0.6.0     rstatix_0.7.2    RImageJROI_0.1.3 scales_1.4.0    
- [5] drc_3.0-1        MASS_7.3-65      readxl_1.4.5     lubridate_1.9.5 
- [9] forcats_1.0.1    stringr_1.6.0    dplyr_1.2.0      purrr_1.2.1     
-[13] readr_2.2.0      tidyr_1.3.2      tibble_3.3.1     ggplot2_4.0.2   
-[17] tidyverse_2.0.0  workflowr_1.7.1 
+ [1] kableExtra_1.4.0 ggpubr_0.6.0     rstatix_0.7.2    RImageJROI_0.1.3
+ [5] scales_1.4.0     drc_3.0-1        MASS_7.3-65      readxl_1.4.5    
+ [9] lubridate_1.9.5  forcats_1.0.1    stringr_1.6.0    dplyr_1.2.0     
+[13] purrr_1.2.1      readr_2.2.0      tidyr_1.3.2      tibble_3.3.1    
+[17] ggplot2_4.0.2    tidyverse_2.0.0  workflowr_1.7.1 
 
 loaded via a namespace (and not attached):
- [1] tidyselect_1.2.1      farver_2.1.2          S7_0.2.1             
- [4] fastmap_1.2.0         TH.data_1.1-3         spatstat.geom_3.7-0  
- [7] promises_1.5.0        digest_0.6.39         timechange_0.4.0     
-[10] lifecycle_1.0.5       survival_3.8-3        processx_3.8.6       
-[13] spatstat.data_3.1-9   magrittr_2.0.4        compiler_4.5.2       
-[16] rlang_1.1.7           sass_0.4.10           tools_4.5.2          
-[19] utf8_1.2.6            plotrix_3.8-13        yaml_2.3.12          
-[22] ggsignif_0.6.4        knitr_1.51            labeling_0.4.3       
-[25] bit_4.6.0             RColorBrewer_1.1-3    multcomp_1.4-29      
-[28] abind_1.4-8           withr_3.0.2           grid_4.5.2           
-[31] polyclip_1.10-7       git2r_0.36.2          gtools_3.9.5         
-[34] spatstat.utils_3.2-1  cli_3.6.5             mvtnorm_1.3-3        
-[37] crayon_1.5.3          rmarkdown_2.30        generics_0.1.4       
-[40] otel_0.2.0            rstudioapi_0.18.0     httr_1.4.8           
-[43] tzdb_0.5.0            cachem_1.1.0          splines_4.5.2        
-[46] parallel_4.5.2        cellranger_1.1.0      vctrs_0.7.1          
-[49] Matrix_1.7-4          sandwich_3.1-1        jsonlite_2.0.0       
-[52] carData_3.0-5         car_3.1-3             callr_3.7.6          
-[55] hms_1.1.4             bit64_4.6.0-1         Formula_1.2-5        
-[58] spatstat.univar_3.1-6 jquerylib_0.1.4       glue_1.8.0           
-[61] codetools_0.2-20      ps_1.9.1              stringi_1.8.7        
-[64] gtable_0.3.6          later_1.4.8           deldir_2.0-4         
-[67] pillar_1.11.1         htmltools_0.5.9       R6_2.6.1             
-[70] rprojroot_2.1.1       vroom_1.7.0           evaluate_1.0.5       
-[73] lattice_0.22-7        backports_1.5.0       broom_1.0.12         
-[76] httpuv_1.6.16         bslib_0.10.0          Rcpp_1.1.1           
-[79] whisker_0.4.1         xfun_0.56             fs_1.6.7             
-[82] zoo_1.8-14            getPass_0.2-4         pkgconfig_2.0.3      </code></pre>
+ [1] tidyselect_1.2.1      viridisLite_0.4.3     farver_2.1.2         
+ [4] S7_0.2.1              fastmap_1.2.0         TH.data_1.1-3        
+ [7] spatstat.geom_3.7-0   promises_1.5.0        digest_0.6.39        
+[10] timechange_0.4.0      lifecycle_1.0.5       survival_3.8-3       
+[13] processx_3.8.6        spatstat.data_3.1-9   magrittr_2.0.4       
+[16] compiler_4.5.2        rlang_1.1.7           sass_0.4.10          
+[19] tools_4.5.2           utf8_1.2.6            plotrix_3.8-13       
+[22] yaml_2.3.12           ggsignif_0.6.4        knitr_1.51           
+[25] labeling_0.4.3        bit_4.6.0             xml2_1.5.2           
+[28] RColorBrewer_1.1-3    multcomp_1.4-29       abind_1.4-8          
+[31] withr_3.0.2           grid_4.5.2            polyclip_1.10-7      
+[34] git2r_0.36.2          gtools_3.9.5          spatstat.utils_3.2-1 
+[37] cli_3.6.5             mvtnorm_1.3-3         crayon_1.5.3         
+[40] rmarkdown_2.30        generics_0.1.4        otel_0.2.0           
+[43] rstudioapi_0.18.0     httr_1.4.8            tzdb_0.5.0           
+[46] cachem_1.1.0          splines_4.5.2         parallel_4.5.2       
+[49] cellranger_1.1.0      vctrs_0.7.1           Matrix_1.7-4         
+[52] sandwich_3.1-1        jsonlite_2.0.0        carData_3.0-5        
+[55] car_3.1-3             callr_3.7.6           hms_1.1.4            
+[58] bit64_4.6.0-1         Formula_1.2-5         systemfonts_1.3.2    
+[61] spatstat.univar_3.1-6 jquerylib_0.1.4       glue_1.8.0           
+[64] codetools_0.2-20      ps_1.9.1              stringi_1.8.7        
+[67] gtable_0.3.6          later_1.4.8           deldir_2.0-4         
+[70] pillar_1.11.1         htmltools_0.5.9       R6_2.6.1             
+[73] textshaping_1.0.4     rprojroot_2.1.1       vroom_1.7.0          
+[76] evaluate_1.0.5        lattice_0.22-7        backports_1.5.0      
+[79] broom_1.0.12          httpuv_1.6.16         bslib_0.10.0         
+[82] Rcpp_1.1.1            svglite_2.2.2         whisker_0.4.1        
+[85] xfun_0.56             fs_1.6.7              zoo_1.8-14           
+[88] getPass_0.2-4         pkgconfig_2.0.3      </code></pre>
 </div>
 </div>
 </div>

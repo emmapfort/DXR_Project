@@ -43,6 +43,7 @@ library(stringr)
 library(purrr)
 library(rstatix)
 library(ggpubr)
+library(kableExtra)
 ```
 
 Define my custom plot theme
@@ -1036,6 +1037,526 @@ legend("bottomleft",
 #saved code for saving the plots for posterity!
 
 ```
+
+# Supplementary Figure 10 - Timepoint-specific iPSC-CM Viability Assay
+
+```{r AB JG Viability Assay Boxplots, warning=FALSE, message=FALSE}
+#My colleagues performed a cell viability assay following the recovery timepoints
+#tx+0, tx+24, tx+144
+
+#import the data
+dxr_viability <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/DXR_DRC_Time_Combined_75JG_87AB_EMP_251114.xlsx", 
+    sheet = "EMP_noBG_normVEH")
+# View(dxr_viability)
+
+#separate out the data
+dox_via <- dxr_viability %>% filter(Drug=="DOX")
+veh_via <- dxr_viability %>% filter(Drug=="VEH")
+
+#now separate by individual
+dox_ind1 <- dox_via %>% filter(Individual == "Ind1") #87-1
+veh_ind1 <- veh_via %>% filter(Individual == "Ind1")
+
+dox_ind3 <- dox_via %>% filter(Individual == "Ind3") #75-1
+veh_ind3 <- veh_via %>% filter(Individual == "Ind3")
+
+#enforce factor order for plotting 
+dox_ind1$Time <- factor(dox_ind1$Time, levels = c("tx+0", "tx+24", "tx+144"))
+dox_ind3$Time <- factor(dox_ind3$Time, levels = c("tx+0", "tx+24", "tx+144"))
+veh_ind1$Time <- factor(veh_ind1$Time, levels = c("tx+0", "tx+24", "tx+144"))
+veh_ind3$Time <- factor(veh_ind3$Time, levels = c("tx+0", "tx+24", "tx+144"))
+
+```
+
+## Boxplots of Raw Data
+
+```{r Boxplots Raw Data all Timepoints, message=FALSE, warning=FALSE}
+
+##DOX base vs fin Ind1
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint - DOX Ind1 87-1", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind1 Baseline"
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind1 Final"
+)
+
+##VEHICLE base vs fin Ind1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint - VEH Ind1 87-1", cex = 1, font = 2)
+
+#ind1 veh baseline
+boxplot(veh_ind1$RFLU_base ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind1 Baseline"
+)
+
+#ind1 veh final
+boxplot(veh_ind1$RFLU_fin ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind1 Final"
+)
+
+###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint - DOX Ind3 75-1", cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind3 Baseline"
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind3 Final"
+)
+
+##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint - VEH Ind3 75-1", cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind3 Baseline"
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind3 Final"
+)
+
+
+```
+
+
+## Remove Background Fluorescence
+
+```{r RFLU noBG boxplots, message=FALSE, warning=FALSE}
+#now remove the background fluorescence using the PrestoBlue only wells
+
+##Individual 1 87-1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint noBG - DOX Ind1 87-1", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base_noBG ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind1 Baseline noBG"
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin_noBG ~ dox_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind1 Final noBG"
+)
+
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint noBG - VEH Ind1 87-1", cex = 1, font = 2)
+
+#ind1 veh baseline
+boxplot(veh_ind1$RFLU_base_noBG ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind1 Baseline noBG"
+)
+
+#ind1 veh final
+boxplot(veh_ind1$RFLU_fin_noBG ~ veh_ind1$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind1 Final noBG"
+)
+
+###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint noBG - DOX Ind3 75-1", cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind3 Baseline noBG"
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG ~ dox_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind3 Final noBG"
+)
+
+##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint noBG - VEH Ind3 75-1", cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base_noBG ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind3 Baseline noBG"
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin_noBG ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind3 Final noBG"
+)
+
+
+```
+
+
+## Normalize by CMM-only wells
+
+```{r subtract CMM only wells, warning=FALSE, message=FALSE}
+#now, I would like to normalize my data by removing any additional background from CMM-only wells seeded with iPSCs
+
+##Individual 1 87-1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Time noBG normUTX - DOX Ind1", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base_noBG_normUTX ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind1 Base noBG normUTX"
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin_noBG_normUTX ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind1 Fin noBG normUTX"
+)
+
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Time noBG normUTX - VEH Ind1", cex = 1, font = 2)
+
+#ind1 veh baseline
+boxplot(veh_ind1$RFLU_base_noBG_normUTX ~ veh_ind1$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind1 Base noBG normUTX"
+)
+
+#ind1 veh final
+boxplot(veh_ind1$RFLU_fin_noBG_normUTX ~ veh_ind1$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind1 Fin noBG normUTX"
+)
+
+###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Time noBG normUTX - DOX Ind3", cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG_normUTX ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind3 Base noBG normUTX"
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG_normUTX ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX Ind3 Fin noBG normUTX"
+)
+
+##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Time noBG normUTX - VEH Ind3", cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base_noBG_normUTX ~ veh_ind3$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind3 Base noBG normUTX"
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin_noBG_normUTX ~ veh_ind3$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "VEH Ind3 Fin noBG normUTX"
+)
+
+```
+
+
+## Divide Treated by Vehicle
+
+```{r div by Vehicle, message=FALSE, warning=FALSE}
+
+#now, I would like to normalize my data further by dividing my treated samples by volume-matched vehicle samples
+
+##Individual 1 87-1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint - DOX/VEH Ind1", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_base_noBG_normUTX_divVEH ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind1 Baseline"
+)
+
+#ind1 final
+boxplot(dox_ind1$RFLU_fin_noBG_normUTX_divVEH ~ dox_ind1$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind1 Final"
+)
+
+###individual 3
+##DOX base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint - DOX/VEH Ind3", cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG_normUTX_divVEH ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind3 Baseline"
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG_normUTX_divVEH ~ dox_ind3$Time,
+        ylim = c(0, 2),
+        ylab = "Cell Viability (RFLU)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind3 Final"
+)
+
+```
+
+
+## Divide Final Timepoint by Baseline
+
+```{r div final by baseline, warning=FALSE, message=FALSE}
+#now, as the final step I will divide the final timepoint by the baseline measurement to get a 0-100% relative cell viability
+
+#enforce factoring order
+dox_ind1$Time <- factor(dox_ind1$Time, levels = c("tx+0", "tx+24", "tx+144"))
+dox_ind3$Time <- factor(dox_ind3$Time, levels = c("tx+0", "tx+24", "tx+144"))
+
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1$RFLU_ ~ dox_ind1$Time,
+        ylim = c(0, 150),
+        ylab = "Percent Viability (%)",
+        xlab = "Timepoint",
+        main = "Ind1"
+)
+
+#ind3 final
+boxplot(dox_ind3$RFLU_ ~ dox_ind3$Time,
+        ylim = c(0, 150),
+        ylab = "Percent Viability (%)",
+        xlab = "Timepoint",
+        main = "Ind3"
+)
+
+
+```
+
+
+## Plot Final Viability Assay
+
+```{r move to a ggplot object for cleaner plots, message=FALSE, warning=FALSE}
+#now, plot these individuals together in one boxplot
+
+#create dox_combined
+dox_combined <- bind_rows(dox_ind1, dox_ind3)
+
+#define colors
+ind_via_cols <- c("Ind1" = "#ffa364", "Ind3" = "#a4d177")
+time_col <- c(
+  "tx+0"   = "#005A4C",
+  "tx+24"  = "#328477",
+  "tx+144" = "#8FB9B1")
+
+#factor for ordering
+dox_combined$Time <- factor(dox_combined$Time,
+                             levels = c("tx+0", "tx+24", "tx+144"))
+
+#perform paired t-test between each timepoint with BH correction
+ttest_dox <- dox_combined %>%
+  pairwise_t_test(RFLU_ ~ Time,
+                  paired = TRUE,
+                  p.adjust.method = "BH") %>%
+  add_xy_position(x = "Time") %>%
+  mutate(
+    p.signif = case_when(
+      p.adj < 0.001 ~ "***",
+      p.adj < 0.01  ~ "**",
+      p.adj < 0.05  ~ "*",
+      TRUE          ~ "ns"
+    )
+  )
+
+#create the plot
+plot_dox_viability <- ggplot(dox_combined,
+                              aes(x = Time,
+                                  y = RFLU_)) +
+  geom_boxplot(aes(fill = Time),
+               show.legend = FALSE,
+               outlier.shape = NA) +
+  geom_point(aes(color = Individual),
+             size = 3,
+             alpha = 1,
+             position = position_identity()) +
+  scale_y_continuous(limits = c(0, 150)) +
+  scale_x_discrete(limits = c("tx+0", "tx+24", "tx+144")) +
+  scale_color_manual(values = ind_via_cols) +
+  scale_fill_manual(values = time_col) +
+  stat_pvalue_manual(ttest_dox,
+                     label = "p.signif",
+                     xmin = "xmin",
+                     xmax = "xmax",
+                     y.position = "y.position",
+                     tip.length = 0.02) +
+  labs(title = "DOX Cell Viability by Timepoint",
+       x = "Timepoint",
+       y = "Relative Cell Viability (%)") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dox_viability
+
+# save_plot(plot_dox_viability,
+#           filename = "Supp10_Viability_ABJG_Timepoints_EMP",
+#           folder = output_folder)
+
+#print a summary table with the statistics information for later
+ttest_dox %>%
+  dplyr::select(group1, group2, n1, n2, statistic, df, p, p.adj, p.signif) %>%
+  mutate(
+    p     = formatC(p,     format = "e", digits = 3),
+    p.adj = formatC(p.adj, format = "e", digits = 3),
+    statistic = round(statistic, 3)
+  ) %>%
+  dplyr::rename(
+    "Group 1"         = group1,
+    "Group 2"         = group2,
+    "n1"              = n1,
+    "n2"              = n2,
+    "t"               = statistic,
+    "df"              = df,
+    "p (raw)"         = p,
+    "p (adj, BH)"     = p.adj,
+    "Sig."            = p.signif
+  ) %>%
+  kable(align = "c", caption = "DOX Viability Statistical Summary (Paired t-test, BH Adjusted)") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE)
+
+```
+
 
 # Figure 1D - DNA Damage Quantification
 
@@ -2049,6 +2570,8 @@ plot_step5
 # )
 
 ```
+
+
 ## IF Quant Step 6
 
 Perform significance testing between treated timepoints.
@@ -2187,6 +2710,7 @@ plot_step6_dox_time
 # )
 
 ```
+
 
 # Figure 1E - yH2AX IF Images (no code)
 
