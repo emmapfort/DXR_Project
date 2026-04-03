@@ -88,17 +88,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Read in DAPI csvs from ImageJ
 
-```{r dapi quantification step 1 read in rois, warning=FALSE, message=FALSE}
-#read in the data from the macros that I used above
-#I will continue to focus on 20X images as I did in the previous set of boxplots for yH2AX quantification
-
-####Ind1 - 87-1####
-ind1_dapi <- 
-
-
-```
-
-
 ```{r dapi quantification step 1, warning=FALSE, message=FALSE}
 #for the first step, I want to collect all of the information from the macros I ran to get mean intensity from the same images used above for the yH2AX quantification
 
@@ -260,7 +249,13 @@ image_merged_dapi_summary <- readRDS("data/Fig1/image_merged_dapi_summary.RDS")
 
 ```
 
-## Check 
+## Assess the number of nuclei per image
+
+In these experiments, Ind1 was very confluent at the time of IF staining. 
+
+Ind4 had fewer cells and appeared sparser across all wells (despite seeding at the same density).
+
+Ind3 was also less confluent than Ind1.
 
 ```{r Assess Images for Quality, message=FALSE, warning=FALSE}
 #first look at the distribution of nuclei counts to inform a threshold
@@ -295,35 +290,15 @@ image_merged_dapi_summary %>%
   theme_custom()
 ```
 
-## Determine individual thresholds
-
-```{r set thresholds by individual}
-# Set per-individual minimums based on histogram inspection
-ind_nuclei_thresholds <- tibble(
-  Individual = c("Ind1", "Ind3", "Ind4"),
-  min_nuclei = c(XX, XX, XX)  # fill in after looking at histograms
-)
-
-image_merged_dapi_summary_filtered <- image_merged_dapi_summary %>%
-  left_join(ind_nuclei_thresholds, by = "Individual") %>%
-  dplyr::filter(NucleiCount >= min_nuclei) %>%
-  dplyr::select(-min_nuclei)
-
-cat("Images retained:", nrow(image_merged_dapi_summary_filtered), "\n")
-
-# Verify what was excluded per individual
-image_merged_dapi_summary %>%
-  left_join(ind_nuclei_thresholds, by = "Individual") %>%
-  dplyr::filter(NucleiCount < min_nuclei) %>%
-  dplyr::select(Image, Individual, Condition, NucleiCount) %>%
-  arrange(Individual, NucleiCount)
-```
-
 
 
 ## Hoechst Quant Step 3
 
-```{r step 3 dapi quant, warning=FALSE, message=FALSE}
+For this step, I will test two scenarios. For the first scenario, I will use the exact same images used in the previous yH2AX quantification (3x per condition)
+
+In the second scenario, I will keep all of the images so as not to artificially select those images with the same numbers of nuclei across conditions, which may mask differences across conditions (if any).
+
+```{r step 3 dapi quant 3 images, warning=FALSE, message=FALSE}
 #now, I would like to use the same 3 images per condition to plot Hoechst intensity
 
 pipeline_images <- merged_image_summary_final %>%
@@ -403,11 +378,238 @@ plot_dapi_3_stats <- ggplot(image_merged_dapi_summary_final,
   scale_color_manual(values = c(ind_cols_if)) +
   scale_fill_manual(values = txtime_col_old) +
   labs(title = "Step 3: Select 3 Images Per Individual with Consistent Nuclei")
-  
-  
 
 ```
 
+## Step 3 Hoechst Quantification - no image selection
+
+```{r step 3 no image selection, message=FALSE, warning=FALSE}
+#now, perform these steps in the same fashion as above on all images processed for this experiment. At the individual level, these numbers of nuclei may differ due to experimental factors including cell confluence (where 84-1 Ind4 is less confluent and therefore has fewer nuclei in all plates).
+
+
+plot_dapi_3.5 <- ggplot(image_merged_dapi_summary,
+                      aes(x = Condition,
+                          y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  labs(title = "Step 3: All Images",
+       x = "Condition",
+       y = "Mean Intensity") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dapi_3.5
+
+#now do stats for these to see if there are any differences over time
+ttests_step3.5_dapi <- image_merged_dapi_summary %>% 
+  group_by(Timepoint) %>% 
+  t_test(Mean_of_Mean ~ Treatment) %>% 
+  mutate(
+    y.position = max(image_merged_dapi_summary$Mean_of_Mean, na.rm = TRUE) * 1
+  )
+
+sig_table_dapi_3.5 <- image_merged_dapi_summary %>% 
+  group_by(Timepoint) %>% 
+  summarise(
+    p = t.test(Mean_of_Mean ~ Treatment)$p.value,
+    y.position = max(Mean_of_Mean, na.rm = TRUE) * 1.05,
+    .groups = "drop"
+  ) %>% 
+  mutate(
+    signif = case_when(
+      p < 0.001 ~ "***",
+      p < 0.01 ~ "**",
+      p < 0.05 ~ "*",
+      TRUE ~ "ns"
+    ),
+    group1 = paste0("VEH_", Timepoint),
+    group2 = paste0("DOX_", Timepoint)
+  )
+
+ttests_step3.5_dapi
+
+#now plot with these ttest statistics above the plot
+plot_dapi_3.5_stats <- ggplot(image_merged_dapi_summary,
+                            aes(x = Condition,
+                                y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  stat_pvalue_manual(sig_table_dapi_3.5,
+                     label = "signif",
+                     tip.length = 0.02) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  labs(title = "Step 3: All Images",
+       x = "Condition",
+       y = "Mean Intensity") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dapi_3.5_stats
+
+#there is some difference between VEH and DOX treated iPSC-CMs at the later timepoints
+
+```
+
+##Step 4 - Collapse images by individual
+
+```{r images by ind step 4 hoechst, message=FALSE, warning=FALSE}
+#now I will collapse each of these images into individual-level data
+#there is some variance between individuals so it will not be perfect
+
+#first, try the data with each image included from the entire set of images
+ind_summary_dapi_step4 <- image_merged_dapi_summary %>% 
+  group_by(Individual, Treatment, Timepoint, Magnification) %>% 
+  summarise(
+    Mean_of_Mean = mean(Mean_of_Mean, na.rm = TRUE),
+    .groups = "drop"
+  ) %>% 
+  mutate(
+    Condition = paste0(Treatment, "_", Timepoint)
+  )
+
+
+ttests_step4_dapi <- ttests_step3.5_dapi %>% 
+  filter(Timepoint %in% c("24T", "24R", "144R")) %>% 
+  mutate(
+    group1 = paste0("DOX_", Timepoint),
+    group2 = paste0("VEH_", Timepoint),
+    y.position = max(image_merged_dapi_summary$Mean_of_Mean, na.rm = TRUE) * 1.05,
+    
+    #add significance stars as defined earlier
+    p.signif = case_when(
+      p < 0.001 ~ "***",
+      p < 0.01 ~ "**",
+      p < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  )
+
+#now plot these individual-level measurements with stats
+
+plot_dapi_4 <- ggplot(ind_summary_dapi_step4, 
+                     aes(x = Condition, y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), 
+             size = 3, 
+             alpha = 1, 
+             position = position_identity()) +
+  # scale_y_continuous(limits = c(0, 100)) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttests_step4_dapi,
+                     label = "p.signif", 
+                     xmin = "group1",
+                     xmax = "group2", 
+                     tip.length = 0.02) +
+  labs(title = "Step 4: Individual-Level Hoechst Intensity, All Images",
+       x = "Condition", 
+       y = "Mean Intensity") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dapi_4
+
+
+#next, try the data with only three images per condition
+ind_summary_dapi_step4_filt <- image_merged_dapi_summary_final %>% 
+  group_by(Individual, Treatment, Timepoint, Magnification) %>% 
+  summarise(
+    Mean_of_Mean = mean(Mean_of_Mean, na.rm = TRUE),
+    .groups = "drop"
+  ) %>% 
+  mutate(
+    Condition = paste0(Treatment, "_", Timepoint)
+  )
+
+
+ttests_step4_dapi_filt <- ttests_step3_dapi %>% 
+  filter(Timepoint %in% c("24T", "24R", "144R")) %>% 
+  mutate(
+    group1 = paste0("DOX_", Timepoint),
+    group2 = paste0("VEH_", Timepoint),
+    y.position = max(image_merged_dapi_summary_final$Mean_of_Mean, na.rm = TRUE) * 1.05,
+    
+    #add significance stars as defined earlier
+    p.signif = case_when(
+      p < 0.001 ~ "***",
+      p < 0.01 ~ "**",
+      p < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  )
+
+#now plot these individual-level measurements with stats on the filtered image set
+
+plot_dapi_4_filt <- ggplot(ind_summary_dapi_step4_filt, 
+                     aes(x = Condition, y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), 
+             size = 3, 
+             alpha = 1, 
+             position = position_identity()) +
+  # scale_y_continuous(limits = c(0, 100)) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttests_step4_dapi_filt,
+                     label = "p.signif", 
+                     xmin = "group1",
+                     xmax = "group2", 
+                     tip.length = 0.02) +
+  labs(title = "Step 4: Individual-Level Hoechst Intensity, 3 Images",
+       x = "Condition", 
+       y = "Mean Intensity") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dapi_4_filt
+
+```
+
+## Step 5 - Treatment-Level Comparisons
+
+```{r tx level comparisons hoechst, message=FALSE, warning=FALSE}
+#now, I want to take these comparisons and add another layer where I'm comparing between DOX treated at different timepoints
+
+ind_summary_dapi_step4_dox <- image_merged_dapi_summary %>% 
+  group_by(Individual, Treatment, Timepoint, Magnification) %>% 
+  summarise(
+    Mean_Nuclei_Count = mean(Nuclei_Count, na.rm = TRUE),
+    Median_Nuclei_Count = median(Nuclei_Count, na.rm= TRUE),
+    .groups = "drop"
+  ) %>% 
+  mutate(
+    Condition = paste0(Treatment, "_", Timepoint)
+  )
+
+#set the condition levels
+condition_levels <- c("DOX_24T", "VEH_24T",
+                      "DOX_24R", "VEH_24R",
+                      "DOX_144R", "VEH_144R")
+
+dox_conditions <- c("DOX_24T", "DOX_24R", "DOX_144R")
+
+ind_summary_dapi_step4_dox <- ind_summary_dapi_step4_dox %>% 
+  mutate(Condition = factor(Condition, levels = condition_levels))
+
+#perform paired t-tests between DOX timepoints
+timepoint_pairs <- list(
+  
+)
+
+```
 
 
 ## Nuclei Counts Overview
@@ -497,4 +699,146 @@ nuclei_counts_imgs <- bind_rows(
 
 ```
 
+
+
+## Nuclei Count Assessment
+
+```{r assess nuclei count from raw images across all cond, warning=FALSE, message=FALSE}
+#assess whether nucleus count decreases over time from raw images
+
+plot_nuc_count <- ggplot(image_merged_dapi_summary,
+                      aes(x = Condition,
+                          y = Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  labs(title = "Assess # of Nuclei per Condition, Image Level",
+       x = "Condition",
+       y = "Number of Nuclei") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_nuc_count
+
+#now do stats for these to see if there are any differences over time
+ttests_nuc_count <- image_merged_dapi_summary %>% 
+  group_by(Timepoint) %>% 
+  t_test(Nuclei_Count ~ Treatment) %>% 
+  mutate(
+    y.position = max(image_merged_dapi_summary$Nuclei_Count, na.rm = TRUE) * 1
+  )
+
+sig_table_nuc_count <- image_merged_dapi_summary %>% 
+  group_by(Timepoint) %>% 
+  summarise(
+    p = t.test(Nuclei_Count ~ Treatment)$p.value,
+    y.position = max(Nuclei_Count, na.rm = TRUE) * 1.05,
+    .groups = "drop"
+  ) %>% 
+  mutate(
+    signif = case_when(
+      p < 0.001 ~ "***",
+      p < 0.01 ~ "**",
+      p < 0.05 ~ "*",
+      TRUE ~ "ns"
+    ),
+    group1 = paste0("VEH_", Timepoint),
+    group2 = paste0("DOX_", Timepoint)
+  )
+
+ttests_nuc_count
+
+#now plot with these ttest statistics above the plot
+plot_nuc_count_stats <- ggplot(image_merged_dapi_summary,
+                            aes(x = Condition,
+                                y = Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  stat_pvalue_manual(sig_table_nuc_count,
+                     label = "signif",
+                     tip.length = 0.02) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  labs(title = "Assess # of Nuclei by Condition, Image-Level",
+       x = "Condition",
+       y = "Number of Nuclei") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_nuc_count_stats
+
+```
+
+## Assess Nuclei Count by Individual Level
+
+```{r ind level nuclei count quant, warning=FALSE, message=FALSE}
+#now I would like to assess these numbers of nuclei at an individual level
+
+#first, collapse the data by individual
+ind_summary_nuc_count <- image_merged_dapi_summary %>% 
+  group_by(Individual, Treatment, Timepoint, Magnification) %>% 
+  summarise(
+    Median_Nuclei_Count = median(Nuclei_Count, na.rm = TRUE),
+    Mean_Nuclei_count = mean(Nuclei_Count, na.rm = TRUE),
+    .groups = "drop"
+  ) %>% 
+  mutate(
+    Condition = paste0(Treatment, "_", Timepoint)
+  )
+
+
+#assess the mean and the median, but first do stats
+ttests_nuc_count_ind <- ttests_nuc_count %>% 
+  filter(Timepoint %in% c("24T", "24R", "144R")) %>% 
+  mutate(
+    group1 = paste0("DOX_", Timepoint),
+    group2 = paste0("VEH_", Timepoint),
+    y.position = max(image_merged_dapi_summary$Nuclei_Count, na.rm = TRUE) * 1.05,
+    
+    #add significance stars as defined earlier
+    p.signif = case_when(
+      p < 0.001 ~ "***",
+      p < 0.01 ~ "**",
+      p < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  )
+
+#now plot these individual-level measurements with stats
+
+plot_dapi_4 <- ggplot(ind_summary_dapi_step4, 
+                     aes(x = Condition, y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), 
+             size = 3, 
+             alpha = 1, 
+             position = position_identity()) +
+  # scale_y_continuous(limits = c(0, 100)) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttests_step4_dapi,
+                     label = "p.signif", 
+                     xmin = "group1",
+                     xmax = "group2", 
+                     tip.length = 0.02) +
+  labs(title = "Step 4: Individual-Level Hoechst Intensity, All Images",
+       x = "Condition", 
+       y = "Mean Intensity") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dapi_4
+
+
+```
 
