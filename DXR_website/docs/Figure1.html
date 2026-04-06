@@ -388,7 +388,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-04-02
+<strong>Last updated:</strong> 2026-04-06
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -519,15 +519,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree896bc1cccd4a9b018a3f625eabf62c2e8a9039b9targetblank896bc1ca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>
+<a href="https://github.com/emmapfort/DXR_Project/tree/896bc1cccd4a9b018a3f625eabf62c2e8a9039b9" target="_blank">896bc1c</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree896bc1cccd4a9b018a3f625eabf62c2e8a9039b9targetblank896bc1ca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -537,7 +537,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>.
+<a href="https://github.com/emmapfort/DXR_Project/tree/896bc1cccd4a9b018a3f625eabf62c2e8a9039b9" target="_blank">896bc1c</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -555,6 +555,7 @@ Ignored files:
     Ignored:    .RData
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    DXR_website/analysis/figure/
     Ignored:    code/Flow_Purity_Stressor_Boxplots_EMP_250226.R
     Ignored:    data/CDKN1A_geneplot_Dox.RDS
     Ignored:    data/Cormotif_dox.RDS
@@ -668,6 +669,12 @@ Ignored files:
     Ignored:    data/top.table_V.D24_dox.RDS
     Ignored:    data/top.table_V.D24r_dox.RDS
 
+Untracked files:
+    Untracked:  DXR_website/data/Fig1/nuclei_counts_imgs.RDS
+
+Unstaged changes:
+    Modified:   DXR_website/analysis/testsheet.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not
@@ -711,6 +718,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/896bc1cccd4a9b018a3f625eabf62c2e8a9039b9/DXR_website/analysis/Figure1.Rmd" target="_blank">896bc1c</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-06
+</td>
+<td>
+Updated analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/emmapfort/DXR_Project/c93aa31190104152a7b3e1cd146fa9a94b68ebd9/DXR_website/docs/Figure1.html" target="_blank">c93aa31</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2967,19 +3008,24 @@ dxr_viability &lt;- read_excel(&quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscr
 #separate out the data
 dox_via &lt;- dxr_viability %&gt;% filter(Drug==&quot;DOX&quot;)
 veh_via &lt;- dxr_viability %&gt;% filter(Drug==&quot;VEH&quot;)
+untx_via &lt;- dxr_viability %&gt;% filter(Drug==&quot;CMM&quot;)
 
 #now separate by individual
 dox_ind1 &lt;- dox_via %&gt;% filter(Individual == &quot;Ind1&quot;) #87-1
 veh_ind1 &lt;- veh_via %&gt;% filter(Individual == &quot;Ind1&quot;)
+untx_ind1 &lt;- untx_via %&gt;% filter(Individual == &quot;Ind1&quot;)
 
 dox_ind3 &lt;- dox_via %&gt;% filter(Individual == &quot;Ind3&quot;) #75-1
 veh_ind3 &lt;- veh_via %&gt;% filter(Individual == &quot;Ind3&quot;)
+untx_ind3 &lt;- untx_via %&gt;% filter(Individual == &quot;Ind3&quot;)
 
 #enforce factor order for plotting 
 dox_ind1$Time &lt;- factor(dox_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
 dox_ind3$Time &lt;- factor(dox_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
 veh_ind1$Time &lt;- factor(veh_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
-veh_ind3$Time &lt;- factor(veh_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))</code></pre>
+veh_ind3$Time &lt;- factor(veh_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+untx_ind1$Time &lt;- factor(untx_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+untx_ind3$Time &lt;- factor(untx_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))</code></pre>
 <div id="boxplots-of-raw-data" class="section level2">
 <h2>Boxplots of Raw Data</h2>
 <pre class="r"><code>##DOX base vs fin Ind1
@@ -3105,29 +3151,27 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>###individual 3
-##DOX base vs fin Ind3
-#create the layout for plots to be side by side for each individiual
+<pre class="r"><code>##Untx base vs fin Ind1
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
 plot.new()
-text(0.5, 0.5, &quot;Viability by Timepoint - DOX Ind3 75-1&quot;, cex = 1, font = 2)
+text(0.5, 0.5, &quot;Viability by Timepoint - UTx Ind1 87-1&quot;, cex = 1, font = 2)
 
-#Ind3 75-1
-boxplot(dox_ind3$RFLU_base ~ dox_ind3$Time,
+#ind1 untx baseline
+boxplot(untx_ind1$RFLU_base ~ untx_ind1$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;DOX Ind3 Baseline&quot;
+        main = &quot;UnTx Ind1 Baseline&quot;
 )
 
-#ind3 final
-boxplot(dox_ind3$RFLU_fin ~ dox_ind3$Time,
+#ind1 untx final
+boxplot(untx_ind1$RFLU_fin ~ untx_ind1$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;DOX Ind3 Final&quot;
+        main = &quot;UnTx Ind1 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3168,27 +3212,29 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>##VEHICLE base vs fin Ind3
+<pre class="r"><code>###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
 plot.new()
-text(0.5, 0.5, &quot;Viability by Timepoint - VEH Ind3 75-1&quot;, cex = 1, font = 2)
+text(0.5, 0.5, &quot;Viability by Timepoint - DOX Ind3 75-1&quot;, cex = 1, font = 2)
 
-#ind3 veh baseline
-boxplot(veh_ind3$RFLU_base ~ veh_ind3$Time,
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base ~ dox_ind3$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;VEH Ind3 Baseline&quot;
+        main = &quot;DOX Ind3 Baseline&quot;
 )
 
-#ind3 veh final
-boxplot(veh_ind3$RFLU_fin ~ veh_ind3$Time,
+#ind3 final
+boxplot(dox_ind3$RFLU_fin ~ dox_ind3$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;VEH Ind3 Final&quot;
+        main = &quot;DOX Ind3 Final&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3229,6 +3275,52 @@ emmapfort
 </table>
 </div>
 </div>
+<pre class="r"><code>##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - VEH Ind3 75-1&quot;, cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Baseline&quot;
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-5.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>##Untx base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - UTx Ind3 75-1&quot;, cex = 1, font = 2)
+
+#ind3 untx baseline
+boxplot(untx_ind3$RFLU_base ~ untx_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;UnTx Ind3 Baseline&quot;
+)
+
+#ind1 untx final
+boxplot(untx_ind3$RFLU_fin ~ untx_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;UnTx Ind3 Final&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/Boxplots%20Raw%20Data%20all%20Timepoints-6.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="remove-background-fluorescence" class="section level2">
 <h2>Remove Background Fluorescence</h2>
@@ -3353,29 +3445,27 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>###individual 3
-##DOX base vs fin Ind3
-#create the layout for plots to be side by side for each individiual
+<pre class="r"><code>##untx ind1 base vs fin
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
 plot.new()
-text(0.5, 0.5, &quot;Viability by Timepoint noBG - DOX Ind3 75-1&quot;, cex = 1, font = 2)
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - UTx Ind1 87-1&quot;, cex = 1, font = 2)
 
-#Ind3 75-1
-boxplot(dox_ind3$RFLU_base_noBG ~ dox_ind3$Time,
+#Ind1 87-1
+boxplot(untx_ind1$RFLU_base_noBG ~ untx_ind1$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;DOX Ind3 Baseline noBG&quot;
+        main = &quot;UnTx Ind1 Baseline noBG&quot;
 )
 
-#ind3 final
-boxplot(dox_ind3$RFLU_fin_noBG ~ dox_ind3$Time,
+#ind1 final
+boxplot(untx_ind1$RFLU_fin_noBG ~ untx_ind1$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;DOX Ind3 Final noBG&quot;
+        main = &quot;UnTx Ind1 Final noBG&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3415,27 +3505,29 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>##VEHICLE base vs fin Ind3
+<pre class="r"><code>###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
 plot.new()
-text(0.5, 0.5, &quot;Viability by Timepoint noBG - VEH Ind3 75-1&quot;, cex = 1, font = 2)
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - DOX Ind3 75-1&quot;, cex = 1, font = 2)
 
-#ind3 veh baseline
-boxplot(veh_ind3$RFLU_base_noBG ~ veh_ind3$Time,
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG ~ dox_ind3$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;VEH Ind3 Baseline noBG&quot;
+        main = &quot;DOX Ind3 Baseline noBG&quot;
 )
 
-#ind3 veh final
-boxplot(veh_ind3$RFLU_fin_noBG ~ veh_ind3$Time,
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG ~ dox_ind3$Time,
         ylim = c(0, 150000),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;VEH Ind3 Final noBG&quot;
+        main = &quot;DOX Ind3 Final noBG&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3475,6 +3567,52 @@ emmapfort
 </table>
 </div>
 </div>
+<pre class="r"><code>##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - VEH Ind3 75-1&quot;, cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base_noBG ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Baseline noBG&quot;
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin_noBG ~ veh_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Final noBG&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-5.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>##untx ind3 base vs fin
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint noBG - UTx Ind3 75-1&quot;, cex = 1, font = 2)
+
+#Ind3 87-1
+boxplot(untx_ind3$RFLU_base_noBG ~ untx_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;UnTx Ind3 Baseline noBG&quot;
+)
+
+#ind3 final
+boxplot(untx_ind3$RFLU_fin_noBG ~ untx_ind3$Time,
+        ylim = c(0, 150000),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;UnTx Ind3 Final noBG&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/RFLU%20noBG%20boxplots-6.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="normalize-by-cmm-only-wells" class="section level2">
 <h2>Normalize by CMM-only wells</h2>
@@ -3599,29 +3737,27 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>###individual 3
-##DOX base vs fin Ind3
-#create the layout for plots to be side by side for each individiual
+<pre class="r"><code>##untx set
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
 plot.new()
-text(0.5, 0.5, &quot;Viability by Time noBG normUTX - DOX Ind3&quot;, cex = 1, font = 2)
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - UTx Ind1&quot;, cex = 1, font = 2)
 
-#Ind3 75-1
-boxplot(dox_ind3$RFLU_base_noBG_normUTX ~ dox_ind3$Time,
+#Ind1 87-1
+boxplot(untx_ind1$RFLU_base_noBG_normUTX ~ untx_ind1$Time,
         ylim = c(0, 2),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;DOX Ind3 Base noBG normUTX&quot;
+        main = &quot;UnTx Ind1 Base noBG normUTX&quot;
 )
 
-#ind3 final
-boxplot(dox_ind3$RFLU_fin_noBG_normUTX ~ dox_ind3$Time,
+#ind1 final
+boxplot(untx_ind1$RFLU_fin_noBG_normUTX ~ untx_ind1$Time,
         ylim = c(0, 2),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;DOX Ind3 Fin noBG normUTX&quot;
+        main = &quot;UnTx Ind1 Fin noBG normUTX&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3661,27 +3797,29 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>##VEHICLE base vs fin Ind3
+<pre class="r"><code>###individual 3
+##DOX base vs fin Ind3
+#create the layout for plots to be side by side for each individiual
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
 plot.new()
-text(0.5, 0.5, &quot;Viability by Time noBG normUTX - VEH Ind3&quot;, cex = 1, font = 2)
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - DOX Ind3&quot;, cex = 1, font = 2)
 
-#ind3 veh baseline
-boxplot(veh_ind3$RFLU_base_noBG_normUTX ~ veh_ind3$Time,
+#Ind3 75-1
+boxplot(dox_ind3$RFLU_base_noBG_normUTX ~ dox_ind3$Time,
         ylim = c(0, 2),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;VEH Ind3 Base noBG normUTX&quot;
+        main = &quot;DOX Ind3 Base noBG normUTX&quot;
 )
 
-#ind3 veh final
-boxplot(veh_ind3$RFLU_fin_noBG_normUTX ~ veh_ind3$Time,
+#ind3 final
+boxplot(dox_ind3$RFLU_fin_noBG_normUTX ~ dox_ind3$Time,
         ylim = c(0, 2),
         ylab = &quot;Cell Viability (RFLU)&quot;,
         xlab = &quot;Timepoint&quot;,
-        main = &quot;VEH Ind3 Fin noBG normUTX&quot;
+        main = &quot;DOX Ind3 Fin noBG normUTX&quot;
 )</code></pre>
 <p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3721,6 +3859,52 @@ emmapfort
 </table>
 </div>
 </div>
+<pre class="r"><code>##VEHICLE base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - VEH Ind3&quot;, cex = 1, font = 2)
+
+#ind3 veh baseline
+boxplot(veh_ind3$RFLU_base_noBG_normUTX ~ veh_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Base noBG normUTX&quot;
+)
+
+#ind3 veh final
+boxplot(veh_ind3$RFLU_fin_noBG_normUTX ~ veh_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;VEH Ind3 Fin noBG normUTX&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-5.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>##untx set
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Time noBG normUTX - UTx Ind3&quot;, cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(untx_ind3$RFLU_base_noBG_normUTX ~ untx_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;UnTx Ind3 Base noBG normUTX&quot;
+)
+
+#ind3 final
+boxplot(untx_ind3$RFLU_fin_noBG_normUTX ~ untx_ind3$Time,
+        ylim = c(0, 2),
+        ylab = &quot;Cell Viability (RFLU)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;UnTx Ind3 Fin noBG normUTX&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/subtract%20CMM%20only%20wells-6.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="divide-treated-by-vehicle" class="section level2">
 <h2>Divide Treated by Vehicle</h2>
@@ -3856,6 +4040,9 @@ emmapfort
 dox_ind1$Time &lt;- factor(dox_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
 dox_ind3$Time &lt;- factor(dox_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
 
+untx_ind1$Time &lt;- factor(untx_ind1$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+untx_ind3$Time &lt;- factor(untx_ind3$Time, levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+
 par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
 layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
 #layout.show(3)
@@ -3915,6 +4102,52 @@ emmapfort
 </table>
 </div>
 </div>
+<pre class="r"><code>#untx version
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - UnTx&quot;, cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(untx_ind1$CMM_ ~ untx_ind1$Time,
+        ylim = c(0, 150),
+        ylab = &quot;Percent Viability (%)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;Ind1 UnTx&quot;
+)
+
+#ind3 final
+boxplot(untx_ind3$CMM_ ~ untx_ind3$Time,
+        ylim = c(0, 150),
+        ylab = &quot;Percent Viability (%)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;Ind3 UnTx&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/div%20final%20by%20baseline-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#untx non-norm by CMM version
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, &quot;Viability by Timepoint - UnTx nn&quot;, cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(untx_ind1$CMM_nn ~ untx_ind1$Time,
+        ylim = c(0, 150),
+        ylab = &quot;Percent Viability (%)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;Ind1 UnTx&quot;
+)
+
+#ind3 final
+boxplot(untx_ind3$CMM_nn ~ untx_ind3$Time,
+        ylim = c(0, 150),
+        ylab = &quot;Percent Viability (%)&quot;,
+        xlab = &quot;Timepoint&quot;,
+        main = &quot;Ind3 UnTx&quot;
+)</code></pre>
+<p><img src="figure/Figure1.Rmd/div%20final%20by%20baseline-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-final-viability-assay" class="section level2">
 <h2>Plot Final Viability Assay</h2>
@@ -4163,6 +4396,414 @@ tx+144
 </td>
 <td style="text-align:center;">
 ***
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="untreated-final-plot" class="section level2">
+<h2>Untreated Final Plot</h2>
+<pre class="r"><code>#create untx_combined
+untx_combined &lt;- bind_rows(untx_ind1, untx_ind3)
+
+#define colors
+ind_via_cols &lt;- c(&quot;Ind1&quot; = &quot;#ffa364&quot;, &quot;Ind3&quot; = &quot;#a4d177&quot;)
+time_col &lt;- c(
+  &quot;tx+0&quot;   = &quot;#005A4C&quot;,
+  &quot;tx+24&quot;  = &quot;#328477&quot;,
+  &quot;tx+144&quot; = &quot;#8FB9B1&quot;)
+
+#factor for ordering
+untx_combined$Time &lt;- factor(untx_combined$Time,
+                             levels = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;))
+
+#perform paired t-test between each timepoint with BH correction
+ttest_untx &lt;- untx_combined %&gt;%
+  pairwise_t_test(CMM_ ~ Time,
+                  paired = TRUE,
+                  p.adjust.method = &quot;BH&quot;) %&gt;%
+  add_xy_position(x = &quot;Time&quot;) %&gt;%
+  mutate(
+    p.signif = case_when(
+      p.adj &lt; 0.001 ~ &quot;***&quot;,
+      p.adj &lt; 0.01  ~ &quot;**&quot;,
+      p.adj &lt; 0.05  ~ &quot;*&quot;,
+      TRUE          ~ &quot;ns&quot;
+    )
+  )
+
+#create the plot
+plot_untx_viability &lt;- ggplot(untx_combined,
+                              aes(x = Time,
+                                  y = CMM_)) +
+  geom_boxplot(aes(fill = Time),
+               show.legend = FALSE,
+               outlier.shape = NA) +
+  geom_point(aes(color = Individual),
+             size = 3,
+             alpha = 1,
+             position = position_identity()) +
+  scale_y_continuous(limits = c(0, 150)) +
+  scale_x_discrete(limits = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;)) +
+  scale_color_manual(values = ind_via_cols) +
+  scale_fill_manual(values = time_col) +
+  stat_pvalue_manual(ttest_dox,
+                     label = &quot;p.signif&quot;,
+                     xmin = &quot;xmin&quot;,
+                     xmax = &quot;xmax&quot;,
+                     y.position = &quot;y.position&quot;,
+                     tip.length = 0.02) +
+  labs(title = &quot;UnTx Cell Viability by Timepoint&quot;,
+       x = &quot;Timepoint&quot;,
+       y = &quot;Relative Cell Viability (%)&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_untx_viability</code></pre>
+<p><img src="figure/Figure1.Rmd/untreated%20final%20plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot_untx_viability,
+#           filename = &quot;UnTx_Viability_ABJG_Timepoints_EMP&quot;,
+#           folder = output_folder)
+
+#print a summary table with the statistics information for later
+ttest_untx %&gt;%
+  dplyr::select(group1, group2, n1, n2, statistic, df, p, p.adj, p.signif) %&gt;%
+  mutate(
+    p     = formatC(p,     format = &quot;e&quot;, digits = 3),
+    p.adj = formatC(p.adj, format = &quot;e&quot;, digits = 3),
+    statistic = round(statistic, 3)
+  ) %&gt;%
+  dplyr::rename(
+    &quot;Group 1&quot;         = group1,
+    &quot;Group 2&quot;         = group2,
+    &quot;n1&quot;              = n1,
+    &quot;n2&quot;              = n2,
+    &quot;t&quot;               = statistic,
+    &quot;df&quot;              = df,
+    &quot;p (raw)&quot;         = p,
+    &quot;p (adj, BH)&quot;     = p.adj,
+    &quot;Sig.&quot;            = p.signif
+  ) %&gt;%
+  kable(align = &quot;c&quot;, caption = &quot;UnTx Viability Statistical Summary (Paired t-test, BH Adjusted)&quot;) %&gt;%
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
+                full_width = FALSE)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+UnTx Viability Statistical Summary (Paired t-test, BH Adjusted)
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Group 1
+</th>
+<th style="text-align:center;">
+Group 2
+</th>
+<th style="text-align:center;">
+n1
+</th>
+<th style="text-align:center;">
+n2
+</th>
+<th style="text-align:center;">
+t
+</th>
+<th style="text-align:center;">
+df
+</th>
+<th style="text-align:center;">
+p (raw)
+</th>
+<th style="text-align:center;">
+p (adj, BH)
+</th>
+<th style="text-align:center;">
+Sig.
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+tx+0
+</td>
+<td style="text-align:center;">
+tx+24
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+0.265
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+7.980e-01
+</td>
+<td style="text-align:center;">
+9.880e-01
+</td>
+<td style="text-align:center;">
+ns
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+tx+0
+</td>
+<td style="text-align:center;">
+tx+144
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+0.016
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+9.880e-01
+</td>
+<td style="text-align:center;">
+9.880e-01
+</td>
+<td style="text-align:center;">
+ns
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+tx+24
+</td>
+<td style="text-align:center;">
+tx+144
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+-0.287
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+7.820e-01
+</td>
+<td style="text-align:center;">
+9.880e-01
+</td>
+<td style="text-align:center;">
+ns
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>####non-normalized by UnTx version
+#perform paired t-test between each timepoint with BH correction
+ttest_untx_nonorm &lt;- untx_combined %&gt;%
+  pairwise_t_test(CMM_nn ~ Time,
+                  paired = TRUE,
+                  p.adjust.method = &quot;BH&quot;) %&gt;%
+  add_xy_position(x = &quot;Time&quot;) %&gt;%
+  mutate(
+    p.signif = case_when(
+      p.adj &lt; 0.001 ~ &quot;***&quot;,
+      p.adj &lt; 0.01  ~ &quot;**&quot;,
+      p.adj &lt; 0.05  ~ &quot;*&quot;,
+      TRUE          ~ &quot;ns&quot;
+    )
+  )
+
+#create the plot
+plot_untx_viability_nonorm &lt;- ggplot(untx_combined,
+                              aes(x = Time,
+                                  y = CMM_nn)) +
+  geom_boxplot(aes(fill = Time),
+               show.legend = FALSE,
+               outlier.shape = NA) +
+  geom_point(aes(color = Individual),
+             size = 3,
+             alpha = 1,
+             position = position_identity()) +
+  scale_y_continuous(limits = c(0, 150)) +
+  scale_x_discrete(limits = c(&quot;tx+0&quot;, &quot;tx+24&quot;, &quot;tx+144&quot;)) +
+  scale_color_manual(values = ind_via_cols) +
+  scale_fill_manual(values = time_col) +
+  stat_pvalue_manual(ttest_dox,
+                     label = &quot;p.signif&quot;,
+                     xmin = &quot;xmin&quot;,
+                     xmax = &quot;xmax&quot;,
+                     y.position = &quot;y.position&quot;,
+                     tip.length = 0.02) +
+  labs(title = &quot;UnTx Cell Viability by Timepoint&quot;,
+       x = &quot;Timepoint&quot;,
+       y = &quot;Relative Cell Viability (%)&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_untx_viability_nonorm</code></pre>
+<p><img src="figure/Figure1.Rmd/untreated%20final%20plot-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot_untx_viability_nonorm,
+#           filename = &quot;UnTx_nonNormUnTx_Viability_ABJG_Timepoints_EMP&quot;,
+#           folder = output_folder)
+
+#print a summary table with the statistics information for later
+ttest_untx_nonorm %&gt;%
+  dplyr::select(group1, group2, n1, n2, statistic, df, p, p.adj, p.signif) %&gt;%
+  mutate(
+    p     = formatC(p,     format = &quot;e&quot;, digits = 3),
+    p.adj = formatC(p.adj, format = &quot;e&quot;, digits = 3),
+    statistic = round(statistic, 3)
+  ) %&gt;%
+  dplyr::rename(
+    &quot;Group 1&quot;         = group1,
+    &quot;Group 2&quot;         = group2,
+    &quot;n1&quot;              = n1,
+    &quot;n2&quot;              = n2,
+    &quot;t&quot;               = statistic,
+    &quot;df&quot;              = df,
+    &quot;p (raw)&quot;         = p,
+    &quot;p (adj, BH)&quot;     = p.adj,
+    &quot;Sig.&quot;            = p.signif
+  ) %&gt;%
+  kable(align = &quot;c&quot;, caption = &quot;UnTx Viability Statistical Summary (Paired t-test, BH Adjusted)&quot;) %&gt;%
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
+                full_width = FALSE)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+UnTx Viability Statistical Summary (Paired t-test, BH Adjusted)
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Group 1
+</th>
+<th style="text-align:center;">
+Group 2
+</th>
+<th style="text-align:center;">
+n1
+</th>
+<th style="text-align:center;">
+n2
+</th>
+<th style="text-align:center;">
+t
+</th>
+<th style="text-align:center;">
+df
+</th>
+<th style="text-align:center;">
+p (raw)
+</th>
+<th style="text-align:center;">
+p (adj, BH)
+</th>
+<th style="text-align:center;">
+Sig.
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+tx+0
+</td>
+<td style="text-align:center;">
+tx+24
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+-2.459
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+4.400e-02
+</td>
+<td style="text-align:center;">
+6.500e-02
+</td>
+<td style="text-align:center;">
+ns
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+tx+0
+</td>
+<td style="text-align:center;">
+tx+144
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+-2.595
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+3.600e-02
+</td>
+<td style="text-align:center;">
+6.500e-02
+</td>
+<td style="text-align:center;">
+ns
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+tx+24
+</td>
+<td style="text-align:center;">
+tx+144
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+-2.008
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+8.500e-02
+</td>
+<td style="text-align:center;">
+8.500e-02
+</td>
+<td style="text-align:center;">
+ns
 </td>
 </tr>
 </tbody>
@@ -5448,6 +6089,2599 @@ emmapfort
 # )</code></pre>
 </div>
 </div>
+<div id="if-hoechst-dapi-quant---macros-for-fijiimagej"
+class="section level1">
+<h1>IF Hoechst (DAPI) Quant - Macros for FIJI/ImageJ</h1>
+<pre class="r"><code># // DAPI Intensity Only — using existing ROI zips from above
+# folder = &quot;D:\\DXR Project\\IF yH2AX\\if yh2ax dxr 75-1\\rgb quant\\&quot;;
+# roiFolder = &quot;D:\\DXR Project\\IF yH2AX\\if yh2ax dxr 75-1\\outline new\\&quot;;
+# saveDAPIFolder = &quot;D:\\DXR Project\\IF yH2AX\\if yh2ax dxr 75-1\\DAPI intensity\\&quot;;
+# 
+# list = getFileList(folder);
+# 
+# for (i = 0; i &lt; list.length; i++) {
+#     if (endsWith(list[i], &quot;.tif&quot;)) {
+#         print(&quot;----------------------------------------------------&quot;);
+#         print(&quot;Processing file: &quot; + list[i]);
+# 
+#         baseName = replace(list[i], &quot;.tif&quot;, &quot;&quot;);
+# 
+#         // === Check ROI zip exists ===
+#         roiPath = roiFolder + baseName + &quot;_DAPI.zip&quot;;
+#         if (!File.exists(roiPath)) {
+#             print(&quot;WARNING: No ROI zip found for &quot; + baseName + &quot; — skipping.&quot;);
+#             continue;
+#         }
+# 
+#         // === Open composite and extract DAPI (blue) channel ===
+#         open(folder + list[i]);
+#         originalTitle = getTitle();
+# 
+#         run(&quot;Duplicate...&quot;, &quot;title=&quot; + baseName + &quot;_proc&quot;);
+#         selectImage(originalTitle);
+#         close();
+# 
+#         selectWindow(baseName + &quot;_proc&quot;);
+#         run(&quot;Split Channels&quot;);
+# 
+#         // Close red and green, keep blue
+#         redTitle = baseName + &quot;_proc (red)&quot;;
+#         greenTitle = baseName + &quot;_proc (green)&quot;;
+#         blueTitle = baseName + &quot;_proc (blue)&quot;;
+# 
+#         if (isOpen(redTitle)) { selectWindow(redTitle); close(); }
+#         if (isOpen(greenTitle)) { selectWindow(greenTitle); close(); }
+# 
+#         if (!isOpen(blueTitle)) {
+#             print(&quot;WARNING: Blue channel not found for &quot; + baseName + &quot; — skipping.&quot;);
+#             continue;
+#         }
+# 
+#         // === Load ROIs and measure DAPI intensity ===
+#         selectWindow(blueTitle);
+#         roiManager(&quot;Reset&quot;);
+#         roiManager(&quot;Open&quot;, roiPath);
+#         print(&quot;Loaded &quot; + roiManager(&quot;count&quot;) + &quot; ROIs for &quot; + baseName);
+# 
+#         run(&quot;Set Measurements...&quot;, &quot;mean min max integrated area redirect=None decimal=3&quot;);
+#         roiManager(&quot;Deselect&quot;);
+#         roiManager(&quot;Measure&quot;);
+# 
+#         saveAs(&quot;Results&quot;, saveDAPIFolder + baseName + &quot;_DAPI_intensity.csv&quot;);
+#         print(&quot;Saved: &quot; + baseName + &quot;_DAPI_intensity.csv&quot;);
+#         run(&quot;Clear Results&quot;);
+# 
+#         // === Cleanup ===
+#         selectWindow(blueTitle);
+#         close();
+#         roiManager(&quot;Deselect&quot;);
+#         roiManager(&quot;Reset&quot;);
+# 
+#         print(&quot;Finished: &quot; + baseName);
+#     }
+# }</code></pre>
+</div>
+<div id="if-dapi-quant---step-1" class="section level1">
+<h1>IF DAPI Quant - Step 1</h1>
+<div id="read-in-dapi-csvs-from-imagej" class="section level2">
+<h2>Read in DAPI csvs from ImageJ</h2>
+<pre class="r"><code>#for the first step, I want to collect all of the information from the macros I ran to get mean intensity from the same images used above for the yH2AX quantification
+
+#create a function to read all per-image DAPI CSVs for each cell line and input magnification
+# read_dapi_intensity &lt;- function(cell_line, individual_label, default_magnification = NULL) {
+#   dapi_folder &lt;- paste0(&quot;D:/DXR Project/IF yH2AX/if yh2ax dxr &quot;, cell_line, &quot;/DAPI intensity/&quot;)
+#   files &lt;- list.files(dapi_folder, pattern = &quot;_DAPI_intensity\\.csv$&quot;, full.names = TRUE)
+#   
+#   bind_rows(lapply(files, function(f) {
+#     read.csv(f) %&gt;%
+#       mutate(
+#         ROI_File = gsub(&quot;_DAPI_intensity\\.csv$&quot;, &quot;&quot;, basename(f)),
+#         Individual = individual_label,
+#         Line = cell_line,
+#         Magnification = if (!is.null(default_magnification)) {
+#           default_magnification
+#         } else {
+#           case_when(
+#             grepl(&quot;20X&quot;, ROI_File, ignore.case = TRUE) ~ &quot;20X&quot;,
+#             grepl(&quot;10X&quot;, ROI_File, ignore.case = TRUE) ~ &quot;10X&quot;,
+#             grepl(&quot;40X&quot;, ROI_File, ignore.case = TRUE) ~ &quot;40X&quot;,
+#             TRUE ~ &quot;Other&quot;
+#           )
+#         }
+#       )
+#   }))
+# }
+
+# ind1_dapi &lt;- read_dapi_intensity(&quot;87-1&quot;, &quot;Ind1&quot;) %&gt;% dplyr::select(-X)
+# ind3_dapi &lt;- read_dapi_intensity(&quot;75-1&quot;, &quot;Ind3&quot;) %&gt;% dplyr::select(-X)
+# ind4_dapi &lt;- read_dapi_intensity(&quot;84-1&quot;, &quot;Ind4&quot;, default_magnification = &quot;20X&quot;) %&gt;% dplyr::select(-X)
+
+# saveRDS(ind1_dapi, &quot;data/Fig1/ind1_dapi_rois.RDS&quot;)
+# saveRDS(ind3_dapi, &quot;data/Fig1/ind3_dapi_rois.RDS&quot;)
+# saveRDS(ind4_dapi, &quot;data/Fig1/ind4_dapi_rois.RDS&quot;)
+
+#read in the finalized files
+ind1_dapi &lt;- readRDS(&quot;data/Fig1/ind1_dapi_rois.RDS&quot;)
+ind3_dapi &lt;- readRDS(&quot;data/Fig1/ind3_dapi_rois.RDS&quot;)
+ind4_dapi &lt;- readRDS(&quot;data/Fig1/ind4_dapi_rois.RDS&quot;)</code></pre>
+</div>
+<div id="create-dapi-dataframe" class="section level2">
+<h2>Create DAPI Dataframe</h2>
+<pre class="r"><code>#combine and apply identical filtering/annotation as above for yH2AX
+# ind_dapi_all &lt;- bind_rows(ind1_dapi, ind3_dapi, ind4_dapi) %&gt;%
+#   mutate(
+#     Treatment = case_when(
+#       grepl(&quot;DOX&quot;, ROI_File) ~ &quot;DOX&quot;,
+#       grepl(&quot;DMSO&quot;, ROI_File) ~ &quot;VEH&quot;,
+#       TRUE ~ &quot;Other&quot;
+#     ),
+#     Timepoint = case_when(
+#       grepl(&quot;24T&quot;, ROI_File) ~ &quot;24T&quot;,
+#       grepl(&quot;24R&quot;, ROI_File) ~ &quot;24R&quot;,
+#       grepl(&quot;144R&quot;, ROI_File) ~ &quot;144R&quot;,
+#       TRUE ~ &quot;Other&quot;
+#     ),
+#     Condition = paste0(Treatment, &quot;_&quot;, Timepoint)
+#   ) %&gt;%
+#   dplyr::filter(Treatment != &quot;Other&quot;) %&gt;%
+#   dplyr::filter(Magnification == &quot;20X&quot;) %&gt;%
+#   dplyr::filter(!grepl(&quot;^2nd&quot;, ROI_File, ignore.case = TRUE))
+
+# saveRDS(ind_dapi_all, &quot;data/Fig1/IF_quant/individual_dapi_all.RDS&quot;)
+ind_dapi_all &lt;- readRDS(&quot;data/Fig1/IF_quant/individual_dapi_all.RDS&quot;)</code></pre>
+</div>
+<div id="dapi-intensity-plot" class="section level2">
+<h2>DAPI Intensity Plot</h2>
+<pre class="r"><code>#plot all of these intensity measurements for Hoechst (DAPI) nuclear staining
+
+plot_dapi_1 &lt;- ind_dapi_all %&gt;%
+  mutate(Condition = factor(Condition, levels = condition_levels)) %&gt;%
+  ggplot(aes(x = Condition, y = Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 1.5,
+             alpha = 1,
+             position = position_identity()) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  ylim(0, 250) +
+  labs(title = &quot;Step 1: ROI Level Mean Hoechst Intensity&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Mean Intensity&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_dapi_1</code></pre>
+<p><img src="figure/Figure1.Rmd/DAPI%20Intensity%20-%20ROI%20Level-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot_dapi_1,
+#           filename = &quot;HoechstInt_Step1_ROILevel_Boxplot_EMP&quot;,
+#           folder = output_folder)</code></pre>
+</div>
+<div id="create-an-image-level-summary" class="section level2">
+<h2>Create an Image Level Summary</h2>
+<pre class="r"><code>#create an image-level summary of all of the relevant ROIs (nuclei)
+
+# dapi_image_level_summary &lt;- ind_dapi_all %&gt;%
+#   mutate(Image = trimws(ROI_File)) %&gt;%
+#   group_by(Image, Individual, Line, Magnification, Treatment, Timepoint, Condition) %&gt;%
+#   dplyr::select(Image, Individual, Line, Magnification, Treatment, Timepoint, Condition, Mean) %&gt;% 
+#   summarize(
+#     Mean_of_Mean = mean(Mean, na.rm = TRUE),
+#     .groups = &quot;drop&quot;
+#   )
+
+#this results in a dataframe of the 146 20X images I took total across three cell lines
+
+# saveRDS(dapi_image_level_summary, &quot;data/Fig1/IF_quant/dapi_image_level_summary_all.RDS&quot;)
+dapi_image_level_summary &lt;- readRDS(&quot;data/Fig1/IF_quant/dapi_image_level_summary_all.RDS&quot;)
+
+plot_dapi_image &lt;- dapi_image_level_summary %&gt;%
+  mutate(Condition = factor(Condition, levels = condition_levels)) %&gt;%
+  ggplot(aes(x = Condition, y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 3,
+             alpha = 0.8,
+             position = position_identity()) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  ylim(0, 105) +
+  labs(title = &quot;Step 2: Image-Level Mean Hoechst Intensity&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Mean Intensity&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_dapi_image</code></pre>
+<p><img src="figure/Figure1.Rmd/collapse%20DAPI%20to%20image%20level%20and%20plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot_dapi_image,
+#          filename = &quot;HoechstInt_Step2_ImgLevel_Boxplot&quot;,
+#          folder = output_folder)</code></pre>
+</div>
+<div id="merge-with-metadata" class="section level2">
+<h2>Merge with Metadata</h2>
+<pre class="r"><code>#now I would like to merge my image_level_metadata made above (on the same samples) with these
+
+image_level_metadata &lt;- readRDS(&quot;data/Fig1/IF_quant/image_level_metadata_all.RDS&quot;)
+
+# image_merged_dapi_summary &lt;- 
+#   image_level_metadata %&gt;% 
+#   mutate(
+#     Image = str_remove(Image, &quot;_DAPI&quot;) #remove the ending that doesn&#39;t match here
+#   ) %&gt;% 
+#   dplyr::select(Individual, Line, Treatment, Timepoint, Condition, Magnification,
+#                 Image, Nuclei_Count) %&gt;% 
+#   dplyr::left_join(dapi_image_level_summary, by = c(&quot;Image&quot;, &quot;Individual&quot;, &quot;Line&quot;, &quot;Magnification&quot;,
+#                                                     &quot;Treatment&quot;, &quot;Timepoint&quot;, &quot;Condition&quot;))
+
+# saveRDS(image_merged_dapi_summary, &quot;data/Fig1/image_merged_dapi_summary.RDS&quot;)
+image_merged_dapi_summary &lt;- readRDS(&quot;data/Fig1/image_merged_dapi_summary.RDS&quot;)</code></pre>
+</div>
+<div id="assess-the-number-of-nuclei-per-image" class="section level2">
+<h2>Assess the number of nuclei per image</h2>
+<p>In these experiments, Ind1 was very confluent at the time of IF
+staining.</p>
+<p>Ind4 had fewer cells and appeared sparser across all wells (despite
+seeding at the same density).</p>
+<p>Ind3 was also less confluent than Ind1.</p>
+<pre class="r"><code>#first look at the distribution of nuclei counts to inform a threshold
+image_merged_dapi_summary %&gt;%
+  ggplot(aes(x = Nuclei_Count)) +
+  geom_histogram(binwidth = 5, fill = &quot;steelblue&quot;, color = &quot;white&quot;) +
+  facet_wrap(~ Individual) +
+  labs(title = &quot;Distribution of Nuclei Counts per Image&quot;,
+       x = &quot;Nuclei Count&quot;, y = &quot;Count&quot;) +
+  theme_custom()</code></pre>
+<p><img src="figure/Figure1.Rmd/Assess%20Images%20for%20Quality-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#also look by condition to see if low counts cluster anywhere
+image_merged_dapi_summary %&gt;%
+  mutate(Condition = factor(Condition, levels = condition_levels)) %&gt;%
+  ggplot(aes(x = Condition, y = Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), size = 2, alpha = 0.7) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  labs(title = &quot;Nuclei Count per Image by Condition&quot;,
+       x = &quot;Condition&quot;, y = &quot;Nuclei Count&quot;) +
+  theme_custom()</code></pre>
+<p><img src="figure/Figure1.Rmd/Assess%20Images%20for%20Quality-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#look at distribution per individual
+#84-1 was less confluent and Ind1 was very confluent at the time of staining
+image_merged_dapi_summary %&gt;%
+  ggplot(aes(x = Nuclei_Count)) +
+  geom_histogram(binwidth = 5, fill = &quot;steelblue&quot;, color = &quot;white&quot;) +
+  facet_wrap(~ Individual, scales = &quot;free&quot;) +  # free scales important here
+  labs(title = &quot;Nuclei Count Distribution by Individual&quot;,
+       x = &quot;Nuclei Count&quot;, y = &quot;Count&quot;) +
+  theme_custom()</code></pre>
+<p><img src="figure/Figure1.Rmd/Assess%20Images%20for%20Quality-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="hoechst-quant-step-3" class="section level2">
+<h2>Hoechst Quant Step 3</h2>
+<p>For this step, I will test two scenarios. For the first scenario, I
+will use the exact same images used in the previous yH2AX quantification
+(3x per condition)</p>
+<p>In the second scenario, I will keep all of the images so as not to
+artificially select those images with the same numbers of nuclei across
+conditions, which may mask differences across conditions (if any).</p>
+<pre class="r"><code>#now, I would like to use the same 3 images per condition to plot Hoechst intensity
+
+pipeline_images &lt;- merged_image_summary_final %&gt;%
+  distinct(Image, Individual, Line) %&gt;%
+  mutate(Image = gsub(&quot;_DAPI&quot;, &quot;&quot;, Image)) %&gt;%
+  dplyr::select(Image, Individual, Line)
+
+#now that I have the set of 54 images from the previous experiment, let&#39;s make my final set for dapi quantification like merged_image_summary_final above
+
+image_merged_dapi_summary_final &lt;- image_merged_dapi_summary %&gt;%
+  semi_join(pipeline_images, by = c(&quot;Image&quot;, &quot;Individual&quot;, &quot;Line&quot;))
+
+# saveRDS(image_merged_dapi_summary_final, &quot;data/Fig1/image_merged_dapi_summary_final.RDS&quot;)
+
+#now plot these in a boxplot with the three images per individual
+
+plot_dapi_3 &lt;- ggplot(image_merged_dapi_summary_final,
+                      aes(x = Condition,
+                          y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  ylim(0, 105) +
+  labs(title = &quot;Step 3: Select 3 Images Per Individual With Consistent Nuclei&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Mean Intensity&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_dapi_3</code></pre>
+<p><img src="figure/Figure1.Rmd/step%203%20dapi%20quant%203%20images-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#save plot
+# save_plot(plot_dapi_3,
+#           filename = &quot;HoechstInt_Step3_3Img_Boxplot_EMP&quot;,
+#           folder = output_folder)</code></pre>
+</div>
+<div id="step-3-hoechst-quantification---no-image-selection"
+class="section level2">
+<h2>Step 3 Hoechst Quantification - no image selection</h2>
+<pre class="r"><code>#now, perform these steps in the same fashion as above on all images processed for this experiment. At the individual level, these numbers of nuclei may differ due to experimental factors including cell confluence (where 84-1 Ind4 is less confluent and therefore has fewer nuclei in all plates).
+
+
+plot_dapi_3.5 &lt;- ggplot(image_merged_dapi_summary,
+                      aes(x = Condition,
+                          y = Mean_of_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  ylim(0, 105) +
+  labs(title = &quot;Step 3: All Images&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Mean Intensity&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_dapi_3.5</code></pre>
+<p><img src="figure/Figure1.Rmd/step%203%20no%20image%20selection-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#save the plots
+
+# save_plot(plot_dapi_3.5,
+#           filename = &quot;HoechstInt_Step3.5_ImgLevel_Boxplot_EMP&quot;,
+#           folder = output_folder)</code></pre>
+</div>
+<div id="step-4---use-weighted-mean-intensity-to-normalize"
+class="section level2">
+<h2>Step 4 - Use Weighted Mean Intensity to Normalize</h2>
+<pre class="r"><code>#As I visually checked images that had a high mean of mean intensity, I noted that they have much fewer nuclei
+#when doing this analysis, I want to check whether high mean intensity is correlated to lower number of nuclei - since calculating the mean of the mean intensity across all images will treat each image as if they have the same number of nuclei
+
+#checks:
+
+ggplot(image_merged_dapi_summary, 
+       aes(x = Nuclei_Count, y = Mean_of_Mean, color = Condition)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = &quot;lm&quot;, se = TRUE) +
+  scale_x_log10() +  #look at log scale to see relationship easily
+  labs(title = &quot;Nuclei Count vs Mean Intensity per Image&quot;) +
+  theme_custom()</code></pre>
+<p><img src="figure/Figure1.Rmd/weighted%20mean%20norm-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#make a summary table to see
+image_merged_dapi_summary %&gt;%
+  group_by(Condition) %&gt;%
+  summarise(
+    r = cor(log1p(Nuclei_Count), Mean_of_Mean, use = &quot;complete.obs&quot;),
+    n_images = n(),
+    total_nuclei = sum(Nuclei_Count, na.rm = TRUE),
+    median_nuclei_per_image = median(Nuclei_Count, na.rm = TRUE)
+  )</code></pre>
+<pre><code># A tibble: 6 × 5
+  Condition       r n_images total_nuclei median_nuclei_per_image
+  &lt;chr&gt;       &lt;dbl&gt;    &lt;int&gt;        &lt;int&gt;                   &lt;dbl&gt;
+1 DOX_144R   0.754        16         1835                      93
+2 DOX_24R    0.822        19         3144                     155
+3 DOX_24T   -0.201        39         4382                      85
+4 VEH_144R   0.226        25         2281                      69
+5 VEH_24R   -0.0230       25         2700                      77
+6 VEH_24T    0.138        22         3041                     108</code></pre>
+<pre class="r"><code>#these data indicate that higher median nuclei per image are correlated with higher hoechst intensity (which makes sense)
+
+
+#some conditions also have a lot more images at 20X
+#i took a lot of images of Ind3 as I had many regions with few to no cells due to confluency and uneven plating - the number of images being higher could skew results
+
+image_merged_dapi_summary %&gt;%
+  group_by(Individual, Condition) %&gt;%
+  summarise(
+    n_images = n(),
+    total_nuclei = sum(Nuclei_Count, na.rm = TRUE),
+    median_nuclei_per_image = median(Nuclei_Count, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+    ) %&gt;%
+  arrange(Condition, Individual)</code></pre>
+<pre><code># A tibble: 18 × 5
+   Individual Condition n_images total_nuclei median_nuclei_per_image
+   &lt;chr&gt;      &lt;chr&gt;        &lt;int&gt;        &lt;int&gt;                   &lt;dbl&gt;
+ 1 Ind1       DOX_144R         6         1204                   186. 
+ 2 Ind3       DOX_144R         5          429                    87  
+ 3 Ind4       DOX_144R         5          202                    37  
+ 4 Ind1       DOX_24R          4         1364                   343  
+ 5 Ind3       DOX_24R          8         1483                   169  
+ 6 Ind4       DOX_24R          7          297                    36  
+ 7 Ind1       DOX_24T          7         1452                   201  
+ 8 Ind3       DOX_24T         15         2240                   141  
+ 9 Ind4       DOX_24T         17          690                    41  
+10 Ind1       VEH_144R         3          679                   253  
+11 Ind3       VEH_144R        10          874                    70.5
+12 Ind4       VEH_144R        12          728                    60  
+13 Ind1       VEH_24R          4         1005                   222. 
+14 Ind3       VEH_24R         12         1128                    77  
+15 Ind4       VEH_24R          9          567                    62  
+16 Ind1       VEH_24T          4         1061                   256. 
+17 Ind3       VEH_24T         10         1580                   126  
+18 Ind4       VEH_24T          8          400                    39.5</code></pre>
+<pre class="r"><code>#as I noted earlier, Ind4 was much less confluent - this shows that when I&#39;m taking the mean it&#39;s inflating the images from Ind4 with fewer nuclei to give them equal weight to those with hundreds of nuclei per image
+
+#now, I want to use a weighted mean intensity to normalize the results</code></pre>
+</div>
+<div id="step-4---collapse-to-individual-level-with-weighted-mean"
+class="section level2">
+<h2>Step 4 - Collapse to Individual Level with Weighted Mean</h2>
+<pre class="r"><code>#collapse to individual level with weighted mean
+ind_summary_dapi_4 &lt;- image_merged_dapi_summary %&gt;%
+  dplyr::filter(Nuclei_Count &gt;= 10) %&gt;% #exclude imgs with fewer than 10 nuclei
+  group_by(Individual, Treatment, Timepoint, Condition) %&gt;%
+  summarise(
+    n_images = n(),
+    total_nuclei = sum(Nuclei_Count, na.rm = TRUE),
+    Weight_Mean = weighted.mean(Mean_of_Mean, w = Nuclei_Count, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  mutate(Condition = factor(Condition, levels = condition_levels))
+
+#paired t-test at individual level with BH correction
+sig_table_dapi_4 &lt;- ind_summary_dapi_4 %&gt;%
+  dplyr::select(Individual, Timepoint, Treatment, Weight_Mean) %&gt;%  # drop Condition
+  group_by(Timepoint) %&gt;%
+  summarise(
+    p = {
+      wide &lt;- pick(everything()) %&gt;%
+        pivot_wider(names_from = Treatment, values_from = Weight_Mean) %&gt;%
+        drop_na(DOX, VEH)
+      t.test(wide$DOX, wide$VEH, paired = TRUE)$p.value
+    },
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  mutate(
+    p.adj = p.adjust(p, method = &quot;BH&quot;),
+    signif = case_when(
+      p.adj &lt; 0.001 ~ &quot;***&quot;,
+      p.adj &lt; 0.01  ~ &quot;**&quot;,
+      p.adj &lt; 0.05  ~ &quot;*&quot;,
+      TRUE          ~ &quot;ns&quot;
+    ),
+    group1 = paste0(&quot;VEH_&quot;, Timepoint),
+    group2 = paste0(&quot;DOX_&quot;, Timepoint),
+    y.position = max(ind_summary_dapi_4$Weight_Mean, na.rm = TRUE) * 1.05
+  )
+
+#plot at individual level
+plot_dapi_4_stats &lt;- ggplot(ind_summary_dapi_4,
+                               aes(x = Condition, y = Weight_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), size = 3, alpha = 1) +
+  stat_pvalue_manual(sig_table_dapi_4,
+                     label = &quot;signif&quot;,
+                     tip.length = 0.02) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  ylim(0, 105) +
+  labs(title = &quot;Step 4: All Images - Individual Level Weighted Mean&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Weighted Mean Intensity&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+#save this plot of all images
+
+plot_dapi_4_stats</code></pre>
+<p><img src="figure/Figure1.Rmd/step%204%20Ind%20level%20collapse%20weight%20mean-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot_dapi_4_stats,
+#           filename = &quot;HoechstInt_Step4_AllImg_IndLevel_WeightMean_EMP&quot;,
+#           folder = output_folder)</code></pre>
+</div>
+<div id="step-4.5---3-images-per-condition" class="section level2">
+<h2>Step 4.5 - 3 Images Per Condition</h2>
+<pre class="r"><code>#now make another version of the above plot with the three images used in my earlier experiment per timepoint
+#these are the same three images
+
+ind_summary_dapi_4_filt &lt;- image_merged_dapi_summary %&gt;%
+  dplyr::filter(Nuclei_Count &gt;= 10) %&gt;% 
+  semi_join(pipeline_images, by = c(&quot;Image&quot;, &quot;Individual&quot;, &quot;Line&quot;)) %&gt;% 
+  group_by(Individual, Treatment, Timepoint, Condition) %&gt;%
+  summarise(
+    n_images = n(),
+    total_nuclei = sum(Nuclei_Count, na.rm = TRUE),
+    Weight_Mean = weighted.mean(Mean_of_Mean, w = Nuclei_Count, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  mutate(Condition = factor(Condition, levels = condition_levels))
+
+sig_table_dapi_4_filt &lt;- ind_summary_dapi_4_filt %&gt;%
+  dplyr::select(Individual, Timepoint, Treatment, Weight_Mean) %&gt;%
+  group_by(Timepoint) %&gt;%
+  summarise(
+    p = {
+      wide &lt;- pick(everything()) %&gt;%
+        pivot_wider(names_from = Treatment, values_from = Weight_Mean) %&gt;%
+        drop_na(DOX, VEH)
+      t.test(wide$DOX, wide$VEH, paired = TRUE)$p.value
+    },
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  mutate(
+    p.adj = p.adjust(p, method = &quot;BH&quot;),
+    signif = case_when(
+      p.adj &lt; 0.001 ~ &quot;***&quot;,
+      p.adj &lt; 0.01  ~ &quot;**&quot;,
+      p.adj &lt; 0.05  ~ &quot;*&quot;,
+      TRUE          ~ &quot;ns&quot;
+    ),
+    group1 = paste0(&quot;VEH_&quot;, Timepoint),
+    group2 = paste0(&quot;DOX_&quot;, Timepoint),
+    y.position = max(ind_summary_dapi_4_filt$Weight_Mean, na.rm = TRUE) * 1.05
+  )
+
+plot_dapi_4_filt_stats &lt;- ggplot(ind_summary_dapi_4_filt,
+                                  aes(x = Condition, y = Weight_Mean)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), size = 3, alpha = 1) +
+  stat_pvalue_manual(sig_table_dapi_4_filt,
+                     label = &quot;signif&quot;,
+                     tip.length = 0.02) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  ylim(0, 105) +
+  labs(title = &quot;Step 4.5: 3 Images - Individual Level Weighted Mean&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Weighted Mean Intensity&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_dapi_4_filt_stats</code></pre>
+<p><img src="figure/Figure1.Rmd/step%204.5%20weighted%20mean%203%20images-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sig_table_dapi_4_filt</code></pre>
+<pre><code># A tibble: 3 × 7
+  Timepoint     p p.adj signif group1   group2   y.position
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;
+1 144R      0.351 0.526 ns     VEH_144R DOX_144R       82.6
+2 24R       0.281 0.526 ns     VEH_24R  DOX_24R        82.6
+3 24T       0.629 0.629 ns     VEH_24T  DOX_24T        82.6</code></pre>
+<pre class="r"><code># save_plot(plot_dapi_4_filt_stats,
+#           filename = &quot;HoechstInt_Step4_3Img_IndLevel_WeightMean_EMP&quot;,
+#           folder = output_folder)
+
+
+#should I be testing each individual separately? then I only have one point though so I&#39;d have to use statistics from image-level comparisons </code></pre>
+</div>
+<div id="step-5---treatment-level-comparisons" class="section level2">
+<h2>Step 5 - Treatment-Level Comparisons</h2>
+<pre class="r"><code>#now, I want to take these comparisons and add another layer where I&#39;m comparing between DOX treated at different timepoints
+
+ind_summary_dapi_step5_dox &lt;- ind_summary_dapi_4 %&gt;% 
+  group_by(Individual, Treatment, Timepoint) %&gt;% 
+  summarise(
+    Weight_Mean = Weight_Mean,
+    .groups = &quot;drop&quot;
+  ) %&gt;% 
+  mutate(
+    Condition = paste0(Treatment, &quot;_&quot;, Timepoint)
+  )
+
+#set the condition levels
+condition_levels &lt;- c(&quot;DOX_24T&quot;, &quot;VEH_24T&quot;,
+                      &quot;DOX_24R&quot;, &quot;VEH_24R&quot;,
+                      &quot;DOX_144R&quot;, &quot;VEH_144R&quot;)
+
+dox_conditions &lt;- c(&quot;DOX_24T&quot;, &quot;DOX_24R&quot;, &quot;DOX_144R&quot;)
+
+ind_summary_dapi_step5_dox &lt;- ind_summary_dapi_step5_dox %&gt;% 
+  mutate(Condition = factor(Condition, levels = condition_levels))
+
+#perform paired t-tests between DOX timepoints
+timepoint_pairs &lt;- list(
+  c(&quot;24T&quot;,&quot;24R&quot;),
+  c(&quot;24R&quot;,&quot;144R&quot;),
+  c(&quot;24T&quot;,&quot;144R&quot;)
+)
+
+ttest_table_dox_time_dapi &lt;- purrr::map_df(seq_along(timepoint_pairs), function(i) {
+  tp &lt;- timepoint_pairs[[i]]
+  
+  df_wide &lt;- ind_summary_dapi_step5_dox %&gt;% 
+    filter(Treatment == &quot;DOX&quot;, Timepoint %in% tp) %&gt;% 
+    group_by(Individual, Timepoint) %&gt;% 
+    summarise(Weight_Mean = mean(Weight_Mean, na.rm = TRUE), .groups = &quot;drop&quot;) %&gt;% 
+    pivot_wider(names_from = Timepoint, values_from = Weight_Mean) %&gt;% 
+    drop_na()
+  
+  base_y &lt;- max(ind_summary_dapi_step5_dox$Weight_Mean,
+                na.rm = TRUE) * 0.9
+  
+  y_increment &lt;- max(ind_summary_dapi_step5_dox$Weight_Mean,
+                     na.rm = TRUE) * 0.05
+  
+  y_pos &lt;- base_y + y_increment * i
+  
+  if(nrow(df_wide) &lt; 2) {
+    tibble(
+      group1 = paste0(&quot;DOX_&quot;, tp[1]),
+      group2 = paste0(&quot;DOX_&quot;, tp[2]),
+      p.value = NA_real_,
+      p.signif = &quot;NA&quot;,
+      y.position = y_pos
+    )
+  } else {
+    test &lt;- t.test(df_wide[[tp[1]]], df_wide[[tp[2]]], paired = TRUE)
+    tibble(
+      group1 = paste0(&quot;DOX_&quot;, tp[1]),
+      group2 = paste0(&quot;DOX_&quot;, tp[2]),
+      p.value = test$p.value,
+      p.signif = case_when(
+        test$p.value &lt; 0.001 ~ &quot;***&quot;,
+        test$p.value &lt; 0.01 ~ &quot;**&quot;,
+        test$p.value &lt; 0.05 ~ &quot;*&quot;,
+        TRUE ~ &quot;ns&quot;
+      ),
+      y.position = y_pos
+    )
+  }
+})
+
+#map to numeric positions for stat_pvalue_manual + add adj. p value (BH corrected)
+ttest_table_dox_time_dapi &lt;- ttest_table_dox_time_dapi %&gt;% 
+  mutate(
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+#manually set y positions for each comparison (so it is visible like above)
+max_val &lt;- max(ind_summary_dapi_step5_dox$Weight_Mean, na.rm = TRUE)
+
+ttest_table_dox_time_dapi &lt;- ttest_table_dox_time_dapi %&gt;% 
+  mutate(
+    y.position = case_when(
+      group1 == &quot;DOX_24T&quot; &amp; group2 == &quot;DOX_24R&quot; ~ max_val * 1.05, #middle
+      group1 == &quot;DOX_24T&quot; &amp; group2 == &quot;DOX_144R&quot; ~ max_val * 1.10,  #top
+      group1 == &quot;DOX_24R&quot; &amp; group2 == &quot;DOX_144R&quot; ~ max_val * 1.00 #bottom
+      ),
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+
+#now plot the DOX timepoint comparisons
+plot_step5_dox_time_dapi &lt;- ggplot(ind_summary_dapi_step5_dox,
+                                   aes(x = Condition,
+                                       y = Weight_Mean)) +
+  geom_boxplot(aes(fill = Condition),
+               show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 3,
+             alpha = 1,
+             position = position_identity()) +
+  scale_y_continuous(limits = c(0, 105)) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttest_table_dox_time_dapi,
+                     label = &quot;p.signif&quot;,
+                     xmin = &quot;group1_num&quot;,
+                     xmax = &quot;group2_num&quot;,
+                     y.position = &quot;y.position&quot;,
+                     tip.length = 0.02) +
+  labs(title = &quot;Step 5: DOX Timepoint Comparisons Hoechst Intensity&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Mean Intensity&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_step5_dox_time_dapi</code></pre>
+<p><img src="figure/Figure1.Rmd/tx%20level%20comparisons%20hoechst-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#print the stats table as well for visibility
+ttest_table_dox_time_dapi</code></pre>
+<pre><code># A tibble: 3 × 7
+  group1  group2   p.value p.signif y.position group1_num group2_num
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+1 DOX_24T DOX_24R    0.663 ns             78.4          1          3
+2 DOX_24R DOX_144R   0.236 ns             74.7          3          5
+3 DOX_24T DOX_144R   0.430 ns             82.2          1          5</code></pre>
+<pre class="r"><code>#save the plot
+# save_plot(plot_step5_dox_time_dapi,
+#           filename = &quot;HoechstInt_Step5_IndLev_DOXComp_EMP&quot;,
+#           folder = output_folder)</code></pre>
+</div>
+</div>
+<div id="assess-number-of-nuclei-per-condition" class="section level1">
+<h1>Assess Number of Nuclei Per Condition</h1>
+<p>I want to understand whether there are differences in nuclei numbers
+across conditions.</p>
+<pre class="r"><code>read_nuclei_counts &lt;- function(cell_line, individual_label) {
+  summary_path &lt;- paste0(&quot;D:/DXR Project/IF yH2AX/if yh2ax dxr &quot;, cell_line, 
+                         &quot;/DAPI intensity/nuclei_counts_summary.csv&quot;)
+  read.csv(summary_path) %&gt;%
+    mutate(Individual = individual_label,
+           Line = cell_line)
+}
+
+nuclei_counts_imgs &lt;- bind_rows(
+  read_nuclei_counts(&quot;87-1&quot;, &quot;Ind1&quot;),
+  read_nuclei_counts(&quot;75-1&quot;, &quot;Ind3&quot;),
+  read_nuclei_counts(&quot;84-1&quot;, &quot;Ind4&quot;)
+) %&gt;%
+  mutate(
+    Magnification = case_when(
+      grepl(&quot;20X&quot;, ImageName, ignore.case = TRUE) ~ &quot;20X&quot;,
+      grepl(&quot;10X&quot;, ImageName, ignore.case = TRUE) ~ &quot;10X&quot;,
+      grepl(&quot;40X&quot;, ImageName, ignore.case = TRUE) ~ &quot;40X&quot;,
+      TRUE ~ &quot;Other&quot;
+    ),
+    Treatment = case_when(
+      grepl(&quot;DOX&quot;, ImageName) ~ &quot;DOX&quot;,
+      grepl(&quot;DMSO&quot;, ImageName) ~ &quot;VEH&quot;,
+      TRUE ~ &quot;Other&quot;
+    ),
+    Timepoint = case_when(
+      grepl(&quot;24T&quot;, ImageName) ~ &quot;24T&quot;,
+      grepl(&quot;24R&quot;, ImageName) ~ &quot;24R&quot;,
+      grepl(&quot;144R&quot;, ImageName) ~ &quot;144R&quot;,
+      TRUE ~ &quot;Other&quot;
+    ),
+    Condition = paste0(Treatment, &quot;_&quot;, Timepoint)
+  ) %&gt;%
+  dplyr::filter(Magnification == &quot;20X&quot;) %&gt;%
+  dplyr::filter(Treatment != &quot;Other&quot;) %&gt;%
+  dplyr::filter(!grepl(&quot;^2nd&quot;, ImageName, ignore.case = TRUE)) 
+
+#overview table — one row per image
+nuclei_counts_imgs %&gt;%
+  mutate(Condition = factor(Condition, levels = condition_levels)) %&gt;%
+  arrange(Individual, Condition, ImageName) %&gt;%
+  dplyr::select(Individual, Line, Condition, ImageName, NucleiCount) %&gt;%
+  knitr::kable(caption = &quot;Nuclei Count per Image&quot;) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
+                full_width = FALSE)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Nuclei Count per Image
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Individual
+</th>
+<th style="text-align:left;">
+Line
+</th>
+<th style="text-align:left;">
+Condition
+</th>
+<th style="text-align:left;">
+ImageName
+</th>
+<th style="text-align:right;">
+NucleiCount
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+24T_DOX_87_yh2ax_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+63
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+185
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_RGB_0001_edittest
+</td>
+<td style="text-align:right;">
+179
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+224
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_RGB_0002_edittest
+</td>
+<td style="text-align:right;">
+240
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_RGB_0003
+</td>
+<td style="text-align:right;">
+257
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_RGB_0003_edittest
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+152
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_dup_RGB_0001
+</td>
+<td style="text-align:right;">
+201
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_dup_RGB_0001_edittest
+</td>
+<td style="text-align:right;">
+64
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_dup_RGB_0001edit
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_dup_RGB_0002
+</td>
+<td style="text-align:right;">
+370
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX24T_87_yh2ax_20X_dup_RGB_0002edittest
+</td>
+<td style="text-align:right;">
+289
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO24T_87_yh2ax_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+232
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO24T_87_yh2ax_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+217
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO24T_87_yh2ax_20X_dup_RGB_0001
+</td>
+<td style="text-align:right;">
+333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO24T_87_yh2ax_20X_dup_RGB_0002
+</td>
+<td style="text-align:right;">
+279
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+24R_DOX_87_yh2ax_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+343
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+24R_DOX_87_yh2ax_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+335
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+24R_DOX_87_yh2ax_20X_RGB_0010
+</td>
+<td style="text-align:right;">
+343
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+24R_DOX_87_yh2ax_20X_RGB_0011
+</td>
+<td style="text-align:right;">
+343
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO24R_87_yh2ax_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+234
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO24R_87_yh2ax_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+351
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO24R_87_yh2ax_20X_RGB_0003
+</td>
+<td style="text-align:right;">
+209
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO24R_87_yh2ax_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+211
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+144R_DOX_87_yh2ax_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+144R_DOX_87_yh2ax_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+195
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX144R_87_yh2ax_20X_dup_RGB_0001
+</td>
+<td style="text-align:right;">
+146
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX144R_87_yh2ax_20X_dup_RGB_0002
+</td>
+<td style="text-align:right;">
+193
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX144R_87_yh2ax_20X_dup_RGB_0003
+</td>
+<td style="text-align:right;">
+171
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX144R_87_yh2ax_20X_dup_RGB_0004
+</td>
+<td style="text-align:right;">
+321
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO144R_87_yh2ax_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+314
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO144R_87_yh2ax_20X_dup_RGB_0001
+</td>
+<td style="text-align:right;">
+112
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind1
+</td>
+<td style="text-align:left;">
+87-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO144R_87_yh2ax_20X_dup_RGB_0002
+</td>
+<td style="text-align:right;">
+253
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24T_75_EMP_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+206
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24T_75_EMP_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+204
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24T_75_EMP_20X_RGB_0003
+</td>
+<td style="text-align:right;">
+223
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24T_75_EMP_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24T_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24T_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+90
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24T_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+120
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+120
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+85
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0003
+</td>
+<td style="text-align:right;">
+141
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+103
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+90
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+204
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+142
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24T
+</td>
+<td style="text-align:left;">
+DOX_24Tdup_75_EMP_20X_RGB_0008
+</td>
+<td style="text-align:right;">
+194
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24T_75_EMP_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24T_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+344
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24T_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24T_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+73
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24T_75_EMP_20X_RGB_0008
+</td>
+<td style="text-align:right;">
+76
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24T_75_EMP_20X_RGB_0009
+</td>
+<td style="text-align:right;">
+136
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24T_75_EMP_20X_RGB_0010
+</td>
+<td style="text-align:right;">
+60
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24Tdup_75_EMP_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+199
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24Tdup_75_EMP_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+116
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24T
+</td>
+<td style="text-align:left;">
+DMSO_24Tdup_75_EMP_20X_RGB_0003
+</td>
+<td style="text-align:right;">
+257
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24R_75_EMP_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+179
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24R_75_EMP_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+155
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24R_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+159
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24Rdup_75_EMP_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+123
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24Rdup_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+224
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24Rdup_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+264
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24Rdup_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+279
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_24R
+</td>
+<td style="text-align:left;">
+DOX_24Rdup_75_EMP_20X_RGB_0008
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0001
+</td>
+<td style="text-align:right;">
+207
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0002
+</td>
+<td style="text-align:right;">
+38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0003
+</td>
+<td style="text-align:right;">
+26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+143
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+68
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+126
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24R_75_EMP_20X_RGB_0012
+</td>
+<td style="text-align:right;">
+77
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24Rdup_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+95
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24Rdup_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24Rdup_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_24R
+</td>
+<td style="text-align:left;">
+DMSO_24Rdup_75_EMP_20X_RGB_0008
+</td>
+<td style="text-align:right;">
+77
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX_144R_75_EMP_20X_RGB_0004
+</td>
+<td style="text-align:right;">
+87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX_144R_75_EMP_20X_RGB_0005
+</td>
+<td style="text-align:right;">
+108
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX_144R_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX_144R_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+99
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+DOX_144R
+</td>
+<td style="text-align:left;">
+DOX_144R_75_EMP_20X_RGB_0008
+</td>
+<td style="text-align:right;">
+63
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144R_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+175
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144R_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+156
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144R_75_EMP_20X_RGB_0008
+</td>
+<td style="text-align:right;">
+69
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144R_75_EMP_20X_RGB_0009
+</td>
+<td style="text-align:right;">
+136
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144R_75_EMP_20X_RGB_0010
+</td>
+<td style="text-align:right;">
+62
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144Rd_75_EMP_20X_RGB_0006
+</td>
+<td style="text-align:right;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144Rd_75_EMP_20X_RGB_0007
+</td>
+<td style="text-align:right;">
+20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144Rd_75_EMP_20X_RGB_0008
+</td>
+<td style="text-align:right;">
+45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144Rd_75_EMP_20X_RGB_0009
+</td>
+<td style="text-align:right;">
+72
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ind3
+</td>
+<td style="text-align:left;">
+75-1
+</td>
+<td style="text-align:left;">
+VEH_144R
+</td>
+<td style="text-align:left;">
+DMSO_144Rd_75_EMP_20X_RGB_0010
+</td>
+<td style="text-align:right;">
+115
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># nuclei_counts_imgs &lt;- bind_rows(
+#   read_nuclei_counts(&quot;87-1&quot;, &quot;Ind1&quot;),
+#   read_nuclei_counts(&quot;75-1&quot;, &quot;Ind3&quot;),
+#   read_nuclei_counts(&quot;84-1&quot;, &quot;Ind4&quot;)
+# ) %&gt;%
+#   mutate(
+#     Magnification = case_when(
+#       grepl(&quot;20X&quot;, ImageName, ignore.case = TRUE) ~ &quot;20X&quot;,
+#       grepl(&quot;10X&quot;, ImageName, ignore.case = TRUE) ~ &quot;10X&quot;,
+#       grepl(&quot;40X&quot;, ImageName, ignore.case = TRUE) ~ &quot;40X&quot;,
+#       TRUE ~ &quot;Other&quot;
+#     ),
+#     Treatment = case_when(
+#       grepl(&quot;DOX&quot;, ImageName) ~ &quot;DOX&quot;,
+#       grepl(&quot;DMSO&quot;, ImageName) ~ &quot;VEH&quot;,
+#       TRUE ~ &quot;Other&quot;
+#     ),
+#     Timepoint = case_when(
+#       grepl(&quot;24T&quot;, ImageName) ~ &quot;24T&quot;,
+#       grepl(&quot;24R&quot;, ImageName) ~ &quot;24R&quot;,
+#       grepl(&quot;144R&quot;, ImageName) ~ &quot;144R&quot;,
+#       TRUE ~ &quot;Other&quot;
+#     ),
+#     Condition = paste0(Treatment, &quot;_&quot;, Timepoint)
+#   ) %&gt;%
+#   dplyr::filter(Magnification == &quot;20X&quot;) %&gt;%
+#   dplyr::filter(Treatment != &quot;Other&quot;) %&gt;%
+#   dplyr::filter(!grepl(&quot;^2nd&quot;, ImageName, ignore.case = TRUE)) %&gt;% 
+#   semi_join(pipeline_images, by = c(&quot;ImageName&quot; = &quot;ROI_File&quot;, &quot;Individual&quot;, &quot;Line&quot;))
+
+# saveRDS(nuclei_counts_imgs, file = &quot;data/Fig1/nuclei_counts_imgs.RDS&quot;)
+nuclei_counts_imgs &lt;- readRDS(&quot;data/Fig1/nuclei_counts_imgs.RDS&quot;)</code></pre>
+<div id="nuclei-count-assessment---step-1-image-level-comparisons"
+class="section level2">
+<h2>Nuclei Count Assessment - Step 1: Image-Level Comparisons</h2>
+<pre class="r"><code>#assess whether nucleus count decreases over time from raw images
+
+plot_nuc_count &lt;- ggplot(image_merged_dapi_summary,
+                      aes(x = Condition,
+                          y = Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  labs(title = &quot;Assess # of Nuclei per Condition, Image Level&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Number of Nuclei&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_nuc_count</code></pre>
+<p><img src="figure/Figure1.Rmd/assess%20nuclei%20count%20from%20raw%20images%20across%20all%20cond-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#now do stats for these to see if there are any differences over time
+ttests_nuc_count &lt;- image_merged_dapi_summary %&gt;% 
+  group_by(Timepoint) %&gt;% 
+  t_test(Nuclei_Count ~ Treatment) %&gt;% 
+  mutate(
+    y.position = max(image_merged_dapi_summary$Nuclei_Count, na.rm = TRUE) * 1
+  )
+
+sig_table_nuc_count &lt;- image_merged_dapi_summary %&gt;% 
+  group_by(Timepoint) %&gt;% 
+  summarise(
+    p = t.test(Nuclei_Count ~ Treatment)$p.value,
+    y.position = max(Nuclei_Count, na.rm = TRUE) * 1.05,
+    .groups = &quot;drop&quot;
+  ) %&gt;% 
+  mutate(
+    signif = case_when(
+      p &lt; 0.001 ~ &quot;***&quot;,
+      p &lt; 0.01 ~ &quot;**&quot;,
+      p &lt; 0.05 ~ &quot;*&quot;,
+      TRUE ~ &quot;ns&quot;
+    ),
+    group1 = paste0(&quot;VEH_&quot;, Timepoint),
+    group2 = paste0(&quot;DOX_&quot;, Timepoint)
+  )
+
+ttests_nuc_count</code></pre>
+<pre><code># A tibble: 3 × 10
+  Timepoint .y.      group1 group2    n1    n2 statistic    df      p y.position
+  &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+1 144R      Nuclei_… DOX    VEH       16    25     0.950  29.2 0.35          370
+2 24R       Nuclei_… DOX    VEH       19    25     1.76   30.7 0.0885        370
+3 24T       Nuclei_… DOX    VEH       39    22    -0.994  37.2 0.327         370</code></pre>
+<pre class="r"><code>#now plot with these ttest statistics above the plot
+plot_nuc_count_stats &lt;- ggplot(image_merged_dapi_summary,
+                            aes(x = Condition,
+                                y = Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 2,
+             alpha = 1,
+             position = position_identity()) +
+  stat_pvalue_manual(sig_table_nuc_count,
+                     label = &quot;signif&quot;,
+                     tip.length = 0.02) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = c(ind_cols_if)) +
+  scale_fill_manual(values = txtime_col_old) +
+  labs(title = &quot;Assess # of Nuclei by Condition, Image-Level&quot;,
+       x = &quot;Condition&quot;,
+       y = &quot;Number of Nuclei&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_nuc_count_stats</code></pre>
+<p><img src="figure/Figure1.Rmd/assess%20nuclei%20count%20from%20raw%20images%20across%20all%20cond-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot_nuc_count_stats,
+#           filename = &quot;NucleiCount_Boxplot_ImgLevel_EMP&quot;,
+#           folder = output_folder)</code></pre>
+</div>
+<div id="nuclei-count-assessment---step-2-individual-level-comparisons"
+class="section level2">
+<h2>Nuclei Count Assessment - Step 2: Individual-Level Comparisons</h2>
+<pre class="r"><code>#now I would like to assess these numbers of nuclei at an individual level
+
+#first, collapse the data by individual
+ind_summary_nuc_count &lt;- image_merged_dapi_summary %&gt;% 
+  group_by(Individual, Treatment, Timepoint, Magnification) %&gt;% 
+  summarise(
+    Median_Nuclei_Count = median(Nuclei_Count, na.rm = TRUE),
+    Mean_Nuclei_count = mean(Nuclei_Count, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  ) %&gt;% 
+  mutate(
+    Condition = paste0(Treatment, &quot;_&quot;, Timepoint)
+  )
+
+
+#assess the mean and the median, but first do stats
+ttests_nuc_count_ind &lt;- ttests_nuc_count %&gt;% 
+  filter(Timepoint %in% c(&quot;24T&quot;, &quot;24R&quot;, &quot;144R&quot;)) %&gt;% 
+  mutate(
+    group1 = paste0(&quot;DOX_&quot;, Timepoint),
+    group2 = paste0(&quot;VEH_&quot;, Timepoint),
+    y.position = max(image_merged_dapi_summary$Nuclei_Count, na.rm = TRUE) * 1.05,
+    
+    #add significance stars as defined earlier
+    p.signif = case_when(
+      p &lt; 0.001 ~ &quot;***&quot;,
+      p &lt; 0.01 ~ &quot;**&quot;,
+      p &lt; 0.05 ~ &quot;*&quot;,
+      TRUE ~ &quot;ns&quot;
+    )
+  )
+
+#now plot these individual-level measurements with stats
+
+#first plot mean number of nuclei
+
+plot_nuc_counts_ind_mean &lt;- ggplot(ind_summary_nuc_count, 
+                     aes(x = Condition, y = Mean_Nuclei_count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), 
+             size = 3, 
+             alpha = 1, 
+             position = position_identity()) +
+  # scale_y_continuous(limits = c(0, 105)) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttests_nuc_count_ind,
+                     label = &quot;p.signif&quot;, 
+                     xmin = &quot;group1&quot;,
+                     xmax = &quot;group2&quot;, 
+                     tip.length = 0.02) +
+  ylim(0, 400) +
+  labs(title = &quot;Assess # of Nuclei per Condition, Ind Level&quot;,
+       x = &quot;Condition&quot;, 
+       y = &quot;Mean # of Nuclei&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_nuc_counts_ind_mean</code></pre>
+<p><img src="figure/Figure1.Rmd/ind%20level%20nuclei%20count%20quant-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#next, plot median number of nuclei
+
+plot_nuc_counts_ind_med &lt;- ggplot(ind_summary_nuc_count, 
+                     aes(x = Condition, y = Median_Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual), 
+             size = 3, 
+             alpha = 1, 
+             position = position_identity()) +
+  # scale_y_continuous(limits = c(0, 105)) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttests_nuc_count_ind,
+                     label = &quot;p.signif&quot;, 
+                     xmin = &quot;group1&quot;,
+                     xmax = &quot;group2&quot;, 
+                     tip.length = 0.02) +
+  ylim(0, 400) +
+  labs(title = &quot;Assess # of Nuclei per Condition, Ind Level&quot;,
+       x = &quot;Condition&quot;, 
+       y = &quot;Median # of Nuclei&quot;) +
+  theme_custom() +
+  theme(legend.position = &quot;bottom&quot;)
+
+plot_nuc_counts_ind_med</code></pre>
+<p><img src="figure/Figure1.Rmd/ind%20level%20nuclei%20count%20quant-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#save plots
+
+# save_plot(plot_nuc_counts_ind_mean,
+#           filename = &quot;NucleiCount_IndLevel_Mean_EMP&quot;,
+#           folder = output_folder)
+# 
+# save_plot(plot_nuc_counts_ind_med,
+#           filename = &quot;NucleiCount_IndLevel_Median_EMP&quot;,
+#           folder = output_folder)</code></pre>
+</div>
+</div>
 <div id="figure-1e---yh2ax-if-images-no-code" class="section level1">
 <h1>Figure 1E - yH2AX IF Images (no code)</h1>
 <p>Images from individual 87-1 (Ind1).</p>
@@ -5462,7 +8696,7 @@ Session information
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.5.2 (2025-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
-Running under: Windows 11 x64 (build 22000)
+Running under: Windows 11 x64 (build 26200)
 
 Matrix products: default
   LAPACK version 3.12.1
@@ -5515,9 +8749,10 @@ loaded via a namespace (and not attached):
 [73] textshaping_1.0.4     rprojroot_2.1.1       vroom_1.7.0          
 [76] evaluate_1.0.5        lattice_0.22-7        backports_1.5.0      
 [79] broom_1.0.12          httpuv_1.6.16         bslib_0.10.0         
-[82] Rcpp_1.1.1            svglite_2.2.2         whisker_0.4.1        
-[85] xfun_0.56             fs_1.6.7              zoo_1.8-14           
-[88] getPass_0.2-4         pkgconfig_2.0.3      </code></pre>
+[82] Rcpp_1.1.1            nlme_3.1-168          svglite_2.2.2        
+[85] mgcv_1.9-3            whisker_0.4.1         xfun_0.56            
+[88] fs_1.6.7              zoo_1.8-14            getPass_0.2-4        
+[91] pkgconfig_2.0.3      </code></pre>
 </div>
 </div>
 </div>
