@@ -1916,6 +1916,44 @@ ttest_untx_nonorm %>%
 ```
 
 
+## Viability Assay Analysis - no normalization by CMM
+
+```{r viablity assay noCMM set, message=FALSE, warning=FALSE}
+
+#import the data from a different sheet on the same excel sheet
+dxr_viability_2 <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/DXR_DRC_Time_Combined_75JG_87AB_EMP_251114.xlsx", 
+    sheet = "EMP_noBG_UTXnonorm_divVEH")
+
+#now go ahead and follow the same workflow for these samples
+#these are not normalized by the untreated wells (UnTx), also called CMM
+
+#separate out the data
+dox_via_2 <- dxr_viability_2 %>% filter(Drug=="DOX")
+veh_via_2 <- dxr_viability_2 %>% filter(Drug=="VEH")
+untx_via_2 <- dxr_viability_2 %>% filter(Drug=="CMM")
+
+#now separate by individual
+dox_ind1_2 <- dox_via_2 %>% filter(Individual == "Ind1") #87-1
+veh_ind1_2 <- veh_via_2 %>% filter(Individual == "Ind1")
+untx_ind1_2 <- untx_via_2 %>% filter(Individual == "Ind1")
+
+dox_ind3_2 <- dox_via_2 %>% filter(Individual == "Ind3") #75-1
+veh_ind3_2 <- veh_via_2 %>% filter(Individual == "Ind3")
+untx_ind3_2 <- untx_via_2 %>% filter(Individual == "Ind3")
+
+#enforce factor order for plotting 
+dox_ind1_2$Time <- factor(dox_ind1_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+dox_ind3_2$Time <- factor(dox_ind3_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+veh_ind1_2$Time <- factor(veh_ind1_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+veh_ind3_2$Time <- factor(veh_ind3_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+untx_ind1_2$Time <- factor(untx_ind1_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+untx_ind3_2$Time <- factor(untx_ind3_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+
+
+```
+
+
+
 # Figure 1D - DNA Damage Quantification
 
 yH2AX Quantification (Immunofluorescence Staining).
