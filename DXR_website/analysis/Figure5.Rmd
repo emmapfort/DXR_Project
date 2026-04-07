@@ -843,79 +843,553 @@ comp_celltype_genes <- list(
   Fibro      = Fibro_entrez
 )
 
-celltype_order <- c("PDL1pos_HCA2", "Lung_Epi", "Fibro")
+#start with the PDL1+ HCA2 cells
+pdl1pos_hca2 <- unique(na.omit(PDL1pos_HCA2_entrez))
 
-#Fisher's exact test function
-fisher_test_overlap <- function(acute, chronic, degs) {
-  a <- sum(acute %in% degs)
-  b <- length(acute) - a
-  c <- sum(chronic %in% degs)
-  d <- length(chronic) - c
-  
-  contingency <- matrix(c(a, b, c, d), nrow = 2, byrow = TRUE)
-  fisher_res <- fisher.test(contingency)
-  
-  tibble(
-    OR = unname(fisher_res$estimate),
-    CI_low = fisher_res$conf.int[1],
-    CI_high = fisher_res$conf.int[2],
-    p_value = fisher_res$p.value,
-    Significant = case_when(
-      fisher_res$p.value < 0.001 ~ "***",
-      fisher_res$p.value < 0.01  ~ "**",
-      fisher_res$p.value < 0.05  ~ "*",
-      TRUE ~ "ns"
-    )
+#pld1 sags inside each motif
+in_motif1_pdl1 <- sum(final_genes_1_RUV %in% pdl1pos_hca2)
+in_motif2_pdl1 <- sum(final_genes_2_RUV %in% pdl1pos_hca2)
+
+#non-pdl1 senescence-associated genes inside each motif
+in_motif1_nonpdl1 <- length(final_genes_1_RUV) - in_motif1_pdl1
+in_motif2_nonpdl1 <- length(final_genes_2_RUV) - in_motif2_pdl1
+
+#make contingency tables for fishers exact tests
+contingency_motifs_pdl1 <- matrix(c(
+  in_motif1_pdl1, in_motif1_nonpdl1,
+  in_motif2_pdl1, in_motif2_nonpdl1),
+  nrow = 2, byrow = TRUE
   )
-}
 
-#build forest summary
-forest_summary_celltype <- map_dfr(names(comp_celltype_genes), function(treat) {
-  res <- fisher_test_overlap(chronic_set, acute_set, comp_celltype_genes[[treat]])
-  res %>% mutate(Gene_Set = treat)
-}) %>%
-  mutate(Gene_Set = factor(Gene_Set, levels = rev(celltype_order)))
+#print the contingency tables
+print(contingency_motifs_pdl1)
 
-#create a forest plot
-forest_celltype <- ggplot(forest_summary_celltype,
-                          aes(y = Gene_Set, x = OR,
-                              xmin = CI_low, xmax = CI_high)) +
-  geom_point(size = 4) +
-  geom_errorbarh(height = 0.2, linewidth = 0.5, color = "black") +
-  geom_text(aes(label = Significant), position = position_nudge(y = 0.3),
-            color = "black", fontface = "bold", size = 5) +
-  geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
-  scale_x_continuous(limits = c(0, 20),
-                breaks = c(1, 10, 20)) +
+#perform a fisher's exact test
+fisher_test_motifs_pdl1 <- fisher.test(contingency_motifs_pdl1)
+#print fisher's exact test results
+print(fisher_test_motifs_pdl1)
+
+#make a summary table of all of these data to plot
+motif_summary_pdl1 <- tibble(
+  Motif = c("Acute", "Chronic"),
+  PDL1pos = c(in_motif1_pdl1, in_motif2_pdl1),
+  non_PDL1pos = c(in_motif1_nonpdl1, in_motif2_nonpdl1)
+) %>% 
+  pivot_longer(cols = c(PDL1pos, non_PDL1pos), 
+               names_to = "Category", 
+               values_to = "Count") %>% 
+  mutate(
+    Category = ifelse(Category == "PDL1pos", "Yes", "No"),
+    Fraction = Count /ave(Count, Motif, FUN = sum),
+    Significant = ifelse(Category == "Yes" & 
+                           fisher_test_motifs_pdl1$p.value < 0.05, "*", "")
+  )
+
+#position significance stars just above bars
+label_positions_pdl1 <- motif_summary_pdl1 %>% 
+  filter(Category == "Yes") %>% 
+  mutate(y_pos = Fraction + 1.01)
+
+#change the ordering so that yes is on the top
+motif_summary_pdl1$Category <- factor(motif_summary_pdl1$Category, 
+                                      levels = c("Yes", "No"))
+
+#plot the proportions in a barplot
+PDL1_barplot <- ggplot(motif_summary_pdl1, aes(x = Motif,
+                                               y = Fraction,
+                                               fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  geom_text(
+    data = label_positions_pdl1 %>% 
+      filter(Significant != ""),
+    aes(x = Motif,y = y_pos, label = Significant),
+    size = 6,
+    color = "black"
+  ) +
+  scale_y_continuous(labels = scales::label_number(scale = 1), 
+                     limits = c(0, 1.08)) +
+  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
   labs(
-    title = "Enrichment of Cell-type Senescence Genes in Chronic vs Acute",
-    x = "odds ratio (95% confidence interval)",
-    y = ""
+    title = "Proportion of Senescence-Associated Genes (PDL1+ HCA2) in Acute vs Chronic",
+    x = "Cluster",
+    y = "Percentage",
+    fill = "PDL1+ HCA2 SAG"
   ) +
   theme_custom()
 
-print(forest_celltype)
-forest_celltype
+print(PDL1_barplot)
+  
+```
 
-#save plot as a png and pdf
 
-# save_plot(forest_celltype,
-#           filename = "Fig5D_Senescence_CellType_EMP_260316",
-#           folder = output_folder,
-#           height = 4,
-#           width = 6)
 
-#save summary table for easy visualization
-forest_summary_celltype_table <- forest_summary_celltype
-View(forest_summary_celltype_table)
+## Senescence Gene Proportions in Acute vs Chronic
 
+```{r Look at senesence associated genes, message=FALSE, warning=FALSE}
+#now further assess these senescence-associated genes to determine their proportions in chronic and acute clusters
+
+final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
+final_genes_2_RUV <- readRDS("data/Fig3/final_genes_2_RUV.RDS")
+
+acute_set <- unique(na.omit(final_genes_1_RUV))
+chronic_set <- unique(na.omit(final_genes_2_RUV))
+
+SAG_sets <- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+celltype_order <- c("PDL1pos_HCA2", "Lung_Epi", "Fibro")
+
+motif_cols <- c("Acute" = "#83C67C", "Chronic" = "#C499C6")
+
+#compute statistics using a fishers exact test for each set
+motif_summary_sags <- purrr::map_dfr(names(SAG_sets), function(gs_name) {
+  gs <- unique(na.omit(SAG_sets[[gs_name]]))
+  
+  in_motif1     <- sum(acute_set %in% gs)
+  in_motif2     <- sum(chronic_set %in% gs)
+  in_motif1_not <- length(acute_set) - in_motif1
+  in_motif2_not <- length(chronic_set) - in_motif2
+  
+  contingency <- matrix(
+    c(in_motif1, in_motif1_not,
+      in_motif2, in_motif2_not),
+    nrow = 2, byrow = TRUE
+  )
+  
+  fisher_res <- fisher.test(contingency)
+  p_val      <- fisher_res$p.value
+  
+  cat(sprintf("\n--- %s ---\n", gs_name))
+  cat(sprintf("  Acute:   %.2f%% (%d/%d)\n",
+              100 * in_motif1 / length(acute_set), in_motif1, length(acute_set)))
+  cat(sprintf("  Chronic: %.2f%% (%d/%d)\n",
+              100 * in_motif2 / length(chronic_set), in_motif2, length(chronic_set)))
+  cat(sprintf("  Fisher p = %.5f | OR = %.3f\n", p_val, unname(fisher_res$estimate)))
+  
+  tibble(
+    GeneSet   = gs_name,
+    Motif     = c("Acute", "Chronic"),
+    In        = c(in_motif1, in_motif2),
+    Total     = c(length(acute_set), length(chronic_set)),
+    P_Value   = p_val
+  ) %>%
+    mutate(
+      Fraction  = In / Total,
+      Bar_Label = sprintf("%.1f%%\n(%d/%d)", 100 * Fraction, In, Total)
+    )
+})
+
+motif_summary_sags <- motif_summary_sags %>%
+  mutate(
+    GeneSet = factor(GeneSet, levels = names(SAG_sets)),
+    Motif   = factor(Motif,   levels = c("Acute", "Chronic"))
+  )
+
+#one significance label per gene set
+sig_labels <- motif_summary_sags %>%
+  group_by(GeneSet, P_Value) %>%
+  summarise(y_pos = max(Fraction) + 0.08, .groups = "drop") %>%
+  mutate(
+    Star = ifelse(P_Value < 0.001, "***",
+           ifelse(P_Value < 0.01,  "**",
+           ifelse(P_Value < 0.05,  "*",  "ns")))
+  )
+
+#make plots faceted by gene set, acute vs chronic bars per facet
+plot_bar_SAGset <- ggplot(motif_summary_sags,
+                          aes(x = Motif, y = Fraction, fill = Motif)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = Bar_Label, y = Fraction / 2),
+            size = 3.4, color = "white", fontface = "bold",
+            lineheight = 0.9) +
+  geom_text(data = sig_labels,
+            aes(x = 1.5, y = y_pos, label = Star),
+            inherit.aes = FALSE,
+            size = 5, color = "black", fontface = "bold") +
+  geom_segment(data = sig_labels,
+               aes(x = 1, xend = 2,
+                   y = y_pos - 0.02, yend = y_pos - 0.02),
+               inherit.aes = FALSE,
+               color = "black", linewidth = 0.4) +
+  facet_wrap(~ GeneSet, nrow = 1) +
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1),
+    limits = c(0, 1.0),
+    expand = c(0, 0)
+  ) +
+  scale_fill_manual(values = motif_cols) +
+  labs(
+    title = "Proportion of Senescence-Associated Genes in Acute vs Chronic",
+    x     = "Cluster",
+    y     = "Proportion of SAGs in Cluster",
+    fill  = "Cluster"
+  ) +
+  theme_custom() +
+  theme(
+    axis.title       = element_text(size = 14),
+    axis.text        = element_text(size = 12),
+    plot.title       = element_text(size = 15, hjust = 0.5),
+    strip.text       = element_text(size = 12, face = "bold"),
+    legend.position  = "right",
+    panel.spacing    = unit(1.2, "lines")
+  )
+
+print(plot_bar_SAGset)
 
 ```
 
 
-# Senescence Genes
+```{r pdl1 pos barplots}
+motif_summary_pdl1 <- tibble(
+  Motif = c("Acute", "Chronic"),
+  PDL1pos = c(in_motif1_pdl1, in_motif2_pdl1),
+  non_PDL1pos = c(in_motif1_nonpdl1, in_motif2_nonpdl1)
+) %>% 
+  pivot_longer(cols = c(PDL1pos, non_PDL1pos), 
+               names_to = "Category", 
+               values_to = "Count") %>% 
+  mutate(
+    Category = ifelse(Category == "PDL1pos", "Yes", "No"),
+    # Simplified Fraction calculation
+    Fraction = Count / ave(Count, Motif, FUN = sum),
+    Significant = ifelse(Category == "Yes" & 
+                         fisher_test_motifs_pdl1$p.value < 0.05, "*", "")
+  )
 
-```{r Look at senesence associated genes, message=FALSE, warning=FALSE}
+# 2. Fixed Significance Star Positions
+# For a stacked bar where 'Yes' is on top, the height is 1.0 (total proportion)
+label_positions_pdl1 <- motif_summary_pdl1 %>% 
+  filter(Category == "Yes") %>% 
+  mutate(y_pos = 1.01) # Place slightly above the full bar height
+
+# Ensure 'No' is at the bottom and 'Yes' is at the top
+motif_summary_pdl1$Category <- factor(motif_summary_pdl1$Category, 
+                                      levels = c("Yes", "No"))
+
+# 3. Updated Plot
+PDL1_barplot <- ggplot(motif_summary_pdl1, aes(x = Motif,
+                                               y = Fraction,
+                                               fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  geom_text(
+    data = label_positions_pdl1 %>% filter(Significant != ""),
+    aes(x = Motif, y = y_pos, label = Significant),
+    size = 8, # Made slightly larger for visibility
+    color = "black",
+    inherit.aes = FALSE # Prevents confusion with the 'fill' mapping
+  ) +
+  # Fixed y-axis to show 0.0 to 1.0 proportions
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.1), 
+                     limits = c(0, 1.1),
+                     breaks = seq(0, 1, 0.2)) +
+  # Fixed the comma error in scale_fill_manual
+  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
+  labs(
+    title = "Proportion of SAGs (PDL1+ HCA2)",
+    x = "Cluster",
+    y = "Proportion", # Corrected label
+    fill = "PDL1+ HCA2"
+  ) +
+  theme_custom() # Swapped for standard theme so it runs immediately
+
+print(PDL1_barplot)
+
+significance_table <- motif_summary_pdl1 %>%
+  filter(Category == "Yes") %>%
+  dplyr::select(Motif, Count, Fraction, Significant) %>%
+  mutate(
+    Total_Genes = c(length(final_genes_1_RUV), length(final_genes_2_RUV)),
+    P_Value = fisher_test_motifs_pdl1$p.value,
+    Significance = Significant
+  )
+
+# Print the final table to the console
+print("--- Significance Summary Table ---")
+print(significance_table)
+
+```
+
+
+```{r lung epi set barplots}
+
+lung_epi <- unique(na.omit(Lung_Epi_entrez))
+
+#epi sags inside each motif
+in_motif1_epi <- sum(final_genes_1_RUV %in% lung_epi)
+in_motif2_epi <- sum(final_genes_2_RUV %in% lung_epi)
+
+#non-pdl1 senescence-associated genes inside each motif
+in_motif1_nonepi <- length(final_genes_1_RUV) - in_motif1_epi
+in_motif2_nonepi <- length(final_genes_2_RUV) - in_motif2_epi
+
+#make contingency tables for fishers exact tests
+contingency_motifs_epi <- matrix(c(
+  in_motif1_epi, in_motif1_nonepi,
+  in_motif2_epi, in_motif2_nonepi),
+  nrow = 2, byrow = TRUE
+  )
+
+#print the contingency tables
+print(contingency_motifs_epi)
+
+#perform a fisher's exact test
+fisher_test_motifs_epi <- fisher.test(contingency_motifs_epi)
+#print fisher's exact test results
+print(fisher_test_motifs_epi)
+
+motif_summary_epi <- tibble(
+  Motif = c("Acute", "Chronic"),
+  epi = c(in_motif1_epi, in_motif2_epi),
+  non_epi = c(in_motif1_nonepi, in_motif2_nonepi)
+) %>% 
+  pivot_longer(cols = c(epi, non_epi), 
+               names_to = "Category", 
+               values_to = "Count") %>% 
+  mutate(
+    Category = ifelse(Category == "Epi", "Yes", "No"),
+    # Simplified Fraction calculation
+    Fraction = Count / ave(Count, Motif, FUN = sum),
+    Significant = ifelse(Category == "Yes" & 
+                         fisher_test_motifs_epi$p.value < 0.05, "*", "")
+  )
+
+# 2. Fixed Significance Star Positions
+# For a stacked bar where 'Yes' is on top, the height is 1.0 (total proportion)
+label_positions_epi <- motif_summary_epi %>% 
+  filter(Category == "Yes") %>% 
+  mutate(y_pos = 1.01) # Place slightly above the full bar height
+
+# Ensure 'No' is at the bottom and 'Yes' is at the top
+motif_summary_epi$Category <- factor(motif_summary_epi$Category, 
+                                      levels = c("Yes", "No"))
+
+# 3. Updated Plot
+Epi_barplot <- ggplot(motif_summary_epi, aes(x = Motif,
+                                               y = Fraction,
+                                               fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  geom_text(
+    data = label_positions_epi %>% filter(Significant != ""),
+    aes(x = Motif, y = y_pos, label = Significant),
+    size = 8, # Made slightly larger for visibility
+    color = "black",
+    inherit.aes = FALSE # Prevents confusion with the 'fill' mapping
+  ) +
+  # Fixed y-axis to show 0.0 to 1.0 proportions
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.1), 
+                     limits = c(0, 1.1),
+                     breaks = seq(0, 1, 0.2)) +
+  # Fixed the comma error in scale_fill_manual
+  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
+  labs(
+    title = "Proportion of SAGs (Lung Epi)",
+    x = "Cluster",
+    y = "Proportion", # Corrected label
+    fill = "Lung Epi"
+  ) +
+  theme_custom() 
+
+print(Epi_barplot)
+
+significance_table_epi <- motif_summary_epi %>%
+  filter(Category == "Yes") %>%
+  dplyr::select(Motif, Count, Fraction, Significant) %>%
+  mutate(
+    Total_Genes = c(length(final_genes_1_RUV), length(final_genes_2_RUV)),
+    P_Value = fisher_test_motifs_epi$p.value,
+    Significance = Significant
+  )
+
+# Print the final table to the console
+print("--- Significance Summary Table ---")
+print(significance_table_epi)
+```
+
+
+### fibroblasts
+
+```{r fibroblasts barplots}
+fibro <- unique(na.omit(Fibro_entrez))
+
+#epi sags inside each motif
+in_motif1_fibro <- sum(final_genes_1_RUV %in% fibro)
+in_motif2_fibro <- sum(final_genes_2_RUV %in% fibro)
+
+#non-pdl1 senescence-associated genes inside each motif
+in_motif1_nonfibro <- length(final_genes_1_RUV) - in_motif1_fibro
+in_motif2_nonfibro <- length(final_genes_2_RUV) - in_motif2_fibro
+
+#make contingency tables for fishers exact tests
+contingency_motifs_fibro <- matrix(c(
+  in_motif1_fibro, in_motif1_nonfibro,
+  in_motif2_fibro, in_motif2_nonfibro),
+  nrow = 2, byrow = TRUE
+  )
+
+#print the contingency tables
+print(contingency_motifs_fibro)
+
+#perform a fisher's exact test
+fisher_test_motifs_fibro <- fisher.test(contingency_motifs_fibro)
+#print fisher's exact test results
+print(fisher_test_motifs_fibro)
+
+motif_summary_fibro <- tibble(
+  Motif = c("Acute", "Chronic"),
+  fibro = c(in_motif1_fibro, in_motif2_fibro),
+  non_fibro = c(in_motif1_nonfibro, in_motif2_nonfibro)
+) %>% 
+  pivot_longer(cols = c(fibro, non_fibro), 
+               names_to = "Category", 
+               values_to = "Count") %>% 
+  mutate(
+    Category = ifelse(Category == "fibro", "Yes", "No"),
+    # Simplified Fraction calculation
+    Fraction = Count / ave(Count, Motif, FUN = sum),
+    Significant = ifelse(Category == "Yes" & 
+                         fisher_test_motifs_fibro$p.value < 0.05, "*", "")
+  )
+
+# 2. Fixed Significance Star Positions
+# For a stacked bar where 'Yes' is on top, the height is 1.0 (total proportion)
+label_positions_fibro <- motif_summary_fibro %>% 
+  filter(Category == "Yes") %>% 
+  mutate(y_pos = 1.01) # Place slightly above the full bar height
+
+# Ensure 'No' is at the bottom and 'Yes' is at the top
+motif_summary_fibro$Category <- factor(motif_summary_fibro$Category, 
+                                      levels = c("Yes", "No"))
+
+# 3. Updated Plot
+fibro_barplot <- ggplot(motif_summary_fibro, aes(x = Motif,
+                                               y = Fraction,
+                                               fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  geom_text(
+    data = label_positions_fibro %>% filter(Significant != ""),
+    aes(x = Motif, y = y_pos, label = Significant),
+    size = 8, # Made slightly larger for visibility
+    color = "black",
+    inherit.aes = FALSE # Prevents confusion with the 'fill' mapping
+  ) +
+  # Fixed y-axis to show 0.0 to 1.0 proportions
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.1), 
+                     limits = c(0, 1.1),
+                     breaks = seq(0, 1, 0.2)) +
+  # Fixed the comma error in scale_fill_manual
+  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
+  labs(
+    title = "Proportion of SAGs (Fibroblasts)",
+    x = "Cluster",
+    y = "Proportion", # Corrected label
+    fill = "Fibroblasts"
+  ) +
+  theme_custom() 
+
+print(fibro_barplot)
+
+significance_table_fibro <- motif_summary_fibro %>%
+  filter(Category == "Yes") %>%
+  dplyr::select(Motif, Count, Fraction, Significant) %>%
+  mutate(
+    Total_Genes = c(length(final_genes_1_RUV), length(final_genes_2_RUV)),
+    P_Value = fisher_test_motifs_fibro$p.value,
+    Significance = Significant
+  )
+
+# Print the final table to the console
+print("--- Significance Summary Table ---")
+print(significance_table_fibro)
+```
+
+
+## Proportion of senescence-associated genes in DEGs vs nonDEGs
+
+```{r degs vs nondegs senescence genes, warning=FALSE, message=FALSE}
+#now I will assess the proportion of these senescence-associated genes in my identified DEGs vs nonDEGs
+
+forest_data_sag <- purrr::map_dfr(names(gene_sets), function(gs_name) {
+  gs <- unique(na.omit(gene_sets[[gs_name]]))
+  
+  purrr::map_dfr(names(timepoint_DEGs_ddr), function(tp) {
+    degs    <- unique(timepoint_DEGs_ddr[[tp]])
+    nondegs <- setdiff(all_genes, degs)
+    
+    in_deg_yes  <- sum(degs %in% gs)
+    in_deg_no   <- length(degs) - in_deg_yes
+    in_non_yes  <- sum(nondegs %in% gs)
+    in_non_no   <- length(nondegs) - in_non_yes
+    
+    contingency <- matrix(
+      c(in_deg_yes, in_deg_no,
+        in_non_yes, in_non_no),
+      nrow = 2, byrow = TRUE
+    )
+    
+    fisher_res <- fisher.test(contingency)
+    
+    cat(sprintf("[%s | %s]  OR=%.3f  p=%.5f  DEGs: %d/%d  nonDEGs: %d/%d\n",
+                gs_name, tp,
+                unname(fisher_res$estimate), fisher_res$p.value,
+                in_deg_yes, length(degs),
+                in_non_yes, length(nondegs)))
+    
+    tibble(
+      GeneSet     = gs_name,
+      Timepoint   = tp,
+      Odds_Ratio  = unname(fisher_res$estimate),
+      CI_low      = fisher_res$conf.int[1],
+      CI_high     = fisher_res$conf.int[2],
+      P_Value     = fisher_res$p.value,
+      Significant = fisher_res$p.value < 0.05,
+      Prop_DEG    = sprintf("%d/%d", in_deg_yes, length(degs)),
+      Prop_nonDEG = sprintf("%d/%d", in_non_yes, length(nondegs))
+    )
+  })
+})
+
+#factor ordering
+forest_data_sag <- forest_data_sag %>%
+  mutate(
+    GeneSet   = factor(GeneSet,   levels = names(SAG_sets)),
+    Timepoint = factor(Timepoint, levels = c("t0", "t24", "t144")),
+    Sig_Label = ifelse(Significant, "Significant", "Not Significant")
+  )
+
+#create the plot
+plot_forest_SAGset <- ggplot(forest_data_sag,
+                              aes(y = Timepoint, x = Odds_Ratio,
+                                  color = GeneSet, shape = Sig_Label)) +
+  geom_point(size = 4) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.25) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "gray50") +
+  geom_text(aes(x = CI_high, label = paste0("DEG: ", Prop_DEG)),
+            hjust = -0.15, size = 3, show.legend = FALSE) +
+  scale_color_manual(values = gs_colors) +
+  scale_shape_manual(values = c("Significant" = 16, "Not Significant" = 1)) +
+  scale_x_log10() +
+  scale_y_discrete(limits = rev(c("t0", "t24", "t144"))) +
+  facet_wrap(~ GeneSet, ncol = 1) +
+  labs(
+    title  = "Senescence Associated Genes in DEGs vs nonDEGs",
+    y      = "Timepoint",
+    x      = "Odds Ratio (95% confidence interval)",
+    color  = "Gene Set",
+    shape  = "Significance"
+  ) +
+  theme_custom() +
+  theme(
+    axis.title      = element_text(size = 13),
+    axis.text       = element_text(size = 11),
+    plot.title      = element_text(size = 15, hjust = 0.5),
+    strip.text      = element_text(size = 12, face = "bold"),
+    legend.position = "bottom"
+  )
+
+print(plot_forest_SAGset)
 
 ```
 

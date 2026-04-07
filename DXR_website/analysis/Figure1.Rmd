@@ -3723,9 +3723,9 @@ max_val <- max(ind_summary_dapi_step5_dox$Weight_Mean, na.rm = TRUE)
 ttest_table_dox_time_dapi <- ttest_table_dox_time_dapi %>% 
   mutate(
     y.position = case_when(
-      group1 == "DOX_24T" & group2 == "DOX_24R" ~ max_val * 1.05, #middle
-      group1 == "DOX_24T" & group2 == "DOX_144R" ~ max_val * 1.10,  #top
-      group1 == "DOX_24R" & group2 == "DOX_144R" ~ max_val * 1.00 #bottom
+      group1 == "DOX_24T" & group2 == "DOX_24R" ~ max_val * 1.15, #middle
+      group1 == "DOX_24T" & group2 == "DOX_144R" ~ max_val * 1.25,  #top
+      group1 == "DOX_24R" & group2 == "DOX_144R" ~ max_val * 1.05 #bottom
       ),
     group1_num = as.numeric(factor(group1, levels = condition_levels)),
     group2_num = as.numeric(factor(group2, levels = condition_levels))
@@ -3769,6 +3769,143 @@ ttest_table_dox_time_dapi
 #           folder = output_folder)
 
 ```
+
+## Step 5 - Vehicle-Level Comparisons
+
+```{r compare between vehicle timepoints too, warning=FALSE, message=FALSE}
+
+#now I want to do the same as above but test between vehicle timepoints
+
+ind_summary_dapi_step5_veh <- ind_summary_dapi_4 %>% 
+  group_by(Individual, Treatment, Timepoint) %>% 
+  summarise(
+    Weight_Mean = Weight_Mean,
+    .groups = "drop"
+  ) %>% 
+  mutate(
+    Condition = paste0(Treatment, "_", Timepoint)
+  )
+
+#set the condition levels
+condition_levels <- c("DOX_24T", "VEH_24T",
+                      "DOX_24R", "VEH_24R",
+                      "DOX_144R", "VEH_144R")
+
+veh_conditions <- c("VEH_24T", "VEH_24R", "VEH_144R")
+
+ind_summary_dapi_step5_veh <- ind_summary_dapi_step5_veh %>% 
+  mutate(Condition = factor(Condition, levels = condition_levels))
+
+#perform paired t-tests between VEH timepoints
+timepoint_pairs <- list(
+  c("24T","24R"),
+  c("24R","144R"),
+  c("24T","144R")
+)
+
+ttest_table_veh_time_dapi <- purrr::map_df(seq_along(timepoint_pairs), function(i) {
+  tp <- timepoint_pairs[[i]]
+  
+  df_wide <- ind_summary_dapi_step5_veh %>% 
+    filter(Treatment == "VEH", Timepoint %in% tp) %>% 
+    group_by(Individual, Timepoint) %>% 
+    summarise(Weight_Mean = mean(Weight_Mean, na.rm = TRUE), .groups = "drop") %>% 
+    pivot_wider(names_from = Timepoint, values_from = Weight_Mean) %>% 
+    drop_na()
+  
+  base_y <- max(ind_summary_dapi_step5_veh$Weight_Mean,
+                na.rm = TRUE) * 0.9
+  
+  y_increment <- max(ind_summary_dapi_step5_veh$Weight_Mean,
+                     na.rm = TRUE) * 0.05
+  
+  y_pos <- base_y + y_increment * i
+  
+  if(nrow(df_wide) < 2) {
+    tibble(
+      group1 = paste0("VEH_", tp[1]),
+      group2 = paste0("VEH_", tp[2]),
+      p.value = NA_real_,
+      p.signif = "NA",
+      y.position = y_pos
+    )
+  } else {
+    test <- t.test(df_wide[[tp[1]]], df_wide[[tp[2]]], paired = TRUE)
+    tibble(
+      group1 = paste0("VEH_", tp[1]),
+      group2 = paste0("VEH_", tp[2]),
+      p.value = test$p.value,
+      p.signif = case_when(
+        test$p.value < 0.001 ~ "***",
+        test$p.value < 0.01 ~ "**",
+        test$p.value < 0.05 ~ "*",
+        TRUE ~ "ns"
+      ),
+      y.position = y_pos
+    )
+  }
+})
+
+#map to numeric positions for stat_pvalue_manual + add adj. p value (BH corrected)
+ttest_table_veh_time_dapi <- ttest_table_veh_time_dapi %>% 
+  mutate(
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+#manually set y positions for each comparison (so it is visible like above)
+max_val <- max(ind_summary_dapi_step5_veh$Weight_Mean, na.rm = TRUE)
+
+ttest_table_veh_time_dapi <- ttest_table_veh_time_dapi %>% 
+  mutate(
+    y.position = case_when(
+      group1 == "VEH_24T" & group2 == "VEH_24R" ~ max_val * 1.15, #middle
+      group1 == "VEH_24T" & group2 == "VEH_144R" ~ max_val * 1.25,  #top
+      group1 == "VEH_24R" & group2 == "VEH_144R" ~ max_val * 1.05 #bottom
+      ),
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+
+#now plot the VEH timepoint comparisons
+plot_step5_veh_time_dapi <- ggplot(ind_summary_dapi_step5_veh,
+                                   aes(x = Condition,
+                                       y = Weight_Mean)) +
+  geom_boxplot(aes(fill = Condition),
+               show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 3,
+             alpha = 1,
+             position = position_identity()) +
+  scale_y_continuous(limits = c(0, 105)) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttest_table_veh_time_dapi,
+                     label = "p.signif",
+                     xmin = "group1_num",
+                     xmax = "group2_num",
+                     y.position = "y.position",
+                     tip.length = 0.02) +
+  labs(title = "Step 5: VEH Timepoint Comparisons Hoechst Intensity",
+       x = "Condition",
+       y = "Mean Intensity") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_step5_veh_time_dapi
+
+#print the stats table as well for visibility
+ttest_table_veh_time_dapi
+
+#save the plot
+# save_plot(plot_step5_veh_time_dapi,
+#           filename = "HoechstInt_Step5_IndLev_VEHComp_EMP",
+#           folder = output_folder)
+
+```
+
 
 
 # Assess Number of Nuclei Per Condition
