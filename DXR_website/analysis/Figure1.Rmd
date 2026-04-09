@@ -4466,6 +4466,368 @@ plot_nuc_counts_ind_med_std
 
 ```
 
+## Nuclei Count Assessment - Testing between timepoints within DOX or VEH
+
+### Mean Nuclei Counts - DOX timepoints tests
+
+```{r nuclei counts testing between timepoints within condition mean dox, warning=FALSE, message=FALSE}
+#define the condition levels
+condition_levels <- c("DOX_24T", "VEH_24T",
+                      "DOX_24R", "VEH_24R",
+                      "DOX_144R", "VEH_144R")
+
+dox_conditions <- c("DOX_24T", "DOX_24R", "DOX_144R")
+veh_conditions <- c("VEH_24T", "VEH_24R", "VEH_144R")
+
+timepoint_pairs <- list(
+  c("24T", "24R"),
+  c("24R", "144R"),
+  c("24T", "144R")
+)
+
+ind_summary_nuc_count_std <- ind_summary_nuc_count_std %>% 
+  mutate(Condition = factor(Condition, levels = condition_levels))
+
+max_val_nuc_mean <- max(ind_summary_nuc_count_std$Mean_Nuclei_count, na.rm = TRUE)
+
+#perform t-tests between DOX conditions for the Mean nuclei count
+ttest_table_dox_time_nuc_mean <- purrr::map_df(seq_along(timepoint_pairs), function(i) {
+  tp <- timepoint_pairs[[i]]
+  
+  df_wide <- ind_summary_nuc_count_std %>% 
+    filter(Treatment == "DOX", Timepoint %in% tp) %>% 
+    group_by(Individual, Timepoint) %>% 
+    summarise(Mean_Nuclei_count = mean(Mean_Nuclei_count, na.rm = TRUE), .groups = "drop") %>% 
+    pivot_wider(names_from = Timepoint, values_from = Mean_Nuclei_count) %>% 
+    drop_na()
+  
+  base_y     <- max_val_nuc_mean * 0.9
+  y_increment <- max_val_nuc_mean * 0.05
+  y_pos      <- base_y + y_increment * i
+  
+  if (nrow(df_wide) < 2) {
+    tibble(group1 = paste0("DOX_", tp[1]), group2 = paste0("DOX_", tp[2]),
+           p.value = NA_real_, p.signif = "NA", y.position = y_pos)
+  } else {
+    test <- t.test(df_wide[[tp[1]]], df_wide[[tp[2]]], paired = TRUE)
+    tibble(
+      group1     = paste0("DOX_", tp[1]),
+      group2     = paste0("DOX_", tp[2]),
+      p.value    = test$p.value,
+      p.signif   = case_when(
+        test$p.value < 0.001 ~ "***",
+        test$p.value < 0.01  ~ "**",
+        test$p.value < 0.05  ~ "*",
+        TRUE                 ~ "ns"
+      ),
+      y.position = y_pos
+    )
+  }
+})
+
+#map to positions on boxplot, add adj. p value, and manually set y positions
+ttest_table_dox_time_nuc_mean <- ttest_table_dox_time_nuc_mean %>% 
+  mutate(
+    y.position = case_when(
+      group1 == "DOX_24T" & group2 == "DOX_24R"   ~ max_val_nuc_mean * 1.15,
+      group1 == "DOX_24T" & group2 == "DOX_144R"  ~ max_val_nuc_mean * 1.25,
+      group1 == "DOX_24R" & group2 == "DOX_144R"  ~ max_val_nuc_mean * 1.05
+    ),
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+ttest_table_dox_time_nuc_mean
+
+#now plot this onto a boxplot as before with these within-condition stats
+plot_dox_time_nuc_mean <- ggplot(ind_summary_nuc_count_std,
+                            aes(x = Condition, y = Mean_Nuclei_count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 3, alpha = 1, position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttest_table_dox_time_nuc_mean,
+                     label = "p.signif",
+                     xmin = "group1_num",
+                     xmax = "group2_num",
+                     y.position = "y.position",
+                     tip.length = 0.02) +
+  ylim(0, max_val_nuc_mean * 1.35) +
+  labs(title = "DOX Timepoint Comparisons Mean Nuclei Count (3 Images)",
+       x = "Condition",
+       y = "Mean # of Nuclei") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dox_time_nuc_mean
+
+# save_plot(plot_dox_time_nuc_mean,
+#           filename = "NucleiCount_Mean_btwDOX_EMP",
+#           folder = output_folder)
+
+```
+
+
+### Mean Nuclei Counts - VEH timepoints tests
+
+```{r nuclei counts testing between timepoints within condition veh mean, warning=FALSE, message=FALSE}
+
+max_val_nuc_mean <- max(ind_summary_nuc_count_std$Mean_Nuclei_count, na.rm = TRUE)
+
+#perform t-tests between VEH conditions for the Mean nuclei count
+ttest_table_veh_time_nuc_mean <- purrr::map_df(seq_along(timepoint_pairs), function(i) {
+  tp <- timepoint_pairs[[i]]
+  
+  df_wide <- ind_summary_nuc_count_std %>% 
+    filter(Treatment == "VEH", Timepoint %in% tp) %>% 
+    group_by(Individual, Timepoint) %>% 
+    summarise(Mean_Nuclei_count = mean(Mean_Nuclei_count, na.rm = TRUE), .groups = "drop") %>% 
+    pivot_wider(names_from = Timepoint, values_from = Mean_Nuclei_count) %>% 
+    drop_na()
+  
+  base_y     <- max_val_nuc_mean * 0.9
+  y_increment <- max_val_nuc_mean * 0.05
+  y_pos      <- base_y + y_increment * i
+  
+  if (nrow(df_wide) < 2) {
+    tibble(group1 = paste0("VEH_", tp[1]), 
+           group2 = paste0("VEH_", tp[2]),
+           p.value = NA_real_, p.signif = "NA", y.position = y_pos)
+  } else {
+    test <- t.test(df_wide[[tp[1]]], df_wide[[tp[2]]], paired = TRUE)
+    tibble(
+      group1     = paste0("VEH_", tp[1]),
+      group2     = paste0("VEH_", tp[2]),
+      p.value    = test$p.value,
+      p.signif   = case_when(
+        test$p.value < 0.001 ~ "***",
+        test$p.value < 0.01  ~ "**",
+        test$p.value < 0.05  ~ "*",
+        TRUE                 ~ "ns"
+      ),
+      y.position = y_pos
+    )
+  }
+})
+
+#map to positions on boxplot, add adj. p value, and manually set y positions
+ttest_table_veh_time_nuc_mean <- ttest_table_veh_time_nuc_mean %>% 
+  mutate(
+    y.position = case_when(
+      group1 == "VEH_24T" & group2 == "VEH_24R"   ~ max_val_nuc_mean * 1.15,
+      group1 == "VEH_24T" & group2 == "VEH_144R"  ~ max_val_nuc_mean * 1.25,
+      group1 == "VEH_24R" & group2 == "VEH_144R"  ~ max_val_nuc_mean * 1.05
+    ),
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+ttest_table_veh_time_nuc_mean
+
+#now plot this onto a boxplot as before with these within-condition stats
+plot_veh_time_nuc_mean <- ggplot(ind_summary_nuc_count_std,
+                            aes(x = Condition, y = Mean_Nuclei_count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 3, alpha = 1, position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttest_table_veh_time_nuc_mean,
+                     label = "p.signif",
+                     xmin = "group1_num",
+                     xmax = "group2_num",
+                     y.position = "y.position",
+                     tip.length = 0.02) +
+  ylim(0, max_val_nuc_mean * 1.35) +
+  labs(title = "VEH Timepoint Comparisons Mean Nuclei Count (3 Images)",
+       x = "Condition",
+       y = "Mean # of Nuclei") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_veh_time_nuc_mean
+
+
+# save_plot(plot_veh_time_nuc_mean,
+#           filename = "NucleiCount_Mean_btwVEH_EMP",
+#           folder = output_folder)
+```
+
+
+### Median Nuclei Counts - DOX timepoints tests
+
+```{r nuclei counts testing between timepoints within condition median dox, warning=FALSE, message=FALSE}
+
+max_val_nuc_med <- max(ind_summary_nuc_count_std$Median_Nuclei_Count, na.rm = TRUE)
+
+#perform t-tests between DOX conditions for the Median nuclei count
+ttest_table_dox_time_nuc_med <- purrr::map_df(seq_along(timepoint_pairs), function(i) {
+  tp <- timepoint_pairs[[i]]
+  
+  df_wide <- ind_summary_nuc_count_std %>% 
+    filter(Treatment == "DOX", Timepoint %in% tp) %>% 
+    group_by(Individual, Timepoint) %>% 
+    summarise(Median_Nuclei_Count = median(Median_Nuclei_Count, na.rm = TRUE), .groups = "drop") %>% 
+    pivot_wider(names_from = Timepoint, values_from = Median_Nuclei_Count) %>% 
+    drop_na()
+  
+  base_y     <- max_val_nuc_med * 0.9
+  y_increment <- max_val_nuc_med * 0.05
+  y_pos      <- base_y + y_increment * i
+  
+  if (nrow(df_wide) < 2) {
+    tibble(group1 = paste0("DOX_", tp[1]), group2 = paste0("DOX_", tp[2]),
+           p.value = NA_real_, p.signif = "NA", y.position = y_pos)
+  } else {
+    test <- t.test(df_wide[[tp[1]]], df_wide[[tp[2]]], paired = TRUE)
+    tibble(
+      group1     = paste0("DOX_", tp[1]),
+      group2     = paste0("DOX_", tp[2]),
+      p.value    = test$p.value,
+      p.signif   = case_when(
+        test$p.value < 0.001 ~ "***",
+        test$p.value < 0.01  ~ "**",
+        test$p.value < 0.05  ~ "*",
+        TRUE                 ~ "ns"
+      ),
+      y.position = y_pos
+    )
+  }
+})
+
+#map to positions on boxplot, add adj. p value, and manually set y positions
+ttest_table_dox_time_nuc_med <- ttest_table_dox_time_nuc_med %>% 
+  mutate(
+    y.position = case_when(
+      group1 == "DOX_24T" & group2 == "DOX_24R"   ~ max_val_nuc_med * 1.15,
+      group1 == "DOX_24T" & group2 == "DOX_144R"  ~ max_val_nuc_med * 1.25,
+      group1 == "DOX_24R" & group2 == "DOX_144R"  ~ max_val_nuc_med * 1.05
+    ),
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+ttest_table_dox_time_nuc_med
+
+#now plot this onto a boxplot as before with these within-condition stats
+plot_dox_time_nuc_med <- ggplot(ind_summary_nuc_count_std,
+                            aes(x = Condition, y = Median_Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 3, alpha = 1, position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttest_table_dox_time_nuc_med,
+                     label = "p.signif",
+                     xmin = "group1_num",
+                     xmax = "group2_num",
+                     y.position = "y.position",
+                     tip.length = 0.02) +
+  ylim(0, max_val_nuc_mean * 1.35) +
+  labs(title = "DOX Timepoint Comparisons Median Nuclei Count (3 Images)",
+       x = "Condition",
+       y = "Median # of Nuclei") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_dox_time_nuc_med
+
+# save_plot(plot_dox_time_nuc_med,
+#           filename = "NucleiCount_Median_btwDOX_EMP",
+#           folder = output_folder)
+
+```
+
+
+### Median Nuclei Counts - VEH timepoints tests
+
+```{r nuclei counts testing between timepoints within condition median veh, warning=FALSE, message=FALSE}
+
+max_val_nuc_med <- max(ind_summary_nuc_count_std$Median_Nuclei_Count, na.rm = TRUE)
+
+#perform t-tests between VEH conditions for the Median nuclei count
+ttest_table_veh_time_nuc_med <- purrr::map_df(seq_along(timepoint_pairs), function(i) {
+  tp <- timepoint_pairs[[i]]
+  
+  df_wide <- ind_summary_nuc_count_std %>% 
+    filter(Treatment == "VEH", Timepoint %in% tp) %>% 
+    group_by(Individual, Timepoint) %>% 
+    summarise(Median_Nuclei_Count = median(Median_Nuclei_Count, na.rm = TRUE), .groups = "drop") %>% 
+    pivot_wider(names_from = Timepoint, values_from = Median_Nuclei_Count) %>% 
+    drop_na()
+  
+  base_y     <- max_val_nuc_med * 0.9
+  y_increment <- max_val_nuc_med * 0.05
+  y_pos      <- base_y + y_increment * i
+  
+  if (nrow(df_wide) < 2) {
+    tibble(group1 = paste0("VEH_", tp[1]), 
+           group2 = paste0("VEH_", tp[2]),
+           p.value = NA_real_, p.signif = "NA", y.position = y_pos)
+  } else {
+    test <- t.test(df_wide[[tp[1]]], df_wide[[tp[2]]], paired = TRUE)
+    tibble(
+      group1     = paste0("VEH_", tp[1]),
+      group2     = paste0("VEH_", tp[2]),
+      p.value    = test$p.value,
+      p.signif   = case_when(
+        test$p.value < 0.001 ~ "***",
+        test$p.value < 0.01  ~ "**",
+        test$p.value < 0.05  ~ "*",
+        TRUE                 ~ "ns"
+      ),
+      y.position = y_pos
+    )
+  }
+})
+
+#map to positions on boxplot, add adj. p value, and manually set y positions
+ttest_table_veh_time_nuc_med <- ttest_table_veh_time_nuc_med %>% 
+  mutate(
+    y.position = case_when(
+      group1 == "VEH_24T" & group2 == "VEH_24R"   ~ max_val_nuc_med * 1.15,
+      group1 == "VEH_24T" & group2 == "VEH_144R"  ~ max_val_nuc_med * 1.25,
+      group1 == "VEH_24R" & group2 == "VEH_144R"  ~ max_val_nuc_med * 1.05
+    ),
+    group1_num = as.numeric(factor(group1, levels = condition_levels)),
+    group2_num = as.numeric(factor(group2, levels = condition_levels))
+  )
+
+ttest_table_veh_time_nuc_med
+
+#now plot this onto a boxplot as before with these within-condition stats
+plot_veh_time_nuc_med <- ggplot(ind_summary_nuc_count_std,
+                            aes(x = Condition, y = Median_Nuclei_Count)) +
+  geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
+  geom_point(aes(color = Individual),
+             size = 3, alpha = 1, position = position_identity()) +
+  scale_x_discrete(limits = condition_levels) +
+  scale_color_manual(values = ind_cols_if) +
+  scale_fill_manual(values = txtime_col_old) +
+  stat_pvalue_manual(ttest_table_dox_time_nuc_med,
+                     label = "p.signif",
+                     xmin = "group1_num",
+                     xmax = "group2_num",
+                     y.position = "y.position",
+                     tip.length = 0.02) +
+  ylim(0, max_val_nuc_mean * 1.35) +
+  labs(title = "VEH Timepoint Comparisons Median Nuclei Count (3 Images)",
+       x = "Condition",
+       y = "Median # of Nuclei") +
+  theme_custom() +
+  theme(legend.position = "bottom")
+
+plot_veh_time_nuc_med
+
+# save_plot(plot_veh_time_nuc_med,
+#           filename = "NucleiCount_Median_btwVEH_EMP",
+#           folder = output_folder)
+```
+
 
 # Figure 1E - yH2AX IF Images (no code)
 

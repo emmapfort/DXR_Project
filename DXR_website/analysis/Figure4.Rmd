@@ -36,6 +36,8 @@ Load necessary libraries for analysis.
 library(tidyverse)
 library(readxl)
 library(readr)
+library(clusterProfiler)
+library(org.Hs.eg.db)
 ```
 
 Define my custom plot theme
@@ -451,7 +453,7 @@ TOP2i_Combined <- ggplot(plot_df, aes(x = Treatment, y = Fraction, fill = Catego
     color = "black"
   ) +
   
-  scale_y_continuous(labels = c(0, 100)) +
+  scale_y_continuous(limits = c(0, 100)) +
   scale_fill_manual(values = c("Yes" = "#e41a1c", "No" = "#377eb8"),
                     labels = legend_labels) +
   labs(
@@ -475,7 +477,7 @@ TOP2i_Combined <- ggplot(plot_df, aes(x = Treatment, y = Fraction, fill = Catego
 
 # Supplementary Figure 7 - TOP2i DEGs Acute vs Chronic Clusters
 
-```{r Sup Fig 7 Barplots, message=FALSE, warning=FALSE}
+```{r Supp Fig 7 Barplots, message=FALSE, warning=FALSE}
 
 #read in my chronic and acute cluster gene lists
 final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
@@ -687,5 +689,182 @@ View(forest_summary_TOP2i)
 ```
 
 
+# DOX Proteomics Comparisons
 
+For this comparison, we utilized Supplementary Table 2 from Johnson, O. D., Paul, S., Gutiérrez, J. A., Russell, W. K., & Ward, M. C. (2025). DNA-damage-associated protein co-expression network in cardiomyocytes informs on tolerance to genetic variation and disease. iScience, 28(5). https://doi.org/10.1016/j.isci.2025.112474 
+
+I have taken the differentially abundant proteins (DAPs) identified after DOX treatment for 24 hours, as defined by an adj. p value < 0.05
+
+We would like to assess whether these DAPs are preferentially encoded by Acute or Chronic genes. On the flip side, we would like to assess whether the nonDAPs in the set are also enriched in one cluster vs the other.
+
+```{r read in DAPs and nonDAPs from ODJ SP proteomics paper, warning=FALSE, message=FALSE}
+#I have the excel sheet downloaded from the paper mentioned above, which I will read in here and then filter the proteins for DAPs vs nonDAPs
+
+doxprot_supp2 <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/proteomics_supptable2_ODJ_SP_MCW_downloaded_260408.xlsx", 
+    range = "B2:AA4180")
+
+#now go ahead and make two lists, one with DAPs and one with nonDAPs
+dox_daps <- doxprot_supp2 %>% 
+  filter(P.Value.adj < 0.05) %>% 
+  pull(Protein)
+#according to the paper, should be 319 DAPs
+length(dox_daps)
+
+dox_nondaps <- doxprot_supp2 %>%
+  filter(P.Value.adj >= 0.05) %>% 
+  pull(Protein)
+#according to the paper, should be 3,859 DAPs
+length(dox_nondaps)
+
+#now combine these into one list
+doxprot_list <- list(
+  DAPs = dox_daps,
+  nonDAPs = dox_nondaps
+)
+
+#now I'll have to convert between these protein names (UniProt) and my gene clusters (Entrez_ID) - translate these DAPs into Entrez_ID
+#I will use bitr from the clusterProfiler package as a first attempt to translate between ids
+
+```
+
+
+## Identify DAPs and nonDAPs encoded by genes in Acute vs Chronic clusters
+
+```{r translate daps to genes, warning=FALSE, message=FALSE}
+
+#1. translate DAPs and nonDAPs into Entrez_ID
+dox_daps_tr <- bitr(dox_daps,
+                    fromType = "UNIPROT",
+                    toType = "ENTREZID",
+                    OrgDb = org.Hs.eg.db) %>% 
+  pull(ENTREZID)
+
+dox_nondaps_tr <- bitr(dox_nondaps,
+                       fromType = "UNIPROT",
+                       toType = "ENTREZID",
+                       OrgDb = org.Hs.eg.db) %>% 
+  pull(ENTREZID)
+
+#print the number of Entrez_ID entries found per set
+cat("DAPs:   ", length(dox_daps),    "| mapped to Entrez_ID:", length(dox_daps_tr), "\n")
+cat("nonDAPs: ", length(dox_nondaps),  "| mapped to Entrez_ID:", length(dox_nondaps_tr), "\n")
+
+#2. define gene sets of interest (Acute and Chronic clusters)
+comparison_genes <- list(
+  DAP = dox_daps_tr,
+  nonDAP = dox_nondaps_tr
+)
+
+#3. perform a Fisher's exact test for enrichment in a given gene set
+#we are testing whether DAPs are enriched in Acute vs Chronic sets
+
+fisher_test_overlap_genes <- function(acute, chronic, genes) {
+  a <- sum(acute %in% genes)
+  b <- length(acute) - a
+  c <- sum(chronic %in% genes)
+  d <- length(chronic) - c
+
+  contingency <- matrix(c(a, b, c, d), nrow = 2, byrow = TRUE)
+  fisher_res  <- fisher.test(contingency)
+
+  list(
+    contingency = contingency,
+    p_value     = fisher_res$p.value,
+    significant = case_when(
+      fisher_res$p.value < 0.001 ~ "***",
+      fisher_res$p.value < 0.01  ~ "**",
+      fisher_res$p.value < 0.05  ~ "*",
+      TRUE                       ~ ""
+    )
+  )
+}
+
+#4. create a summary table for plotting barplots
+plot_summary_genes <- map_dfr(names(comparison_genes), function(gene_set) {
+  genes   <- comparison_genes[[gene_set]]
+  fisher_res <- fisher_test_overlap(acute_set, chronic_set, genes)
+
+  acute_overlap <- sum(acute_set %in% genes)
+  acute_nonoverlap <- length(acute_set) - acute_overlap
+  chronic_overlap <- sum(chronic_set %in% genes)
+  chronic_nonoverlap <- length(chronic_set) - chronic_overlap
+
+  tibble(
+    GeneSet  = gene_set,
+    Motif       = rep(c("Acute", "Chronic"), each = 2),
+    Category    = rep(c("DAP", "nonDAP"), 2),
+    Count       = c(acute_overlap,
+                    acute_nonoverlap,
+                    chronic_overlap,
+                    chronic_nonoverlap),
+    Fraction    = c(acute_overlap,
+                    acute_nonoverlap,
+                    chronic_overlap,
+                    chronic_nonoverlap) /
+                  c(length(acute_set),
+                    length(acute_set),
+                    length(chronic_set),
+                    length(chronic_set)),
+    Significant = rep(c(fisher_res$significant, ""), 2)
+  )
+})
+
+plot_summary_genes$Category <- factor(plot_summary_genes$Category, 
+                                      levels = c("DAP", "nonDAP"))
+
+label_positions_genes <- plot_summary_genes %>%
+  filter(Category == "DAP") %>%
+  mutate(y_pos = 1)
+
+#5. create barplots with the results of the fisher's exact test
+#these look at the proportion of DAPs and nonDAPs in Acute and Chronic sets
+dap_barplot_motifs_genes <- ggplot(plot_summary_genes, aes(x = GeneSet, 
+                                                           y = Fraction, 
+                                                           fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  geom_text(data = label_positions_genes %>% 
+              filter(Significant != ""),
+            aes(x = GeneSet, 
+                y = y_pos, 
+                label = Significant),
+            inherit.aes = FALSE, 
+            size = 6, fontface = "bold", color = "black") +
+  geom_text(aes(label = paste0(round(Fraction * 100, 1), "")),
+            position = position_stack(vjust = 0.5), 
+            size = 5, color = "white") +
+  scale_y_continuous(limits = c(0, 1)) +
+  scale_fill_manual(values = c("DAP" = "#0f9eff", "nonDAP" = "#19aa99")) +
+  facet_wrap(~Motif) +
+  labs(
+    title = "Percentage of DAPs vs nonDAPs mapping to Acute and Chronic gene clusters",
+    x     = "Protein Set",
+    y     = "Percentage of Cluster Genes (%)",
+    fill  = ""
+  ) +
+  theme_custom()
+
+print(dap_barplot_motifs_genes)
+
+save_plot(dap_barplot_motifs_genes, 
+          filename = "DAPvnonDAP_AcutevChronic_Barplots_EMP",
+          folder = output_folder)
+
+#print the summary table for statistics
+for (gene_set in names(comparison_genes)) {
+  genes           <- comparison_genes[[gene_set]]
+  acute_overlap   <- sum(acute_set %in% genes)
+  chronic_overlap <- sum(chronic_set %in% genes)
+  prop_ac         <- acute_overlap   / length(acute_set)
+  prop_ch         <- chronic_overlap / length(chronic_set)
+  fisher_res      <- fisher_test_overlap(acute_set, chronic_set, genes)
+
+  cat(sprintf("%s - Acute: %.2f%% (%d/%d), Chronic: %.2f%% (%d/%d),
+              Fisher p = %.5f\n",
+              gene_set,
+              100 * prop_ac, acute_overlap, length(acute_set),
+              100 * prop_ch, chronic_overlap, length(chronic_set),
+              fisher_res$p_value))
+}
+
+```
 
