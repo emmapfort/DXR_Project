@@ -386,7 +386,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-04-02
+<strong>Last updated:</strong> 2026-04-09
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -517,15 +517,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttreebf8396467a61c3b68d262b374db77814b9766494targetblankbf83964a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>
+<a href="https://github.com/emmapfort/DXR_Project/tree/bf8396467a61c3b68d262b374db77814b9766494" target="_blank">bf83964</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttreebf8396467a61c3b68d262b374db77814b9766494targetblankbf83964a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -535,7 +535,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>.
+<a href="https://github.com/emmapfort/DXR_Project/tree/bf8396467a61c3b68d262b374db77814b9766494" target="_blank">bf83964</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -666,6 +666,9 @@ Ignored files:
     Ignored:    data/top.table_V.D24_dox.RDS
     Ignored:    data/top.table_V.D24r_dox.RDS
 
+Unstaged changes:
+    Modified:   DXR_website/analysis/testsheet.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not
@@ -709,6 +712,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/bf8396467a61c3b68d262b374db77814b9766494/DXR_website/analysis/Figure5.Rmd" target="_blank">bf83964</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-09
+</td>
+<td>
+Updated analysis w revisions EMP 04/08/26
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/56fdfae447b60daddcc98e5703a6a87978ebbf80/DXR_website/analysis/Figure5.Rmd" target="_blank">56fdfae</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-07
+</td>
+<td>
+updated analysis 04/07/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/emmapfort/DXR_Project/c93aa31190104152a7b3e1cd146fa9a94b68ebd9/DXR_website/docs/Figure5.html" target="_blank">c93aa31</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1972,59 +2026,93 @@ comp_celltype_genes &lt;- list(
   Fibro      = Fibro_entrez
 )
 
-celltype_order &lt;- c(&quot;PDL1pos_HCA2&quot;, &quot;Lung_Epi&quot;, &quot;Fibro&quot;)
+#start with the PDL1+ HCA2 cells
+pdl1pos_hca2 &lt;- unique(na.omit(PDL1pos_HCA2_entrez))
 
-#Fisher&#39;s exact test function
-fisher_test_overlap &lt;- function(acute, chronic, degs) {
-  a &lt;- sum(acute %in% degs)
-  b &lt;- length(acute) - a
-  c &lt;- sum(chronic %in% degs)
-  d &lt;- length(chronic) - c
-  
-  contingency &lt;- matrix(c(a, b, c, d), nrow = 2, byrow = TRUE)
-  fisher_res &lt;- fisher.test(contingency)
-  
-  tibble(
-    OR = unname(fisher_res$estimate),
-    CI_low = fisher_res$conf.int[1],
-    CI_high = fisher_res$conf.int[2],
-    p_value = fisher_res$p.value,
-    Significant = case_when(
-      fisher_res$p.value &lt; 0.001 ~ &quot;***&quot;,
-      fisher_res$p.value &lt; 0.01  ~ &quot;**&quot;,
-      fisher_res$p.value &lt; 0.05  ~ &quot;*&quot;,
-      TRUE ~ &quot;ns&quot;
-    )
+#pld1 sags inside each motif
+in_motif1_pdl1 &lt;- sum(final_genes_1_RUV %in% pdl1pos_hca2)
+in_motif2_pdl1 &lt;- sum(final_genes_2_RUV %in% pdl1pos_hca2)
+
+#non-pdl1 senescence-associated genes inside each motif
+in_motif1_nonpdl1 &lt;- length(final_genes_1_RUV) - in_motif1_pdl1
+in_motif2_nonpdl1 &lt;- length(final_genes_2_RUV) - in_motif2_pdl1
+
+#make contingency tables for fishers exact tests
+contingency_motifs_pdl1 &lt;- matrix(c(
+  in_motif1_pdl1, in_motif1_nonpdl1,
+  in_motif2_pdl1, in_motif2_nonpdl1),
+  nrow = 2, byrow = TRUE
   )
-}
 
-#build forest summary
-forest_summary_celltype &lt;- map_dfr(names(comp_celltype_genes), function(treat) {
-  res &lt;- fisher_test_overlap(chronic_set, acute_set, comp_celltype_genes[[treat]])
-  res %&gt;% mutate(Gene_Set = treat)
-}) %&gt;%
-  mutate(Gene_Set = factor(Gene_Set, levels = rev(celltype_order)))
+#print the contingency tables
+print(contingency_motifs_pdl1)</code></pre>
+<pre><code>     [,1] [,2]
+[1,]  869 6733
+[2,]  306  195</code></pre>
+<pre class="r"><code>#perform a fisher&#39;s exact test
+fisher_test_motifs_pdl1 &lt;- fisher.test(contingency_motifs_pdl1)
+#print fisher&#39;s exact test results
+print(fisher_test_motifs_pdl1)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
 
-#create a forest plot
-forest_celltype &lt;- ggplot(forest_summary_celltype,
-                          aes(y = Gene_Set, x = OR,
-                              xmin = CI_low, xmax = CI_high)) +
-  geom_point(size = 4) +
-  geom_errorbarh(height = 0.2, linewidth = 0.5, color = &quot;black&quot;) +
-  geom_text(aes(label = Significant), position = position_nudge(y = 0.3),
-            color = &quot;black&quot;, fontface = &quot;bold&quot;, size = 5) +
-  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
-  scale_x_continuous(limits = c(0, 20),
-                breaks = c(1, 10, 20)) +
+data:  contingency_motifs_pdl1
+p-value &lt; 2.2e-16
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.0674743 0.1002002
+sample estimates:
+odds ratio 
+0.08229373 </code></pre>
+<pre class="r"><code>#make a summary table of all of these data to plot
+motif_summary_pdl1 &lt;- tibble(
+  Motif = c(&quot;Acute&quot;, &quot;Chronic&quot;),
+  PDL1pos = c(in_motif1_pdl1, in_motif2_pdl1),
+  non_PDL1pos = c(in_motif1_nonpdl1, in_motif2_nonpdl1)
+) %&gt;% 
+  pivot_longer(cols = c(PDL1pos, non_PDL1pos), 
+               names_to = &quot;Category&quot;, 
+               values_to = &quot;Count&quot;) %&gt;% 
+  mutate(
+    Category = ifelse(Category == &quot;PDL1pos&quot;, &quot;Yes&quot;, &quot;No&quot;),
+    Fraction = Count /ave(Count, Motif, FUN = sum),
+    Significant = ifelse(Category == &quot;Yes&quot; &amp; 
+                           fisher_test_motifs_pdl1$p.value &lt; 0.05, &quot;*&quot;, &quot;&quot;)
+  )
+
+#position significance stars just above bars
+label_positions_pdl1 &lt;- motif_summary_pdl1 %&gt;% 
+  filter(Category == &quot;Yes&quot;) %&gt;% 
+  mutate(y_pos = Fraction + 1.01)
+
+#change the ordering so that yes is on the top
+motif_summary_pdl1$Category &lt;- factor(motif_summary_pdl1$Category, 
+                                      levels = c(&quot;Yes&quot;, &quot;No&quot;))
+
+#plot the proportions in a barplot
+PDL1_barplot &lt;- ggplot(motif_summary_pdl1, aes(x = Motif,
+                                               y = Fraction,
+                                               fill = Category)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;) +
+  geom_text(
+    data = label_positions_pdl1 %&gt;% 
+      filter(Significant != &quot;&quot;),
+    aes(x = Motif,y = y_pos, label = Significant),
+    size = 6,
+    color = &quot;black&quot;
+  ) +
+  scale_y_continuous(labels = scales::label_number(scale = 1), 
+                     limits = c(0, 1.08)) +
+  scale_fill_manual(values = c(&quot;Yes&quot; = &quot;#E41A1C&quot;, &quot;No&quot; = &quot;#377EB8&quot;)) +
   labs(
-    title = &quot;Enrichment of Cell-type Senescence Genes in Chronic vs Acute&quot;,
-    x = &quot;odds ratio (95% confidence interval)&quot;,
-    y = &quot;&quot;
+    title = &quot;Proportion of Senescence-Associated Genes (PDL1+ HCA2) in Acute vs Chronic&quot;,
+    x = &quot;Cluster&quot;,
+    y = &quot;Percentage&quot;,
+    fill = &quot;PDL1+ HCA2 SAG&quot;
   ) +
   theme_custom()
 
-print(forest_celltype)</code></pre>
-<pre><code>`height` was translated to `width`.</code></pre>
+print(PDL1_barplot)</code></pre>
 <p><img src="figure/Figure5.Rmd/enrichment%20between%20chronic%20and%20acute%20revisions-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-enrichment-between-chronic-and-acute-revisions-1">
@@ -2064,61 +2152,350 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>forest_celltype</code></pre>
-<pre><code>`height` was translated to `width`.</code></pre>
-<p><img src="figure/Figure5.Rmd/enrichment%20between%20chronic%20and%20acute%20revisions-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-enrichment-between-chronic-and-acute-revisions-2">
-Past versions of "enrichment between chronic and acute revisions-2.png"
-</button>
-</p>
-<div id="fig-no-spaces-enrichment-between-chronic-and-acute-revisions-2"
-class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/emmapfort/DXR_Project/blob/0544ec2bafa9e6460c0553c1c0f4e8fb58f429c3/DXR_website/docs/figure/Figure5.Rmd/enrichment between chronic and acute revisions-2.png" target="_blank">0544ec2</a>
-</td>
-<td>
-emmapfort
-</td>
-<td>
-2026-03-31
-</td>
-</tr>
-</tbody>
-</table>
+<div id="senescence-gene-proportions-in-acute-vs-chronic"
+class="section level2">
+<h2>Senescence Gene Proportions in Acute vs Chronic</h2>
+<div id="fibroblasts" class="section level3">
+<h3>fibroblasts</h3>
 </div>
 </div>
-<pre class="r"><code>#save plot as a png and pdf
+</div>
+<div id="proportion-of-senescence-associated-genes-in-degs-vs-nondegs"
+class="section level1">
+<h1>Proportion of senescence-associated genes in DEGs vs nonDEGs</h1>
+<pre class="r"><code>timepoint_DEGs_sag &lt;- list(
+  &quot;t0&quot;   = DEGs_24T_R,
+  &quot;t24&quot;   = DEGs_24R_R,
+  &quot;t144&quot;  = DEGs_144R_R
+)
 
-# save_plot(forest_celltype,
-#           filename = &quot;Fig5D_Senescence_CellType_EMP_260316&quot;,
-#           folder = output_folder,
-#           height = 4,
-#           width = 6)
+SAG_sets &lt;- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
 
-#save summary table for easy visualization
-forest_summary_celltype_table &lt;- forest_summary_celltype
-View(forest_summary_celltype_table)</code></pre>
+sag_combined_set &lt;- unique(unlist(SAG_sets))
+
+
+proportion_data_sag &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag &lt;- setdiff(all_genes, degs_sag)
+  
+  in_deg_sag &lt;- sum(degs_sag %in% sag_combined_set)
+  in_deg_nonsag &lt;- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag &lt;- sum(nondegs_sag %in% sag_combined_set)
+  in_nondeg_nonsag &lt;- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag &lt;- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag &lt;- fisher.test(contingency_degs_sag)
+  
+  p_val_sag &lt;- fisher_res_sag$p.value
+  odds_ratio_sag &lt;- unname(fisher_res_sag$estimate)
+  ci_low_sag &lt;- fisher_res_sag$conf.int[1]
+  ci_high_sag &lt;- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag &lt; 0.05
+  )
+})
+
+#format Timepoint factor and add significance label/color
+proportion_data_sag &lt;- proportion_data_sag %&gt;%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)),
+    Sig_Label = ifelse(Significant, &quot;Significant&quot;, &quot;Not Significant&quot;)
+  )
+
+#plot horizontal forest plot with color by significance
+plot_forest_sag &lt;- ggplot(proportion_data_sag, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  scale_color_manual(values = c(&quot;Significant&quot; = &quot;black&quot;, &quot;Not Significant&quot; = &quot;pink&quot;)) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
+  labs(
+    title = &quot;Odds Ratios of Senescence-Assoc. Gene Enrichment by Timepoint&quot;,
+    y = &quot;Timepoint&quot;,
+    x = &quot;Odds Ratio (95% confidence interval)&quot;,
+    color = &quot;Significance&quot;
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_sag$Timepoint)))+
+  theme_custom()
+
+
+print(plot_forest_sag)</code></pre>
+<p><img src="figure/Figure5.Rmd/test%20sags%20against%20degs%20for%20each%20gene%20set%20and%20plot%20together-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(
+#   plot = plot_forest_sag,
+#   filename = &quot;Forest_SAGs_OddsRatio_EMP&quot;,
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)</code></pre>
+<div id="pdl1-hca2-cells-senescence-associated-gene-set-degs-vs-nondegs"
+class="section level2">
+<h2>PDL1+ HCA2 Cells Senescence-Associated Gene Set DEGs vs nonDEGs</h2>
+<pre class="r"><code>timepoint_DEGs_sag &lt;- list(
+  &quot;t0&quot;   = DEGs_24T_R,
+  &quot;t24&quot;   = DEGs_24R_R,
+  &quot;t144&quot;  = DEGs_144R_R
+)
+
+SAG_sets &lt;- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+# PDL1pos_HCA2_entrez
+
+
+proportion_data_sag_hca2 &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag &lt;- setdiff(all_genes, degs_sag)
+  
+  in_deg_sag &lt;- sum(degs_sag %in% PDL1pos_HCA2_entrez)
+  in_deg_nonsag &lt;- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag &lt;- sum(nondegs_sag %in% PDL1pos_HCA2_entrez)
+  in_nondeg_nonsag &lt;- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag &lt;- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag &lt;- fisher.test(contingency_degs_sag)
+  
+  p_val_sag &lt;- fisher_res_sag$p.value
+  odds_ratio_sag &lt;- unname(fisher_res_sag$estimate)
+  ci_low_sag &lt;- fisher_res_sag$conf.int[1]
+  ci_high_sag &lt;- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag &lt; 0.05
+  )
+})
+
+#format Timepoint factor and add significance label/color
+proportion_data_sag_hca2 &lt;- proportion_data_sag_hca2 %&gt;%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)),
+    Sig_Label = ifelse(Significant, &quot;Significant&quot;, &quot;Not Significant&quot;)
+  )
+
+#plot horizontal forest plot with color by significance
+plot_forest_sag_hca2 &lt;- ggplot(proportion_data_sag_hca2, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  scale_color_manual(values = c(&quot;Significant&quot; = &quot;black&quot;, &quot;Not Significant&quot; = &quot;pink&quot;)) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
+  labs(
+    title = &quot;Odds Ratios of PDL1+ HCA2 SAG Enrichment by Timepoint&quot;,
+    y = &quot;Timepoint&quot;,
+    x = &quot;Odds Ratio (95% confidence interval)&quot;,
+    color = &quot;Significance&quot;
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_sag_hca2$Timepoint)))+
+  theme_custom()
+
+
+print(plot_forest_sag_hca2)</code></pre>
+<p><img src="figure/Figure5.Rmd/pdl1pos%20hca2%20sags%20forest%20plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>save_plot(
+  plot = plot_forest_sag_hca2,
+  filename = &quot;Forest_SAGs_PDL1posHCA2_OddsRatio_EMP&quot;,
+  folder = output_folder,
+  height = 4,
+  width = 6)</code></pre>
 </div>
-<div id="senescence-genes" class="section level1">
-<h1>Senescence Genes</h1>
+<div
+id="lung-epithelial-cells-senescence-associated-gene-set-degs-vs-nondegs"
+class="section level2">
+<h2>Lung Epithelial Cells Senescence-Associated Gene Set DEGs vs
+nonDEGs</h2>
+<pre class="r"><code>timepoint_DEGs_sag &lt;- list(
+  &quot;t0&quot;   = DEGs_24T_R,
+  &quot;t24&quot;   = DEGs_24R_R,
+  &quot;t144&quot;  = DEGs_144R_R
+)
+
+SAG_sets &lt;- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+# Lung_Epi_entrez
+
+
+proportion_data_sag_epi &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag &lt;- setdiff(all_genes, degs_sag)
+  
+  in_deg_sag &lt;- sum(degs_sag %in% Lung_Epi_entrez)
+  in_deg_nonsag &lt;- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag &lt;- sum(nondegs_sag %in% Lung_Epi_entrez)
+  in_nondeg_nonsag &lt;- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag &lt;- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag &lt;- fisher.test(contingency_degs_sag)
+  
+  p_val_sag &lt;- fisher_res_sag$p.value
+  odds_ratio_sag &lt;- unname(fisher_res_sag$estimate)
+  ci_low_sag &lt;- fisher_res_sag$conf.int[1]
+  ci_high_sag &lt;- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag &lt; 0.05
+  )
+})
+
+#format Timepoint factor and add significance label/color
+proportion_data_sag_epi &lt;- proportion_data_sag_epi %&gt;%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)),
+    Sig_Label = ifelse(Significant, &quot;Significant&quot;, &quot;Not Significant&quot;)
+  )
+
+#plot horizontal forest plot with color by significance
+plot_forest_sag_epi &lt;- ggplot(proportion_data_sag_epi, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  scale_color_manual(values = c(&quot;Significant&quot; = &quot;black&quot;, &quot;Not Significant&quot; = &quot;pink&quot;)) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
+  labs(
+    title = &quot;Odds Ratios of Lung Epithelial Cells SAG Enrichment by Timepoint&quot;,
+    y = &quot;Timepoint&quot;,
+    x = &quot;Odds Ratio (95% confidence interval)&quot;,
+    color = &quot;Significance&quot;
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_sag_epi$Timepoint)))+
+  theme_custom()
+
+
+print(plot_forest_sag_epi)</code></pre>
+<p><img src="figure/Figure5.Rmd/lung%20epi%20sags%20forest%20plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(
+#   plot = plot_forest_sag_epi,
+#   filename = &quot;Forest_SAGs_LungEpi_OddsRatio_EMP&quot;,
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)</code></pre>
+</div>
+<div id="lung-fibroblast-senescence-associated-gene-set-degs-vs-nondegs"
+class="section level2">
+<h2>Lung Fibroblast Senescence-Associated Gene Set DEGs vs nonDEGs</h2>
+<pre class="r"><code>timepoint_DEGs_sag &lt;- list(
+  &quot;t0&quot;   = DEGs_24T_R,
+  &quot;t24&quot;   = DEGs_24R_R,
+  &quot;t144&quot;  = DEGs_144R_R
+)
+
+SAG_sets &lt;- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+# Fibro_entrez
+
+
+proportion_data_sag_fibro &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag &lt;- setdiff(all_genes, degs_sag)
+  
+  in_deg_sag &lt;- sum(degs_sag %in% Fibro_entrez)
+  in_deg_nonsag &lt;- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag &lt;- sum(nondegs_sag %in% Fibro_entrez)
+  in_nondeg_nonsag &lt;- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag &lt;- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag &lt;- fisher.test(contingency_degs_sag)
+  
+  p_val_sag &lt;- fisher_res_sag$p.value
+  odds_ratio_sag &lt;- unname(fisher_res_sag$estimate)
+  ci_low_sag &lt;- fisher_res_sag$conf.int[1]
+  ci_high_sag &lt;- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag &lt; 0.05
+  )
+})
+
+#format Timepoint factor and add significance label/color
+proportion_data_sag_fibro &lt;- proportion_data_sag_fibro %&gt;%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)),
+    Sig_Label = ifelse(Significant, &quot;Significant&quot;, &quot;Not Significant&quot;)
+  )
+
+#plot horizontal forest plot with color by significance
+plot_forest_sag_fibro &lt;- ggplot(proportion_data_sag_fibro, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  scale_color_manual(values = c(&quot;Significant&quot; = &quot;black&quot;, &quot;Not Significant&quot; = &quot;pink&quot;)) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
+  labs(
+    title = &quot;Odds Ratios of Lung Fibroblasts SAG Enrichment by Timepoint&quot;,
+    y = &quot;Timepoint&quot;,
+    x = &quot;Odds Ratio (95% confidence interval)&quot;,
+    color = &quot;Significance&quot;
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_sag_fibro$Timepoint)))+
+  theme_custom()
+
+
+print(plot_forest_sag_fibro)</code></pre>
+<p><img src="figure/Figure5.Rmd/lung%20fibro%20sags%20forest%20plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>save_plot(
+  plot = plot_forest_sag_fibro,
+  filename = &quot;Forest_SAGs_LungFibro_OddsRatio_EMP&quot;,
+  folder = output_folder,
+  height = 4,
+  width = 6)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2130,7 +2507,7 @@ Session information
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.5.2 (2025-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
-Running under: Windows 11 x64 (build 22000)
+Running under: Windows 11 x64 (build 26200)
 
 Matrix products: default
   LAPACK version 3.12.1
@@ -2163,32 +2540,34 @@ loaded via a namespace (and not attached):
  [1] DBI_1.3.0               rlang_1.1.7             magrittr_2.0.4         
  [4] clue_0.3-67             GetoptLong_1.1.0        git2r_0.36.2           
  [7] otel_0.2.0              matrixStats_1.5.0       compiler_4.5.2         
-[10] RSQLite_2.3.9           getPass_0.2-4           png_0.1-8              
-[13] callr_3.7.6             vctrs_0.7.1             pkgconfig_2.0.3        
-[16] shape_1.4.6.1           crayon_1.5.3            fastmap_1.2.0          
-[19] magick_2.9.0            XVector_0.46.0          labeling_0.4.3         
-[22] utf8_1.2.6              promises_1.5.0          rmarkdown_2.30         
-[25] tzdb_0.5.0              UCSC.utils_1.2.0        ps_1.9.1               
-[28] bit_4.6.0               xfun_0.56               zlibbioc_1.52.0        
-[31] cachem_1.1.0            GenomeInfoDb_1.42.3     jsonlite_2.0.0         
-[34] blob_1.3.0              later_1.4.8             parallel_4.5.2         
-[37] cluster_2.1.8.1         R6_2.6.1                bslib_0.10.0           
-[40] stringi_1.8.7           RColorBrewer_1.1-3      jquerylib_0.1.4        
-[43] cellranger_1.1.0        Rcpp_1.1.1              iterators_1.0.14       
-[46] knitr_1.51              httpuv_1.6.16           timechange_0.4.0       
-[49] tidyselect_1.2.1        rstudioapi_0.18.0       yaml_2.3.12            
-[52] doParallel_1.0.17       codetools_0.2-20        processx_3.8.6         
-[55] plyr_1.8.9              withr_3.0.2             KEGGREST_1.46.0        
-[58] S7_0.2.1                evaluate_1.0.5          Biostrings_2.74.0      
-[61] pillar_1.11.1           whisker_0.4.1           foreach_1.5.2          
-[64] rprojroot_2.1.1         hms_1.1.4               scales_1.4.0           
-[67] glue_1.8.0              tools_4.5.2             fs_1.6.7               
-[70] Cairo_1.7-0             colorspace_2.1-2        GenomeInfoDbData_1.2.13
-[73] cli_3.6.5               rematch_2.0.0           gtable_0.3.6           
-[76] sass_0.4.10             digest_0.6.39           rjson_0.2.23           
-[79] farver_2.1.2            memoise_2.0.1           htmltools_0.5.9        
-[82] lifecycle_1.0.5         httr_1.4.8              GlobalOptions_0.1.3    
-[85] bit64_4.6.0-1          </code></pre>
+[10] RSQLite_2.3.9           getPass_0.2-4           systemfonts_1.3.2      
+[13] png_0.1-8               callr_3.7.6             vctrs_0.7.1            
+[16] pkgconfig_2.0.3         shape_1.4.6.1           crayon_1.5.3           
+[19] fastmap_1.2.0           magick_2.9.0            XVector_0.46.0         
+[22] labeling_0.4.3          utf8_1.2.6              promises_1.5.0         
+[25] rmarkdown_2.30          tzdb_0.5.0              UCSC.utils_1.2.0       
+[28] ps_1.9.1                ragg_1.5.0              bit_4.6.0              
+[31] xfun_0.56               zlibbioc_1.52.0         cachem_1.1.0           
+[34] GenomeInfoDb_1.42.3     jsonlite_2.0.0          blob_1.3.0             
+[37] later_1.4.8             parallel_4.5.2          cluster_2.1.8.1        
+[40] R6_2.6.1                bslib_0.10.0            stringi_1.8.7          
+[43] RColorBrewer_1.1-3      jquerylib_0.1.4         cellranger_1.1.0       
+[46] Rcpp_1.1.1              iterators_1.0.14        knitr_1.51             
+[49] httpuv_1.6.16           timechange_0.4.0        tidyselect_1.2.1       
+[52] rstudioapi_0.18.0       yaml_2.3.12             doParallel_1.0.17      
+[55] codetools_0.2-20        processx_3.8.6          plyr_1.8.9             
+[58] withr_3.0.2             KEGGREST_1.46.0         S7_0.2.1               
+[61] evaluate_1.0.5          Biostrings_2.74.0       pillar_1.11.1          
+[64] whisker_0.4.1           foreach_1.5.2           rprojroot_2.1.1        
+[67] hms_1.1.4               scales_1.4.0            glue_1.8.0             
+[70] tools_4.5.2             fs_1.6.7                Cairo_1.7-0            
+[73] colorspace_2.1-2        GenomeInfoDbData_1.2.13 cli_3.6.5              
+[76] textshaping_1.0.4       rematch_2.0.0           gtable_0.3.6           
+[79] sass_0.4.10             digest_0.6.39           rjson_0.2.23           
+[82] farver_2.1.2            memoise_2.0.1           htmltools_0.5.9        
+[85] lifecycle_1.0.5         httr_1.4.8              GlobalOptions_0.1.3    
+[88] bit64_4.6.0-1          </code></pre>
+</div>
 </div>
 </div>
 </div>
