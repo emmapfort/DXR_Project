@@ -1916,7 +1916,7 @@ ttest_untx_nonorm %>%
 ```
 
 
-## Viability Assay Analysis - no normalization by CMM
+# Viability Assay Analysis - no normalization by CMM
 
 ```{r viablity assay noCMM set, message=FALSE, warning=FALSE}
 
@@ -1949,10 +1949,211 @@ veh_ind3_2$Time <- factor(veh_ind3_2$Time, levels = c("tx+0", "tx+24", "tx+144")
 untx_ind1_2$Time <- factor(untx_ind1_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
 untx_ind3_2$Time <- factor(untx_ind3_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
 
-
 ```
 
 
+## Step 1 - Raw Data Boxplots (no change from above)
+
+## Step 2 - remove background from presto blue-only wells (no change from above)
+
+## Step 3 - Divide DOX/VEH (without normalizing by UnTx wells)
+
+```{r no norm DOX div VEH, warning=FALSE, message=FALSE}
+#now for this step, I have directly divided our treated wells by vehicle wells
+
+#now, I would like to normalize my data further by dividing my treated samples by volume-matched vehicle samples
+
+##Individual 1 87-1
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "DOX/VEH Ind1 (no UnTx norm)", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1_2$RFLU_base_noBG_divVEH ~ dox_ind1_2$Time,
+        ylim = c(0, 1.5),
+        ylab = "Cell Viability (Rel)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind1 Baseline"
+)
+
+#ind1 final
+boxplot(dox_ind1_2$RFLU_fin_noBG_divVEH ~ dox_ind1_2$Time,
+        ylim = c(0, 1.5),
+        ylab = "Cell Viability (Rel)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind1 Final"
+)
+
+###individual 3
+##DOX base vs fin Ind3
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "DOX/VEH Ind3 (no UnTx norm)", cex = 1, font = 2)
+
+#Ind3 75-1
+boxplot(dox_ind3_2$RFLU_base_noBG_divVEH ~ dox_ind3_2$Time,
+        ylim = c(0, 1.5),
+        ylab = "Cell Viability (Rel)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind3 Baseline"
+)
+
+#ind3 final
+boxplot(dox_ind3_2$RFLU_fin_noBG_divVEH ~ dox_ind3_2$Time,
+        ylim = c(0, 1.5),
+        ylab = "Cell Viability (Rel)",
+        xlab = "Timepoint",
+        main = "DOX/VEH Ind3 Final"
+)
+
+```
+
+## Step 4 - Divide Final by Baseline timepoints
+
+```{r final div baseline DOX div VEH no UnTx normalization, message=FALSE, warning=FALSE}
+#now plot the final timepoint divided by the baseline timepoint to get the final relative cell viability (%)
+
+#enforce factoring order
+dox_ind1_2$Time <- factor(dox_ind1_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+dox_ind3_2$Time <- factor(dox_ind3_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+
+untx_ind1_2$Time <- factor(untx_ind1_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+untx_ind3_2$Time <- factor(untx_ind3_2$Time, levels = c("tx+0", "tx+24", "tx+144"))
+
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint: DOX/VEH & Fin/Base", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(dox_ind1_2$RFLU_noBG_divVEH_divTime_per ~ dox_ind1_2$Time,
+        ylim = c(0, 150),
+        ylab = "Percent Viability (%)",
+        xlab = "Timepoint",
+        main = "Ind1"
+)
+
+#ind3 final
+boxplot(dox_ind3_2$RFLU_noBG_divVEH_divTime_per ~ dox_ind3_2$Time,
+        ylim = c(0, 150),
+        ylab = "Percent Viability (%)",
+        xlab = "Timepoint",
+        main = "Ind3"
+)
+
+
+#now do statistical testing between conditions for each individual (t-tests)
+run_pairwise_ttests <- function(data, metric_col, individual_label, set_label) {
+  timepoints <- list(
+    c("tx+0", "tx+24"),
+    c("tx+0", "tx+144"),
+    c("tx+24", "tx+144")
+  )
+  purrr::map_dfr(timepoints, function(tp) {
+    sub <- data %>% filter(Time %in% tp)
+    tt  <- t.test(sub[[metric_col]] ~ sub$Time)
+    tibble(
+      Individual = individual_label,
+      Set        = set_label,
+      Comparison = paste(tp[1], "vs", tp[2]),
+      t          = round(tt$statistic, 3),
+      df         = round(tt$parameter, 1),
+      p_value    = tt$p.value
+    )
+  })
+}
+
+#run for each individual and bind
+ttest_dox_results <- bind_rows(
+  run_pairwise_ttests(dox_ind1_2, "RFLU_noBG_divVEH_divTime_per", "Ind1", "DOX"),
+  run_pairwise_ttests(dox_ind3_2, "RFLU_noBG_divVEH_divTime_per", "Ind3", "DOX")
+) %>%
+  mutate(
+    p_adj  = p.adjust(p_value, method = "BH"),
+    signif = case_when(
+      p_adj < 0.001 ~ "***",
+      p_adj < 0.01  ~ "**",
+      p_adj < 0.05  ~ "*",
+      TRUE          ~ "ns"
+    )
+  )
+
+ttest_dox_results %>%
+  mutate(
+    p_value = formatC(p_value, format = "e", digits = 3),
+    p_adj   = formatC(p_adj,   format = "e", digits = 3)
+  ) %>%
+  dplyr::rename(
+    "Sig." = signif, 
+    "p (raw)" = p_value, 
+    "p (adj, BH)" = p_adj
+  ) %>%
+  kable(align = "c", 
+        caption = "DOX Viability: Pairwise T-tests by Individual (BH Adjusted)") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = FALSE)
+
+
+#untx version
+par(mar = c(3.0, 3.0, 1.2, 1), mgp = c(2, .7, 0))
+layout(matrix(c(1, 2, 1, 3), nrow = 2, ncol = 2), heights = c(0.5, 2, 2, 2))
+#layout.show(3)
+plot.new()
+text(0.5, 0.5, "Viability by Timepoint: Fin/Base UnTx Samples", cex = 1, font = 2)
+
+#Ind1 87-1
+boxplot(untx_ind1_2$RFLU_noBG_CMMdivTime_per ~ untx_ind1_2$Time,
+        ylim = c(0, 150),
+        ylab = "Percent Viability (%)",
+        xlab = "Timepoint",
+        main = "Ind1 UnTx"
+)
+
+#ind3 final
+boxplot(untx_ind3_2$RFLU_noBG_CMMdivTime_per ~ untx_ind3_2$Time,
+        ylim = c(0, 150),
+        ylab = "Percent Viability (%)",
+        xlab = "Timepoint",
+        main = "Ind3 UnTx"
+)
+
+#now do the same stat testing between the untreated samples by individual
+
+ttest_untx_results <- bind_rows(
+  run_pairwise_ttests(untx_ind1_2, "RFLU_noBG_CMMdivTime_per", "Ind1", "UnTx"),
+  run_pairwise_ttests(untx_ind3_2, "RFLU_noBG_CMMdivTime_per", "Ind3", "UnTx")
+) %>%
+  mutate(
+    p_adj  = p.adjust(p_value, method = "BH"),
+    signif = case_when(
+      p_adj < 0.001 ~ "***",
+      p_adj < 0.01  ~ "**",
+      p_adj < 0.05  ~ "*",
+      TRUE          ~ "ns"
+    )
+  )
+
+ttest_untx_results %>%
+  mutate(
+    p_value = formatC(p_value, format = "e", digits = 3),
+    p_adj   = formatC(p_adj,   format = "e", digits = 3)
+  ) %>%
+  dplyr::rename(
+    "Sig." = signif, 
+    "p (raw)" = p_value, 
+    "p (adj, BH)" = p_adj
+  ) %>%
+  kable(align = "c", 
+        caption = "UnTx Viability: Pairwise T-tests by Individual (BH Adjusted)") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = FALSE)
+
+```
 
 # Figure 1D - DNA Damage Quantification
 
@@ -3678,7 +3879,7 @@ sig_table_dapi_4_filt
 ```{r tx level comparisons hoechst, message=FALSE, warning=FALSE}
 #now, I want to take these comparisons and add another layer where I'm comparing between DOX treated at different timepoints
 
-ind_summary_dapi_step5_dox <- ind_summary_dapi_4 %>% 
+ind_summary_dapi_step5_dox <- ind_summary_dapi_4_filt %>% 
   group_by(Individual, Treatment, Timepoint) %>% 
   summarise(
     Weight_Mean = Weight_Mean,
@@ -3790,7 +3991,7 @@ plot_step5_dox_time_dapi <- ggplot(ind_summary_dapi_step5_dox,
                      xmax = "group2_num",
                      y.position = "y.position",
                      tip.length = 0.02) +
-  labs(title = "Step 5: DOX Timepoint Comparisons Hoechst Intensity",
+  labs(title = "Step 5: DOX Timepoint Comparisons Hoechst Intensity (3 Images)",
        x = "Condition",
        y = "Mean Intensity") +
   theme_custom() +
@@ -3814,7 +4015,7 @@ ttest_table_dox_time_dapi
 
 #now I want to do the same as above but test between vehicle timepoints
 
-ind_summary_dapi_step5_veh <- ind_summary_dapi_4 %>% 
+ind_summary_dapi_step5_veh <- ind_summary_dapi_4_filt %>% 
   group_by(Individual, Treatment, Timepoint) %>% 
   summarise(
     Weight_Mean = Weight_Mean,
@@ -3926,7 +4127,7 @@ plot_step5_veh_time_dapi <- ggplot(ind_summary_dapi_step5_veh,
                      xmax = "group2_num",
                      y.position = "y.position",
                      tip.length = 0.02) +
-  labs(title = "Step 5: VEH Timepoint Comparisons Hoechst Intensity",
+  labs(title = "Step 5: VEH Timepoint Comparisons Hoechst Intensity (3 Images)",
        x = "Condition",
        y = "Mean Intensity") +
   theme_custom() +
@@ -3970,7 +4171,7 @@ nuclei_counts_imgs <- bind_rows(
       grepl("20X", ImageName, ignore.case = TRUE) ~ "20X",
       grepl("10X", ImageName, ignore.case = TRUE) ~ "10X",
       grepl("40X", ImageName, ignore.case = TRUE) ~ "40X",
-      TRUE ~ "Other"
+      TRUE ~ "20X" #Ind4 is all 20X and doesn't have it in the name
     ),
     Treatment = case_when(
       grepl("DOX", ImageName) ~ "DOX",
@@ -3989,7 +4190,29 @@ nuclei_counts_imgs <- bind_rows(
   dplyr::filter(Treatment != "Other") %>%
   dplyr::filter(!grepl("^2nd", ImageName, ignore.case = TRUE)) 
 
-#overview table — one row per image
+#check the number of images per condition (all raw images)
+image_counts <- nuclei_counts_imgs %>%
+  group_by(Individual, Condition) %>%
+  summarise(n_images = n(), .groups = "drop")
+
+#now standardize to the lowest max across conditions with random sampling
+min_max_n <- image_counts %>%
+  pull(n_images) %>%
+  min()
+
+#print this output
+cat("Images per Individual x Condition (before standardization):\n")
+print(image_counts)
+cat(sprintf("\nStandardizing to %d images per Individual x Condition.\n", min_max_n))
+
+#now randomly sample these images to get an equal number
+set.seed(9196)  #set for reproducibility
+nuclei_counts_imgs_std <- nuclei_counts_imgs %>%
+  group_by(Individual, Condition) %>%
+  slice_sample(n = min_max_n) %>%
+  ungroup()
+
+#non-standardized overview table of all images — one row per image
 nuclei_counts_imgs %>%
   mutate(Condition = factor(Condition, levels = condition_levels)) %>%
   arrange(Individual, Condition, ImageName) %>%
@@ -3997,9 +4220,30 @@ nuclei_counts_imgs %>%
   knitr::kable(caption = "Nuclei Count per Image") %>% 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
                 full_width = FALSE)
+
+#standardized output table with sampled images
+nuclei_counts_imgs_std %>%
+  mutate(Condition = factor(Condition, levels = condition_levels)) %>%
+  arrange(Individual, Condition, ImageName) %>%
+  dplyr::select(Individual, Line, Condition, ImageName, NucleiCount) %>%
+  knitr::kable(caption = sprintf("Nuclei Count per Image (standardized to %d images per group)", min_max_n)) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE)
+
+#check on which combinations exist in the data and ensure that each individual and condition are present with 3 images each
+cat("Individuals present in standardized data:\n")
+print(unique(nuclei_counts_imgs_std$Individual))
+
+cat("\nImage counts per Individual x Condition (standardized):\n")
+nuclei_counts_imgs_std %>%
+  group_by(Individual, Condition) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  tidyr::pivot_wider(names_from = Condition, values_from = n, values_fill = 0) %>%
+  print()
+
 ```
 
-```{r nuclei counts pipeline images, message=FALSE, warning=FALSE}
+```{r nuclei counts pipeline images, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 
 # nuclei_counts_imgs <- bind_rows(
 #   read_nuclei_counts("87-1", "Ind1"),
@@ -4032,7 +4276,8 @@ nuclei_counts_imgs %>%
 #   semi_join(pipeline_images, by = c("ImageName" = "ROI_File", "Individual", "Line"))
 
 # saveRDS(nuclei_counts_imgs, file = "data/Fig1/nuclei_counts_imgs.RDS")
-nuclei_counts_imgs <- readRDS("data/Fig1/nuclei_counts_imgs.RDS")
+# nuclei_counts_imgs <- readRDS("data/Fig1/nuclei_counts_imgs.RDS")
+
 ```
 
 ## Nuclei Count Assessment - Step 1: Image-Level Comparisons
@@ -4040,9 +4285,9 @@ nuclei_counts_imgs <- readRDS("data/Fig1/nuclei_counts_imgs.RDS")
 ```{r assess nuclei count from raw images across all cond, warning=FALSE, message=FALSE}
 #assess whether nucleus count decreases over time from raw images
 
-plot_nuc_count <- ggplot(image_merged_dapi_summary,
+plot_nuc_count_std <- ggplot(nuclei_counts_imgs_std,
                       aes(x = Condition,
-                          y = Nuclei_Count)) +
+                          y = NucleiCount)) +
   geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
   geom_point(aes(color = Individual),
              size = 2,
@@ -4051,27 +4296,27 @@ plot_nuc_count <- ggplot(image_merged_dapi_summary,
   scale_x_discrete(limits = condition_levels) +
   scale_color_manual(values = c(ind_cols_if)) +
   scale_fill_manual(values = txtime_col_old) +
-  labs(title = "Assess # of Nuclei per Condition, Image Level",
+  labs(title = "Assess # of Nuclei per Condition, Image Level (3 images)",
        x = "Condition",
        y = "Number of Nuclei") +
   theme_custom() +
   theme(legend.position = "bottom")
 
-plot_nuc_count
+plot_nuc_count_std
 
 #now do stats for these to see if there are any differences over time
-ttests_nuc_count <- image_merged_dapi_summary %>% 
+ttests_nuc_count_std <- nuclei_counts_imgs_std %>% 
   group_by(Timepoint) %>% 
-  t_test(Nuclei_Count ~ Treatment) %>% 
+  t_test(NucleiCount ~ Treatment) %>% 
   mutate(
-    y.position = max(image_merged_dapi_summary$Nuclei_Count, na.rm = TRUE) * 1
+    y.position = max(nuclei_counts_imgs_std$NucleiCount, na.rm = TRUE) * 1
   )
 
-sig_table_nuc_count <- image_merged_dapi_summary %>% 
+sig_table_nuc_count_std <- nuclei_counts_imgs_std %>% 
   group_by(Timepoint) %>% 
   summarise(
-    p = t.test(Nuclei_Count ~ Treatment)$p.value,
-    y.position = max(Nuclei_Count, na.rm = TRUE) * 1.05,
+    p = t.test(NucleiCount ~ Treatment)$p.value,
+    y.position = max(NucleiCount, na.rm = TRUE) * 1.05,
     .groups = "drop"
   ) %>% 
   mutate(
@@ -4085,33 +4330,33 @@ sig_table_nuc_count <- image_merged_dapi_summary %>%
     group2 = paste0("DOX_", Timepoint)
   )
 
-ttests_nuc_count
+ttests_nuc_count_std
 
 #now plot with these ttest statistics above the plot
-plot_nuc_count_stats <- ggplot(image_merged_dapi_summary,
+plot_nuc_count_stats_std <- ggplot(nuclei_counts_imgs_std,
                             aes(x = Condition,
-                                y = Nuclei_Count)) +
+                                y = NucleiCount)) +
   geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
   geom_point(aes(color = Individual),
              size = 2,
              alpha = 1,
              position = position_identity()) +
-  stat_pvalue_manual(sig_table_nuc_count,
+  stat_pvalue_manual(sig_table_nuc_count_std,
                      label = "signif",
                      tip.length = 0.02) +
   scale_x_discrete(limits = condition_levels) +
   scale_color_manual(values = c(ind_cols_if)) +
   scale_fill_manual(values = txtime_col_old) +
-  labs(title = "Assess # of Nuclei by Condition, Image-Level",
+  labs(title = "Assess # of Nuclei by Condition, Image-Level (3 images)",
        x = "Condition",
        y = "Number of Nuclei") +
   theme_custom() +
   theme(legend.position = "bottom")
 
-plot_nuc_count_stats
+plot_nuc_count_stats_std
 
-# save_plot(plot_nuc_count_stats,
-#           filename = "NucleiCount_Boxplot_ImgLevel_EMP",
+# save_plot(plot_nuc_count_stats_std,
+#           filename = "NucleiCount_3Imgs_Boxplot_ImgLevel_EMP",
 #           folder = output_folder)
 
 ```
@@ -4123,11 +4368,11 @@ plot_nuc_count_stats
 #now I would like to assess these numbers of nuclei at an individual level
 
 #first, collapse the data by individual
-ind_summary_nuc_count <- image_merged_dapi_summary %>% 
+ind_summary_nuc_count_std <- nuclei_counts_imgs_std %>% 
   group_by(Individual, Treatment, Timepoint, Magnification) %>% 
   summarise(
-    Median_Nuclei_Count = median(Nuclei_Count, na.rm = TRUE),
-    Mean_Nuclei_count = mean(Nuclei_Count, na.rm = TRUE),
+    Median_Nuclei_Count = median(NucleiCount, na.rm = TRUE),
+    Mean_Nuclei_count = mean(NucleiCount, na.rm = TRUE),
     .groups = "drop"
   ) %>% 
   mutate(
@@ -4136,12 +4381,12 @@ ind_summary_nuc_count <- image_merged_dapi_summary %>%
 
 
 #assess the mean and the median, but first do stats
-ttests_nuc_count_ind <- ttests_nuc_count %>% 
+ttests_nuc_count_ind_std <- ttests_nuc_count_std %>% 
   filter(Timepoint %in% c("24T", "24R", "144R")) %>% 
   mutate(
     group1 = paste0("DOX_", Timepoint),
     group2 = paste0("VEH_", Timepoint),
-    y.position = max(image_merged_dapi_summary$Nuclei_Count, na.rm = TRUE) * 1.05,
+    y.position = max(nuclei_counts_imgs_std$NucleiCount, na.rm = TRUE) * 1.05,
     
     #add significance stars as defined earlier
     p.signif = case_when(
@@ -4156,7 +4401,7 @@ ttests_nuc_count_ind <- ttests_nuc_count %>%
 
 #first plot mean number of nuclei
 
-plot_nuc_counts_ind_mean <- ggplot(ind_summary_nuc_count, 
+plot_nuc_counts_ind_mean_std <- ggplot(ind_summary_nuc_count_std, 
                      aes(x = Condition, y = Mean_Nuclei_count)) +
   geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
   geom_point(aes(color = Individual), 
@@ -4167,24 +4412,24 @@ plot_nuc_counts_ind_mean <- ggplot(ind_summary_nuc_count,
   scale_x_discrete(limits = condition_levels) +
   scale_color_manual(values = ind_cols_if) +
   scale_fill_manual(values = txtime_col_old) +
-  stat_pvalue_manual(ttests_nuc_count_ind,
+  stat_pvalue_manual(ttests_nuc_count_ind_std,
                      label = "p.signif", 
                      xmin = "group1",
                      xmax = "group2", 
                      tip.length = 0.02) +
   ylim(0, 400) +
-  labs(title = "Assess # of Nuclei per Condition, Ind Level",
+  labs(title = "Assess # of Nuclei per Condition, Ind Level (3 Images)",
        x = "Condition", 
        y = "Mean # of Nuclei") +
   theme_custom() +
   theme(legend.position = "bottom")
 
-plot_nuc_counts_ind_mean
+plot_nuc_counts_ind_mean_std
 
 
 #next, plot median number of nuclei
 
-plot_nuc_counts_ind_med <- ggplot(ind_summary_nuc_count, 
+plot_nuc_counts_ind_med_std <- ggplot(ind_summary_nuc_count_std, 
                      aes(x = Condition, y = Median_Nuclei_Count)) +
   geom_boxplot(aes(fill = Condition), show.legend = FALSE) +
   geom_point(aes(color = Individual), 
@@ -4195,28 +4440,28 @@ plot_nuc_counts_ind_med <- ggplot(ind_summary_nuc_count,
   scale_x_discrete(limits = condition_levels) +
   scale_color_manual(values = ind_cols_if) +
   scale_fill_manual(values = txtime_col_old) +
-  stat_pvalue_manual(ttests_nuc_count_ind,
+  stat_pvalue_manual(ttests_nuc_count_ind_std,
                      label = "p.signif", 
                      xmin = "group1",
                      xmax = "group2", 
                      tip.length = 0.02) +
   ylim(0, 400) +
-  labs(title = "Assess # of Nuclei per Condition, Ind Level",
+  labs(title = "Assess # of Nuclei per Condition, Ind Level (3 Images)",
        x = "Condition", 
        y = "Median # of Nuclei") +
   theme_custom() +
   theme(legend.position = "bottom")
 
-plot_nuc_counts_ind_med
+plot_nuc_counts_ind_med_std
 
 #save plots
 
-# save_plot(plot_nuc_counts_ind_mean,
-#           filename = "NucleiCount_IndLevel_Mean_EMP",
+# save_plot(plot_nuc_counts_ind_mean_std,
+#           filename = "NucleiCount_IndLevel_Mean_3Imgs_EMP",
 #           folder = output_folder)
 # 
-# save_plot(plot_nuc_counts_ind_med,
-#           filename = "NucleiCount_IndLevel_Median_EMP",
+# save_plot(plot_nuc_counts_ind_med_std,
+#           filename = "NucleiCount_IndLevel_Median_3Imgs_EMP",
 #           folder = output_folder)
 
 ```

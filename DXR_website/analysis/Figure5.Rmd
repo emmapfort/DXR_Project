@@ -925,7 +925,7 @@ print(PDL1_barplot)
 
 ## Senescence Gene Proportions in Acute vs Chronic
 
-```{r Look at senesence associated genes, message=FALSE, warning=FALSE}
+```{r Look at senesence associated genes, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #now further assess these senescence-associated genes to determine their proportions in chronic and acute clusters
 
 final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
@@ -1042,7 +1042,7 @@ print(plot_bar_SAGset)
 ```
 
 
-```{r pdl1 pos barplots}
+```{r pdl1 pos barplots, eval=FALSE, include=FALSE}
 motif_summary_pdl1 <- tibble(
   Motif = c("Acute", "Chronic"),
   PDL1pos = c(in_motif1_pdl1, in_motif2_pdl1),
@@ -1113,7 +1113,7 @@ print(significance_table)
 ```
 
 
-```{r lung epi set barplots}
+```{r lung epi set barplots, eval=FALSE, include=FALSE}
 
 lung_epi <- unique(na.omit(Lung_Epi_entrez))
 
@@ -1211,7 +1211,7 @@ print(significance_table_epi)
 
 ### fibroblasts
 
-```{r fibroblasts barplots}
+```{r fibroblasts barplots, eval=FALSE, include=FALSE}
 fibro <- unique(na.omit(Fibro_entrez))
 
 #epi sags inside each motif
@@ -1306,90 +1306,344 @@ print(significance_table_fibro)
 ```
 
 
-## Proportion of senescence-associated genes in DEGs vs nonDEGs
+# Proportion of senescence-associated genes in DEGs vs nonDEGs
 
-```{r degs vs nondegs senescence genes, warning=FALSE, message=FALSE}
-#now I will assess the proportion of these senescence-associated genes in my identified DEGs vs nonDEGs
+```{r test sags against degs for each gene set and plot together, message=FALSE, warning=FALSE}
 
-forest_data_sag <- purrr::map_dfr(names(gene_sets), function(gs_name) {
-  gs <- unique(na.omit(gene_sets[[gs_name]]))
+timepoint_DEGs_sag <- list(
+  "t0"   = DEGs_24T_R,
+  "t24"   = DEGs_24R_R,
+  "t144"  = DEGs_144R_R
+)
+
+SAG_sets <- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+sag_combined_set <- unique(unlist(SAG_sets))
+
+
+proportion_data_sag <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag <- setdiff(all_genes, degs_sag)
   
-  purrr::map_dfr(names(timepoint_DEGs_ddr), function(tp) {
-    degs    <- unique(timepoint_DEGs_ddr[[tp]])
-    nondegs <- setdiff(all_genes, degs)
-    
-    in_deg_yes  <- sum(degs %in% gs)
-    in_deg_no   <- length(degs) - in_deg_yes
-    in_non_yes  <- sum(nondegs %in% gs)
-    in_non_no   <- length(nondegs) - in_non_yes
-    
-    contingency <- matrix(
-      c(in_deg_yes, in_deg_no,
-        in_non_yes, in_non_no),
-      nrow = 2, byrow = TRUE
-    )
-    
-    fisher_res <- fisher.test(contingency)
-    
-    cat(sprintf("[%s | %s]  OR=%.3f  p=%.5f  DEGs: %d/%d  nonDEGs: %d/%d\n",
-                gs_name, tp,
-                unname(fisher_res$estimate), fisher_res$p.value,
-                in_deg_yes, length(degs),
-                in_non_yes, length(nondegs)))
-    
-    tibble(
-      GeneSet     = gs_name,
-      Timepoint   = tp,
-      Odds_Ratio  = unname(fisher_res$estimate),
-      CI_low      = fisher_res$conf.int[1],
-      CI_high     = fisher_res$conf.int[2],
-      P_Value     = fisher_res$p.value,
-      Significant = fisher_res$p.value < 0.05,
-      Prop_DEG    = sprintf("%d/%d", in_deg_yes, length(degs)),
-      Prop_nonDEG = sprintf("%d/%d", in_non_yes, length(nondegs))
-    )
-  })
+  in_deg_sag <- sum(degs_sag %in% sag_combined_set)
+  in_deg_nonsag <- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag <- sum(nondegs_sag %in% sag_combined_set)
+  in_nondeg_nonsag <- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag <- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag <- fisher.test(contingency_degs_sag)
+  
+  p_val_sag <- fisher_res_sag$p.value
+  odds_ratio_sag <- unname(fisher_res_sag$estimate)
+  ci_low_sag <- fisher_res_sag$conf.int[1]
+  ci_high_sag <- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag < 0.05
+  )
 })
 
-#factor ordering
-forest_data_sag <- forest_data_sag %>%
+#format Timepoint factor and add significance label/color
+proportion_data_sag <- proportion_data_sag %>%
   mutate(
-    GeneSet   = factor(GeneSet,   levels = names(SAG_sets)),
     Timepoint = factor(Timepoint, levels = c("t0", "t24", "t144")),
     Sig_Label = ifelse(Significant, "Significant", "Not Significant")
   )
 
-#create the plot
-plot_forest_SAGset <- ggplot(forest_data_sag,
-                              aes(y = Timepoint, x = Odds_Ratio,
-                                  color = GeneSet, shape = Sig_Label)) +
-  geom_point(size = 4) +
-  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.25) +
-  geom_vline(xintercept = 1, linetype = "dashed", color = "gray50") +
-  geom_text(aes(x = CI_high, label = paste0("DEG: ", Prop_DEG)),
-            hjust = -0.15, size = 3, show.legend = FALSE) +
-  scale_color_manual(values = gs_colors) +
-  scale_shape_manual(values = c("Significant" = 16, "Not Significant" = 1)) +
-  scale_x_log10() +
-  scale_y_discrete(limits = rev(c("t0", "t24", "t144"))) +
-  facet_wrap(~ GeneSet, ncol = 1) +
+#plot horizontal forest plot with color by significance
+plot_forest_sag <- ggplot(proportion_data_sag, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+  scale_color_manual(values = c("Significant" = "black", "Not Significant" = "pink")) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
   labs(
-    title  = "Senescence Associated Genes in DEGs vs nonDEGs",
-    y      = "Timepoint",
-    x      = "Odds Ratio (95% confidence interval)",
-    color  = "Gene Set",
-    shape  = "Significance"
+    title = "Odds Ratios of Senescence-Assoc. Gene Enrichment by Timepoint",
+    y = "Timepoint",
+    x = "Odds Ratio (95% confidence interval)",
+    color = "Significance"
   ) +
-  theme_custom() +
-  theme(
-    axis.title      = element_text(size = 13),
-    axis.text       = element_text(size = 11),
-    plot.title      = element_text(size = 15, hjust = 0.5),
-    strip.text      = element_text(size = 12, face = "bold"),
-    legend.position = "bottom"
-  )
+  scale_y_discrete(limits = rev(levels(proportion_data_sag$Timepoint)))+
+  theme_custom()
 
-print(plot_forest_SAGset)
+
+print(plot_forest_sag)
+
+# save_plot(
+#   plot = plot_forest_sag,
+#   filename = "Forest_SAGs_OddsRatio_EMP",
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)
 
 ```
 
+## PDL1+ HCA2 Cells Senescence-Associated Gene Set DEGs vs nonDEGs
+
+```{r pdl1pos hca2 sags forest plot, warning=FALSE, message=FALSE}
+timepoint_DEGs_sag <- list(
+  "t0"   = DEGs_24T_R,
+  "t24"   = DEGs_24R_R,
+  "t144"  = DEGs_144R_R
+)
+
+SAG_sets <- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+# PDL1pos_HCA2_entrez
+
+
+proportion_data_sag_hca2 <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag <- setdiff(all_genes, degs_sag)
+  
+  in_deg_sag <- sum(degs_sag %in% PDL1pos_HCA2_entrez)
+  in_deg_nonsag <- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag <- sum(nondegs_sag %in% PDL1pos_HCA2_entrez)
+  in_nondeg_nonsag <- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag <- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag <- fisher.test(contingency_degs_sag)
+  
+  p_val_sag <- fisher_res_sag$p.value
+  odds_ratio_sag <- unname(fisher_res_sag$estimate)
+  ci_low_sag <- fisher_res_sag$conf.int[1]
+  ci_high_sag <- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag < 0.05
+  )
+})
+
+#format Timepoint factor and add significance label/color
+proportion_data_sag_hca2 <- proportion_data_sag_hca2 %>%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c("t0", "t24", "t144")),
+    Sig_Label = ifelse(Significant, "Significant", "Not Significant")
+  )
+
+#plot horizontal forest plot with color by significance
+plot_forest_sag_hca2 <- ggplot(proportion_data_sag_hca2, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+  scale_color_manual(values = c("Significant" = "black", "Not Significant" = "pink")) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
+  labs(
+    title = "Odds Ratios of PDL1+ HCA2 SAG Enrichment by Timepoint",
+    y = "Timepoint",
+    x = "Odds Ratio (95% confidence interval)",
+    color = "Significance"
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_sag_hca2$Timepoint)))+
+  theme_custom()
+
+
+print(plot_forest_sag_hca2)
+
+save_plot(
+  plot = plot_forest_sag_hca2,
+  filename = "Forest_SAGs_PDL1posHCA2_OddsRatio_EMP",
+  folder = output_folder,
+  height = 4,
+  width = 6)
+```
+
+## Lung Epithelial Cells Senescence-Associated Gene Set DEGs vs nonDEGs
+
+```{r lung epi sags forest plot, warning=FALSE, message=FALSE}
+timepoint_DEGs_sag <- list(
+  "t0"   = DEGs_24T_R,
+  "t24"   = DEGs_24R_R,
+  "t144"  = DEGs_144R_R
+)
+
+SAG_sets <- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+# Lung_Epi_entrez
+
+
+proportion_data_sag_epi <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag <- setdiff(all_genes, degs_sag)
+  
+  in_deg_sag <- sum(degs_sag %in% Lung_Epi_entrez)
+  in_deg_nonsag <- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag <- sum(nondegs_sag %in% Lung_Epi_entrez)
+  in_nondeg_nonsag <- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag <- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag <- fisher.test(contingency_degs_sag)
+  
+  p_val_sag <- fisher_res_sag$p.value
+  odds_ratio_sag <- unname(fisher_res_sag$estimate)
+  ci_low_sag <- fisher_res_sag$conf.int[1]
+  ci_high_sag <- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag < 0.05
+  )
+})
+
+#format Timepoint factor and add significance label/color
+proportion_data_sag_epi <- proportion_data_sag_epi %>%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c("t0", "t24", "t144")),
+    Sig_Label = ifelse(Significant, "Significant", "Not Significant")
+  )
+
+#plot horizontal forest plot with color by significance
+plot_forest_sag_epi <- ggplot(proportion_data_sag_epi, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+  scale_color_manual(values = c("Significant" = "black", "Not Significant" = "pink")) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
+  labs(
+    title = "Odds Ratios of Lung Epithelial Cells SAG Enrichment by Timepoint",
+    y = "Timepoint",
+    x = "Odds Ratio (95% confidence interval)",
+    color = "Significance"
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_sag_epi$Timepoint)))+
+  theme_custom()
+
+
+print(plot_forest_sag_epi)
+
+# save_plot(
+#   plot = plot_forest_sag_epi,
+#   filename = "Forest_SAGs_LungEpi_OddsRatio_EMP",
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)
+```
+
+## Lung Fibroblast Senescence-Associated Gene Set DEGs vs nonDEGs
+
+```{r lung fibro sags forest plot, warning=FALSE, message=FALSE}
+timepoint_DEGs_sag <- list(
+  "t0"   = DEGs_24T_R,
+  "t24"   = DEGs_24R_R,
+  "t144"  = DEGs_144R_R
+)
+
+SAG_sets <- list(
+  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
+  Lung_Epi   = Lung_Epi_entrez,
+  Fibro      = Fibro_entrez
+)
+
+# Fibro_entrez
+
+
+proportion_data_sag_fibro <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+  degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
+  nondegs_sag <- setdiff(all_genes, degs_sag)
+  
+  in_deg_sag <- sum(degs_sag %in% Fibro_entrez)
+  in_deg_nonsag <- length(degs_sag) - in_deg_sag
+  
+  in_nondeg_sag <- sum(nondegs_sag %in% Fibro_entrez)
+  in_nondeg_nonsag <- length(nondegs_sag) - in_nondeg_sag
+  
+  contingency_degs_sag <- matrix(c(in_deg_sag, in_deg_nonsag,
+                                   in_nondeg_sag, in_nondeg_nonsag),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_sag <- fisher.test(contingency_degs_sag)
+  
+  p_val_sag <- fisher_res_sag$p.value
+  odds_ratio_sag <- unname(fisher_res_sag$estimate)
+  ci_low_sag <- fisher_res_sag$conf.int[1]
+  ci_high_sag <- fisher_res_sag$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_sag,
+    Odds_Ratio = odds_ratio_sag,
+    CI_low = ci_low_sag,
+    CI_high = ci_high_sag,
+    P_Value = p_val_sag,
+    Significant = p_val_sag < 0.05
+  )
+})
+
+#format Timepoint factor and add significance label/color
+proportion_data_sag_fibro <- proportion_data_sag_fibro %>%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c("t0", "t24", "t144")),
+    Sig_Label = ifelse(Significant, "Significant", "Not Significant")
+  )
+
+#plot horizontal forest plot with color by significance
+plot_forest_sag_fibro <- ggplot(proportion_data_sag_fibro, 
+                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+  scale_color_manual(values = c("Significant" = "black", "Not Significant" = "pink")) +
+  scale_x_continuous(limits = c(0, 10), 
+                     breaks = c(0, 1, 5, 10)) +
+  labs(
+    title = "Odds Ratios of Lung Fibroblasts SAG Enrichment by Timepoint",
+    y = "Timepoint",
+    x = "Odds Ratio (95% confidence interval)",
+    color = "Significance"
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_sag_fibro$Timepoint)))+
+  theme_custom()
+
+
+print(plot_forest_sag_fibro)
+
+save_plot(
+  plot = plot_forest_sag_fibro,
+  filename = "Forest_SAGs_LungFibro_OddsRatio_EMP",
+  folder = output_folder,
+  height = 4,
+  width = 6)
+```
