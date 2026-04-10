@@ -386,7 +386,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-04-02
+<strong>Last updated:</strong> 2026-04-10
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -517,15 +517,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree7eeafb877f0b359b3e16eb27b594763e003cbf9atargetblank7eeafb8a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>
+<a href="https://github.com/emmapfort/DXR_Project/tree/7eeafb877f0b359b3e16eb27b594763e003cbf9a" target="_blank">7eeafb8</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree17cca347e5e0b42d650d74887acc584287e3ad48targetblank17cca34a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree7eeafb877f0b359b3e16eb27b594763e003cbf9atargetblank7eeafb8a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -535,7 +535,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/emmapfort/DXR_Project/tree/17cca347e5e0b42d650d74887acc584287e3ad48" target="_blank">17cca34</a>.
+<a href="https://github.com/emmapfort/DXR_Project/tree/7eeafb877f0b359b3e16eb27b594763e003cbf9a" target="_blank">7eeafb8</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -553,6 +553,7 @@ Ignored files:
     Ignored:    .RData
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    DXR_website/analysis/figure/
     Ignored:    code/Flow_Purity_Stressor_Boxplots_EMP_250226.R
     Ignored:    data/CDKN1A_geneplot_Dox.RDS
     Ignored:    data/Cormotif_dox.RDS
@@ -666,6 +667,17 @@ Ignored files:
     Ignored:    data/top.table_V.D24_dox.RDS
     Ignored:    data/top.table_V.D24r_dox.RDS
 
+Untracked files:
+    Untracked:  DXR_website/data/Fig5/Lung_epi_SAGs_entrezid.RDS
+    Untracked:  DXR_website/data/Fig5/Lung_fibro_SAGs_entrezid.RDS
+    Untracked:  DXR_website/data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS
+    Untracked:  DXR_website/data/Fig5/depianto_s1_ids_sags.RDS
+    Untracked:  DXR_website/data/Fig5/depianto_s2_ids_sags.RDS
+    Untracked:  DXR_website/data/Fig5/distefano_s8_ids_sags.RDS
+
+Unstaged changes:
+    Modified:   DXR_website/analysis/testsheet.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not
@@ -709,6 +721,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/7eeafb877f0b359b3e16eb27b594763e003cbf9a/DXR_website/analysis/Figure4.Rmd" target="_blank">7eeafb8</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-10
+</td>
+<td>
+analysis updates 04/10/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/a6671729b9ec847c5237c9aede2fd1a480a15334/DXR_website/analysis/Figure4.Rmd" target="_blank">a667172</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-09
+</td>
+<td>
+updated analysis 04/09/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/emmapfort/DXR_Project/c93aa31190104152a7b3e1cd146fa9a94b68ebd9/DXR_website/docs/Figure4.html" target="_blank">c93aa31</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -902,7 +965,9 @@ pre[class] {
 <p>Load necessary libraries for analysis.</p>
 <pre class="r"><code>library(tidyverse)
 library(readxl)
-library(readr)</code></pre>
+library(readr)
+library(clusterProfiler)
+library(org.Hs.eg.db)</code></pre>
 <p>Define my custom plot theme</p>
 <pre class="r"><code># Define the custom theme
 # plot_theme_custom &lt;- function() {
@@ -1322,7 +1387,7 @@ TOP2i_Combined &lt;- ggplot(plot_df, aes(x = Treatment, y = Fraction, fill = Cat
     color = &quot;black&quot;
   ) +
   
-  scale_y_continuous(labels = c(0, 100)) +
+  scale_y_continuous(limits = c(0, 100)) +
   scale_fill_manual(values = c(&quot;Yes&quot; = &quot;#e41a1c&quot;, &quot;No&quot; = &quot;#377eb8&quot;),
                     labels = legend_labels) +
   labs(
@@ -3822,55 +3887,7 @@ top2i_barplot_motifs_supp7 &lt;- ggplot(plot_summary, aes(x = Treatment, y = Fra
   theme_custom()
 
 print(top2i_barplot_motifs_supp7)</code></pre>
-<p><img src="figure/Figure4.Rmd/Sup%20Fig%207%20Barplots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Sup-Fig-7-Barplots-1">
-Past versions of "Sup Fig 7 Barplots-1.png"
-</button>
-</p>
-<div id="fig-no-spaces-Sup-Fig-7-Barplots-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/Figure4.Rmd/Sup Fig 7 Barplots-1.png" target="_blank">b1b2cef</a>
-</td>
-<td>
-emmapfort
-</td>
-<td>
-2026-03-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/emmapfort/DXR_Project/blob/7f22593a924c91db265b802d29b8fee802c4d36b/DXR_website/docs/figure/Figure4.Rmd/Sup Fig 7 Barplots-1.png" target="_blank">7f22593</a>
-</td>
-<td>
-emmapfort
-</td>
-<td>
-2026-01-05
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/Figure4.Rmd/Supp%20Fig%207%20Barplots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># save_plot(
 #   plot = top2i_barplot_motifs_supp7,
 #   filename = &quot;Supp7_TOP2i_Barplots_EMP&quot;,
@@ -4034,6 +4051,380 @@ emmapfort
 forest_summary_TOP2i &lt;- forest_summary
 
 View(forest_summary_TOP2i)</code></pre>
+</div>
+<div id="dox-proteomics-comparisons" class="section level1">
+<h1>DOX Proteomics Comparisons</h1>
+<p>For this comparison, we utilized Supplementary Table 2 from Johnson,
+O. D., Paul, S., Gutiérrez, J. A., Russell, W. K., &amp; Ward, M. C.
+(2025). DNA-damage-associated protein co-expression network in
+cardiomyocytes informs on tolerance to genetic variation and disease.
+iScience, 28(5). <a href="https://doi.org/10.1016/j.isci.2025.112474"
+class="uri">https://doi.org/10.1016/j.isci.2025.112474</a></p>
+<p>I have taken the differentially abundant proteins (DAPs) identified
+after DOX treatment for 24 hours, as defined by an adj. p value &lt;
+0.05</p>
+<p>We would like to assess whether these DAPs are preferentially encoded
+by Acute or Chronic genes. On the flip side, we would like to assess
+whether the nonDAPs in the set are also enriched in one cluster vs the
+other.</p>
+<pre class="r"><code>#I have the excel sheet downloaded from the paper mentioned above, which I will read in here and then filter the proteins for DAPs vs nonDAPs
+
+doxprot_supp2 &lt;- read_excel(&quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/proteomics_supptable2_ODJ_SP_MCW_downloaded_260408.xlsx&quot;, 
+    range = &quot;B2:AA4180&quot;)
+
+#now go ahead and make two lists, one with DAPs and one with nonDAPs
+dox_daps &lt;- doxprot_supp2 %&gt;% 
+  filter(P.Value.adj &lt; 0.05) %&gt;% 
+  pull(Protein)
+#according to the paper, should be 319 DAPs
+length(dox_daps)</code></pre>
+<pre><code>[1] 319</code></pre>
+<pre class="r"><code>dox_nondaps &lt;- doxprot_supp2 %&gt;%
+  filter(P.Value.adj &gt;= 0.05) %&gt;% 
+  pull(Protein)
+#according to the paper, should be 3,859 DAPs
+length(dox_nondaps)</code></pre>
+<pre><code>[1] 3859</code></pre>
+<pre class="r"><code>#now combine these into one list
+doxprot_list &lt;- list(
+  DAPs = dox_daps,
+  nonDAPs = dox_nondaps
+)
+
+#now I&#39;ll have to convert between these protein names (UniProt) and my gene clusters (Entrez_ID) - translate these DAPs into Entrez_ID
+#I will use bitr from the clusterProfiler package as a first attempt to translate between ids</code></pre>
+<div
+id="identify-daps-and-nondaps-encoded-by-genes-in-acute-vs-chronic-clusters"
+class="section level2">
+<h2>Identify DAPs and nonDAPs encoded by genes in Acute vs Chronic
+clusters</h2>
+<pre class="r"><code>#1. translate DAPs and nonDAPs into Entrez_ID
+dox_daps_tr &lt;- bitr(dox_daps,
+                    fromType = &quot;UNIPROT&quot;,
+                    toType = &quot;ENTREZID&quot;,
+                    OrgDb = org.Hs.eg.db) %&gt;% 
+  pull(ENTREZID)
+
+dox_nondaps_tr &lt;- bitr(dox_nondaps,
+                       fromType = &quot;UNIPROT&quot;,
+                       toType = &quot;ENTREZID&quot;,
+                       OrgDb = org.Hs.eg.db) %&gt;% 
+  pull(ENTREZID)
+
+#print the number of Entrez_ID entries found per set
+cat(&quot;DAPs:   &quot;, length(dox_daps),    &quot;| mapped to Entrez_ID:&quot;, length(dox_daps_tr), &quot;\n&quot;)</code></pre>
+<pre><code>DAPs:    319 | mapped to Entrez_ID: 321 </code></pre>
+<pre class="r"><code>cat(&quot;nonDAPs: &quot;, length(dox_nondaps),  &quot;| mapped to Entrez_ID:&quot;, length(dox_nondaps_tr), &quot;\n&quot;)</code></pre>
+<pre><code>nonDAPs:  3859 | mapped to Entrez_ID: 3877 </code></pre>
+<pre class="r"><code>#2. define gene sets of interest (Acute and Chronic clusters)
+comparison_prot &lt;- list(
+  DAP = dox_daps_tr,
+  nonDAP = dox_nondaps_tr
+)
+
+comparison_genes &lt;- list(
+  Acute = acute_set,
+  Chronic = chronic_set
+)</code></pre>
+<pre class="r"><code>#bars = Acute and Chronic clusters
+#fill = proportion of genes in each cluster that are DAP vs nonDAP
+#Fisher&#39;s test = are DAPs over-represented in Acute vs Chronic?
+#iterate over the two clusters, and for each one ask
+#        &quot;how many of these genes encode a DAP vs a nonDAP?&quot;
+
+#make a function to overlap genes in the fisher&#39;s exact test
+fisher_test_overlap_genes &lt;- function(acute, chronic, genes) {
+  a &lt;- sum(acute %in% genes)
+  b &lt;- length(acute) - a
+  c &lt;- sum(chronic %in% genes)
+  d &lt;- length(chronic) - c
+
+  contingency &lt;- matrix(c(a, b, c, d), nrow = 2, byrow = TRUE)
+  fisher_res  &lt;- fisher.test(contingency)
+
+  list(
+    contingency = contingency,
+    p_value     = fisher_res$p.value,
+    significant = case_when(
+      fisher_res$p.value &lt; 0.001 ~ &quot;***&quot;,
+      fisher_res$p.value &lt; 0.01  ~ &quot;**&quot;,
+      fisher_res$p.value &lt; 0.05  ~ &quot;*&quot;,
+      TRUE                       ~ &quot;&quot;
+    )
+  )
+}
+
+plot_summary_plot1 &lt;- map_dfr(c(&quot;Acute&quot;, &quot;Chronic&quot;), function(cluster) {
+  
+  genes &lt;- if (cluster == &quot;Acute&quot;) acute_set else chronic_set
+  
+  #how many genes in this cluster encode a DAP vs nonDAP
+  dap_overlap    &lt;- sum(genes %in% dox_daps_tr)
+  nondap_overlap &lt;- length(genes) - dap_overlap  # everything else is nonDAP
+  
+  fisher_res &lt;- fisher_test_overlap_genes(acute_set, chronic_set, dox_daps_tr)
+  
+  tibble(
+    Cluster     = cluster,
+    Category    = c(&quot;DAP&quot;, &quot;nonDAP&quot;),
+    Count       = c(dap_overlap, nondap_overlap),
+    Fraction    = c(dap_overlap, nondap_overlap) / length(genes),
+    Significant = c(fisher_res$significant, &quot;&quot;)
+  )
+})
+
+plot_summary_plot1$Category &lt;- factor(plot_summary_plot1$Category, 
+                                      levels = c(&quot;DAP&quot;, &quot;nonDAP&quot;))
+
+label_positions_plot1 &lt;- plot_summary_plot1 %&gt;%
+  filter(Category == &quot;DAP&quot;) %&gt;%
+  mutate(y_pos = 1)
+
+dap_barplot_plot1 &lt;- ggplot(plot_summary_plot1, 
+                            aes(x = Cluster, y = Fraction, fill = Category)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;) +
+  geom_text(data = label_positions_plot1 %&gt;% filter(Significant != &quot;&quot;),
+            aes(x = Cluster, y = y_pos, label = Significant),
+            inherit.aes = FALSE, size = 6, fontface = &quot;bold&quot;, color = &quot;black&quot;) +
+  geom_text(aes(label = paste0(round(Fraction * 100, 1), &quot;&quot;)),
+            position = position_stack(vjust = 0.5), size = 5, color = &quot;white&quot;) +
+  scale_y_continuous(limits = c(0, 1)) +
+  scale_fill_manual(values = c(&quot;DAP&quot; = &quot;#0f9eff&quot;, &quot;nonDAP&quot; = &quot;#19aa99&quot;)) +
+  labs(
+    title = &quot;Proportion of Acute and Chronic cluster genes encoding DAPs vs nonDAPs&quot;,
+    x     = &quot;Gene Cluster&quot;,
+    y     = &quot;Proportion of Cluster Genes&quot;,
+    fill  = &quot;&quot;
+  ) +
+  theme_custom()
+
+print(dap_barplot_plot1)</code></pre>
+<p><img src="figure/Figure4.Rmd/daps%20vs%20nondaps%20acute%20vs%20chronic%20sets-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(dap_barplot_plot1,
+#           filename = &quot;DAPvnonDAP_inChronicvAcute_Barplot_Proportion_EMP&quot;,
+#           folder = output_folder)
+
+#print summary statistics for plot 1
+fisher_res &lt;- fisher_test_overlap_genes(acute_set, chronic_set, dox_daps_tr)
+
+for (cluster in c(&quot;Acute&quot;, &quot;Chronic&quot;)) {
+  genes       &lt;- if (cluster == &quot;Acute&quot;) acute_set else chronic_set
+  dap_overlap &lt;- sum(genes %in% dox_daps_tr)
+  prop_dap    &lt;- dap_overlap / length(genes)
+
+  cat(sprintf(&quot;%s - DAP: %.2f%% (%d/%d), 
+              nonDAP: %.2f%% (%d/%d), 
+              Fisher p = %.5f\n&quot;,
+              cluster,
+              100 * prop_dap, dap_overlap,
+              length(genes),
+              100 * (1 - prop_dap), 
+              length(genes) - dap_overlap, 
+              length(genes),
+              fisher_res$p_value))
+}</code></pre>
+<pre><code>Acute - DAP: 2.29% (174/7602), 
+              nonDAP: 97.71% (7428/7602), 
+              Fisher p = 0.00034
+Chronic - DAP: 0.20% (1/501), 
+              nonDAP: 99.80% (500/501), 
+              Fisher p = 0.00034</code></pre>
+<pre class="r"><code>#bars = DAPs and nonDAPs
+#fill = proportion of each protein set whose genes fall in Acute vs Chronic
+#fisher&#39;s test = are Acute genes over-represented among DAPs vs nonDAPs?
+#logic: iterate over the two PROTEIN SETS, and for each one ask
+#        &quot;how many of these proteins come from Acute vs Chronic genes?&quot;
+
+plot_summary_plot2 &lt;- map_dfr(c(&quot;DAP&quot;, &quot;nonDAP&quot;), function(prot_set) {
+  
+  genes &lt;- if (prot_set == &quot;DAP&quot;) dox_daps_tr else dox_nondaps_tr
+  
+  acute_overlap   &lt;- sum(genes %in% acute_set)
+  chronic_overlap &lt;- sum(genes %in% chronic_set)
+  #denominator is only genes that map to a cluster
+  total_mapped    &lt;- acute_overlap + chronic_overlap
+  
+  fisher_res &lt;- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+  
+  tibble(
+    ProteinSet  = prot_set,
+    Category    = c(&quot;Acute&quot;, &quot;Chronic&quot;),
+    Count       = c(acute_overlap, chronic_overlap),
+    Fraction    = c(acute_overlap, chronic_overlap) / total_mapped,
+    Significant = c(fisher_res$significant, &quot;&quot;)
+  )
+})
+
+plot_summary_plot2$Category &lt;- factor(plot_summary_plot2$Category, 
+                                      levels = c(&quot;Chronic&quot;, &quot;Acute&quot;))
+
+label_positions_plot2 &lt;- plot_summary_plot2 %&gt;%
+  filter(Category == &quot;Acute&quot;) %&gt;%
+  mutate(y_pos = 1)
+
+dap_barplot_plot2 &lt;- ggplot(plot_summary_plot2, 
+                            aes(x = ProteinSet, y = Fraction,
+                                fill = Category)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;) +
+  geom_text(data = label_positions_plot2 %&gt;% filter(Significant != &quot;&quot;),
+            aes(x = ProteinSet, y = y_pos, label = Significant),
+            inherit.aes = FALSE, size = 6, fontface = &quot;bold&quot;, color = &quot;black&quot;) +
+  geom_text(aes(label = paste0(round(Fraction * 100, 1), &quot;&quot;)),
+            position = position_stack(vjust = 0.5), size = 5, color = &quot;white&quot;) +
+  scale_y_continuous(limits = c(0, 1)) +
+  scale_fill_manual(values = c(&quot;Acute&quot; = &quot;#83C67C&quot;, &quot;Chronic&quot; = &quot;#C499C6&quot;)) +
+  labs(
+    title = &quot;Proportion of cluster-mapping DAPs and nonDAPs in Acute vs Chronic&quot;,
+    x     = &quot;Protein Set&quot;,
+    y     = &quot;Proportion of Cluster-Mapped Proteins&quot;,
+    fill  = &quot;&quot;
+  ) +
+  theme_custom()
+
+print(dap_barplot_plot2)</code></pre>
+<p><img src="figure/Figure4.Rmd/comparing%20proportion%20of%20daps%20and%20nondaps-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(dap_barplot_plot2,
+#           filename = &quot;AcutevChronic_inDAPvnonDAP_Barplot_Proportion_EMP&quot;,
+#           folder = output_folder)
+
+#summary table
+fisher_res &lt;- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+
+for (prot_set in c(&quot;DAP&quot;, &quot;nonDAP&quot;)) {
+  genes           &lt;- if (prot_set == &quot;DAP&quot;) dox_daps_tr else dox_nondaps_tr
+  acute_overlap   &lt;- sum(genes %in% acute_set)
+  chronic_overlap &lt;- sum(genes %in% chronic_set)
+  total_mapped    &lt;- acute_overlap + chronic_overlap
+
+  cat(sprintf(&quot;%s - Acute: %.2f%% (%d/%d), 
+              Chronic: %.2f%% (%d/%d), 
+              Fisher p = %.5f\n&quot;,
+              prot_set,
+              100 * acute_overlap / total_mapped,   
+              acute_overlap,   total_mapped,
+              100 * chronic_overlap / total_mapped, 
+              chronic_overlap, total_mapped,
+              fisher_res$p_value))
+}</code></pre>
+<pre><code>DAP - Acute: 99.43% (174/175), 
+              Chronic: 0.57% (1/175), 
+              Fisher p = 0.41260
+nonDAP - Acute: 98.08% (2195/2238), 
+              Chronic: 1.92% (43/2238), 
+              Fisher p = 0.41260</code></pre>
+<div id="add-a-category-for-dapsnondaps-not-present-in-either-motif"
+class="section level3">
+<h3>Add a category for DAPs/nonDAPs not present in either motif</h3>
+<pre class="r"><code>#bars = DAPs and nonDAPs
+#fill = proportion of each protein set whose genes fall in Acute vs Chronic (vs Neither)
+#fisher&#39;s test = are Acute genes over-represented among DAPs vs nonDAPs?
+#logic: iterate over the two PROTEIN SETS, and for each one ask
+#        &quot;how many of these proteins come from Acute vs Chronic genes?&quot;
+
+#pre-calculate counts for the subtitle
+dap_counts &lt;- list(
+  A = sum(dox_daps_tr %in% acute_set),
+  C = sum(dox_daps_tr %in% chronic_set),
+  N = length(dox_daps_tr) - (sum(dox_daps_tr %in% acute_set) + sum(dox_daps_tr %in% chronic_set))
+)
+
+nondap_counts &lt;- list(
+  A = sum(dox_nondaps_tr %in% acute_set),
+  C = sum(dox_nondaps_tr %in% chronic_set),
+  N = length(dox_nondaps_tr) - (sum(dox_nondaps_tr %in% acute_set) + sum(dox_nondaps_tr %in% chronic_set))
+)
+
+dynamic_subtitle &lt;- paste0(
+  &quot;DAP Counts: | ACute &quot;, dap_counts$A, &quot; | Chronic: &quot;, dap_counts$C, &quot; | Neither: &quot;, dap_counts$N,
+  &quot; \nnonDAP Counts: | Acute &quot;, nondap_counts$A, &quot; | Chronic: &quot;, nondap_counts$C, &quot; | Neither: &quot;, nondap_counts$N
+)
+
+plot_summary_plot2 &lt;- map_dfr(c(&quot;DAP&quot;, &quot;nonDAP&quot;), function(prot_set) {
+  
+  genes &lt;- if (prot_set == &quot;DAP&quot;) dox_daps_tr else dox_nondaps_tr
+  
+  acute_overlap   &lt;- sum(genes %in% acute_set)
+  chronic_overlap &lt;- sum(genes %in% chronic_set)
+  # Calculate genes that are in the protein set but neither motif
+  neither_overlap &lt;- length(genes) - (acute_overlap + chronic_overlap)
+  #denominator is now the full set to account for &quot;Neither&quot;
+  total_genes     &lt;- length(genes)
+  
+  fisher_res &lt;- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+  
+  tibble(
+    ProteinSet  = prot_set,
+    Category    = c(&quot;Acute&quot;, &quot;Chronic&quot;, &quot;Neither&quot;),
+    Count       = c(acute_overlap, chronic_overlap, neither_overlap),
+    Fraction    = c(acute_overlap, chronic_overlap, neither_overlap) / total_genes,
+    Significant = c(fisher_res$significant, &quot;&quot;, &quot;&quot;)
+  )
+})
+
+plot_summary_plot2$Category &lt;- factor(plot_summary_plot2$Category, 
+                                      levels = c(&quot;Chronic&quot;, &quot;Acute&quot;, &quot;Neither&quot;))
+
+label_positions_plot2 &lt;- plot_summary_plot2 %&gt;%
+  filter(Category == &quot;Acute&quot;) %&gt;%
+  mutate(y_pos = 1)
+
+dap_barplot_plot2 &lt;- ggplot(plot_summary_plot2, 
+                            aes(x = ProteinSet, y = Fraction,
+                                fill = Category)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;) +
+  geom_text(data = label_positions_plot2 %&gt;% filter(Significant != &quot;&quot;),
+            aes(x = ProteinSet, y = y_pos, label = Significant),
+            inherit.aes = FALSE, size = 6, fontface = &quot;bold&quot;, color = &quot;black&quot;) +
+  geom_text(aes(label = paste0(round(Fraction * 100, 1), &quot;&quot;)),
+            position = position_stack(vjust = 0.5), size = 5, color = &quot;black&quot;) +
+  scale_y_continuous(limits = c(0, 1.1), breaks = seq(0, 1, 0.2)) +
+  scale_fill_manual(values = c(&quot;Acute&quot; = &quot;#83C67C&quot;, &quot;Chronic&quot; = &quot;#C499C6&quot;, &quot;Neither&quot; = &quot;#D3D3D3&quot;)) +
+  labs(
+    title = &quot;Proportion of cluster-mapping DAPs and nonDAPs in Acute vs Chronic&quot;,
+    subtitle = dynamic_subtitle,
+    x     = &quot;Protein Set&quot;,
+    y     = &quot;Proportion of Total Proteins&quot;,
+    fill  = &quot;&quot;
+  ) +
+  theme_custom()
+
+print(dap_barplot_plot2)</code></pre>
+<p><img src="figure/Figure4.Rmd/revised%20DAPs%20non%20DAPs%20chronic%20v%20acute%20plots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(dap_barplot_plot2,
+#            filename = &quot;AcutevChronic_inDAPvnonDAP_Barplot_Proportion_v2_EMP&quot;,
+#            folder = output_folder)
+
+#summary table
+fisher_res &lt;- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+
+for (prot_set in c(&quot;DAP&quot;, &quot;nonDAP&quot;)) {
+  genes           &lt;- if (prot_set == &quot;DAP&quot;) dox_daps_tr else dox_nondaps_tr
+  acute_overlap   &lt;- sum(genes %in% acute_set)
+  chronic_overlap &lt;- sum(genes %in% chronic_set)
+  neither_overlap &lt;- length(genes) - (acute_overlap + chronic_overlap)
+  total_genes     &lt;- length(genes)
+
+  cat(sprintf(&quot;%s - Acute: %.2f%% (%d/%d), 
+              Chronic: %.2f%% (%d/%d), 
+              Neither: %.2f%% (%d/%d),
+              Fisher p = %.5f\n&quot;,
+              prot_set,
+              100 * acute_overlap / total_genes,   
+              acute_overlap,   total_genes,
+              100 * chronic_overlap / total_genes,  
+              chronic_overlap, total_genes,
+              100 * neither_overlap / total_genes,
+              neither_overlap, total_genes,
+              fisher_res$p_value))
+}</code></pre>
+<pre><code>DAP - Acute: 54.21% (174/321), 
+              Chronic: 0.31% (1/321), 
+              Neither: 45.48% (146/321),
+              Fisher p = 0.41260
+nonDAP - Acute: 56.62% (2195/3877), 
+              Chronic: 1.11% (43/3877), 
+              Neither: 42.27% (1639/3877),
+              Fisher p = 0.41260</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -4045,7 +4436,7 @@ Session information
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.5.2 (2025-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
-Running under: Windows 11 x64 (build 22000)
+Running under: Windows 11 x64 (build 26200)
 
 Matrix products: default
   LAPACK version 3.12.1
@@ -4061,28 +4452,60 @@ time zone: America/Chicago
 tzcode source: internal
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
 
 other attached packages:
- [1] readxl_1.4.5    lubridate_1.9.5 forcats_1.0.1   stringr_1.6.0  
- [5] dplyr_1.2.0     purrr_1.2.1     readr_2.2.0     tidyr_1.3.2    
- [9] tibble_3.3.1    ggplot2_4.0.2   tidyverse_2.0.0 workflowr_1.7.1
+ [1] org.Hs.eg.db_3.20.0    AnnotationDbi_1.68.0   IRanges_2.44.0        
+ [4] S4Vectors_0.48.0       Biobase_2.66.0         BiocGenerics_0.56.0   
+ [7] generics_0.1.4         clusterProfiler_4.18.4 readxl_1.4.5          
+[10] lubridate_1.9.5        forcats_1.0.1          stringr_1.6.0         
+[13] dplyr_1.2.0            purrr_1.2.1            readr_2.2.0           
+[16] tidyr_1.3.2            tibble_3.3.1           ggplot2_4.0.2         
+[19] tidyverse_2.0.0        workflowr_1.7.1       
 
 loaded via a namespace (and not attached):
- [1] utf8_1.2.6         sass_0.4.10        generics_0.1.4     stringi_1.8.7     
- [5] hms_1.1.4          digest_0.6.39      magrittr_2.0.4     timechange_0.4.0  
- [9] evaluate_1.0.5     grid_4.5.2         RColorBrewer_1.1-3 fastmap_1.2.0     
-[13] cellranger_1.1.0   rprojroot_2.1.1    jsonlite_2.0.0     processx_3.8.6    
-[17] whisker_0.4.1      ps_1.9.1           promises_1.5.0     httr_1.4.8        
-[21] scales_1.4.0       jquerylib_0.1.4    cli_3.6.5          rlang_1.1.7       
-[25] withr_3.0.2        cachem_1.1.0       yaml_2.3.12        otel_0.2.0        
-[29] tools_4.5.2        tzdb_0.5.0         httpuv_1.6.16      vctrs_0.7.1       
-[33] R6_2.6.1           lifecycle_1.0.5    git2r_0.36.2       fs_1.6.7          
-[37] pkgconfig_2.0.3    callr_3.7.6        pillar_1.11.1      bslib_0.10.0      
-[41] later_1.4.8        gtable_0.3.6       glue_1.8.0         Rcpp_1.1.1        
-[45] xfun_0.56          tidyselect_1.2.1   rstudioapi_0.18.0  knitr_1.51        
-[49] farver_2.1.2       htmltools_0.5.9    labeling_0.4.3     rmarkdown_2.30    
-[53] compiler_4.5.2     getPass_0.2-4      S7_0.2.1          </code></pre>
+  [1] RColorBrewer_1.1-3      rstudioapi_0.18.0       jsonlite_2.0.0         
+  [4] tidydr_0.0.6            magrittr_2.0.4          ggtangle_0.1.1         
+  [7] farver_2.1.2            rmarkdown_2.30          fs_1.6.7               
+ [10] zlibbioc_1.52.0         vctrs_0.7.1             memoise_2.0.1          
+ [13] ggtree_3.14.0           htmltools_0.5.9         cellranger_1.1.0       
+ [16] gridGraphics_0.5-1      sass_0.4.10             bslib_0.10.0           
+ [19] plyr_1.8.9              cachem_1.1.0            whisker_0.4.1          
+ [22] igraph_2.1.4            lifecycle_1.0.5         pkgconfig_2.0.3        
+ [25] gson_0.1.0              Matrix_1.7-4            R6_2.6.1               
+ [28] fastmap_1.2.0           GenomeInfoDbData_1.2.13 digest_0.6.39          
+ [31] aplot_0.2.9             enrichplot_1.30.5       ggnewscale_0.5.2       
+ [34] patchwork_1.3.2         ps_1.9.1                rprojroot_2.1.1        
+ [37] RSQLite_2.3.9           labeling_0.4.3          timechange_0.4.0       
+ [40] httr_1.4.8              polyclip_1.10-7         compiler_4.5.2         
+ [43] bit64_4.6.0-1           withr_3.0.2             S7_0.2.1               
+ [46] BiocParallel_1.40.0     DBI_1.3.0               ggforce_0.5.0          
+ [49] R.utils_2.13.0          MASS_7.3-65             rappdirs_0.3.4         
+ [52] tools_4.5.2             otel_0.2.0              ape_5.8-1              
+ [55] scatterpie_0.2.6        httpuv_1.6.16           R.oo_1.27.1            
+ [58] glue_1.8.0              callr_3.7.6             nlme_3.1-168           
+ [61] GOSemSim_2.36.0         promises_1.5.0          grid_4.5.2             
+ [64] getPass_0.2-4           cluster_2.1.8.1         reshape2_1.4.4         
+ [67] fgsea_1.36.2            gtable_0.3.6            tzdb_0.5.0             
+ [70] R.methodsS3_1.8.2       data.table_1.18.2.1     hms_1.1.4              
+ [73] utf8_1.2.6              XVector_0.46.0          ggrepel_0.9.7          
+ [76] pillar_1.11.1           yulab.utils_0.2.4       later_1.4.8            
+ [79] splines_4.5.2           tweenr_2.0.3            treeio_1.30.0          
+ [82] lattice_0.22-7          bit_4.6.0               tidyselect_1.2.1       
+ [85] GO.db_3.20.0            Biostrings_2.74.0       knitr_1.51             
+ [88] git2r_0.36.2            xfun_0.56               stringi_1.8.7          
+ [91] UCSC.utils_1.2.0        rematch_2.0.0           lazyeval_0.2.2         
+ [94] ggfun_0.2.0             yaml_2.3.12             evaluate_1.0.5         
+ [97] codetools_0.2-20        qvalue_2.42.0           ggplotify_0.1.3        
+[100] cli_3.6.5               processx_3.8.6          jquerylib_0.1.4        
+[103] Rcpp_1.1.1              GenomeInfoDb_1.42.3     png_0.1-8              
+[106] parallel_4.5.2          blob_1.3.0              DOSE_4.4.0             
+[109] tidytree_0.4.6          scales_1.4.0            crayon_1.5.3           
+[112] rlang_1.1.7             cowplot_1.1.3           fastmatch_1.1-8        
+[115] KEGGREST_1.46.0        </code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
