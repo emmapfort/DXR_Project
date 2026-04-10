@@ -721,84 +721,91 @@ Set 2: DePianto DJ, Heiden JAV, Morshead KB, Sun KH, Modrusan Z, Teng G, Wolters
 
 
 
-```{r cell type comparisons as in 4B for 5D, warning=FALSE}
-
+```{r cell type comparisons as in 4B for 5D, warning=FALSE, message=FALSE}
+#read in your genes
 filcpm_mat_genes <- readRDS("data/QC/filcpm_matrix_genes.RDS")
 all_symb_genes <- filcpm_mat_genes$SYMBOL
 
-distefano_s8_ids <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS8_Distefano_2023_SenescenceGenes.xlsx", 
-    range = "A3:F2910")
+#read in the ids for the first gene set
+# distefano_s8_ids <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS8_Distefano_2023_SenescenceGenes.xlsx", 
+#     range = "A3:F2910")
+
+distefano_s8_ids <- readRDS("data/Fig5/distefano_s8_ids_sags.RDS")
 
 #check how many of these genes (2907) are expressed in our dataset
 
 cat("distefano_s8_ids:", sum(distefano_s8_ids$Gene_symbol %in% all_symb_genes), "of", length(distefano_s8_ids$Gene_symbol), "\n")
 #2,053 of 2,907 are expressed in my dataset
 
-depianto_s1_ids <- c(
-  "ABCA1", "CLDN4", "FANK1", "IL1RN", "MYLK", "REEP", "SP6", "TRAF3IP3",
-  "ACKR3", "COL5A1", "FAT2", "IL32", "NAGK", "RHBDL2", "SPRR1A", "TREM2",
-  "ACSF2", "CPA4", "FBN1", "IL33", "NCCRP1", "RHCG", "SPRR1B", "TRIM16",
-  "ADAMTS7", "CPPED1", "FER1L4", "IL36G", "NDST1", "RHOV", "SPRR2A", "TUBA1A",
-  "ADAMTSL4", "CRABP2", "FGF11", "IRF6", "NRCAM", "RNF212B", "SRPX2", "TUBB2A",
-  "AIM1L", "CRYAB", "FHDC1", "IVL", "NTN1", "RRAD", "SSC4D", "UCP2",
-  "ALOX15B", "CST6", "FLG", "KIAA0922", "NYNRIN", "S100A4", "STARD5", "ULBP2",
-  "ANGPTL4", "CTNNBIP1", "FLG-AS1", "KLRC4", "OTUB2", "S100A8", "STC1", "UPK3B",
-  "ANKRD22", "CUX2", "FRMD8", "KLRK1", "OVOL1", "S100A9", "SUGCT", "VGLL3",
-  "ANXA4", "CXCL1", "GALNT5", "KRT13", "PAM", "SAA1", "SYNPO", "WDR63",
-  "ARHGEF4", "CXCL17", "GAS6-AS1", "KRT16", "PAMR1", "SCD5", "SYTL4", "XG",
-  "ATL1", "CYB5R1", "GBP3", "KRT23", "PAPLN", "SCN4B", "TACSTD2", "ZNF185",
-  "B4GALNT4", "DAPK1", "GCNT4", "KRT6A", "PAQR7", "SEC14L2", "TAGLN", "ZNF429",
-  "C1orf74", "DHRS1", "GGT1", "KRT6B", "PCBP4", "SEPT5-GP1BB", "TCEA2", "ZNF488",
-  "C1QTNF1", "DHRS12", "GJB4", "LAYN", "PDE9A", "SERPINB13", "TENM2", "ZNF702P",
-  "C1QTNF6", "DIXDC1", "GPX3", "LDLRAD2", "PDLIM1", "SERPINB3", "THSD4", "ZNF704",
-  "C3", "DKK3", "GRHL3", "LOC100862671", "PGBD5", "SERPINB7", "TLL2", "ZNF750",
-  "CALML3", "DOCK8", "HEG1", "LOC101928100", "PIK3IP1", "SERPINB9", "TMBIM1",
-  "CALML3-AS1", "DPYSL4", "HEPHL1", "LOC101928281", "PLA2G4F", "SH3BGRL",
-  "TMEM132A", "CAPN3", "DTNA", "HES2", "LOC101930241", "PLK2", "SH3TC2",
-  "TMEM217", "CCND1", "DUOXA1", "HIST1H1C", "LOC103021296", "PLOD2", "SLC15A3",
-  "TMEM229B", "CCND2", "ECM1", "HIST1H2AC", "LRP1", "PORCN", "SLC16A2", "TMEM40",
-  "CCRN4L", "EDN1", "HIST1H2BD", "LY6D", "PPP2R2C", "SLC1A1", "TMEM63C", "CD24",
-  "EHD3", "HIST1H2BK", "LYPD3", "PROM2", "SLC31A2", "TMEM79",
-  "CD82", "ELFN2", "HIST2H2BE", "MAGED1", "PRR5L", "SLC39A11", "TMPRSS13",
-  "CEACAM6", "ENC1", "HSPG2", "MATN2", "PRSS22", "SLC44A2", "TMPRSS4",
-  "CHST2", "ENTPD3", "ID3", "MFI2", "PRSS23", "SLC46A3", "TNFSF10",
-  "CKB", "EPHA4", "IGFBP2", "MMP28", "PTGES", "SLC6A11", "TOM1L2",
-  "CLCA2", "EPHB3", "IKZF2", "MXRA5", "RAB7B", "SLC9A3", "TP53I3",
-  "CLDN1", "ESPN", "IL12RB2", "MYH14", "REC", "SNCG", "TPM1"
-)
+# depianto_s1_ids <- c(
+#   "ABCA1", "CLDN4", "FANK1", "IL1RN", "MYLK", "REEP", "SP6", "TRAF3IP3",
+#   "ACKR3", "COL5A1", "FAT2", "IL32", "NAGK", "RHBDL2", "SPRR1A", "TREM2",
+#   "ACSF2", "CPA4", "FBN1", "IL33", "NCCRP1", "RHCG", "SPRR1B", "TRIM16",
+#   "ADAMTS7", "CPPED1", "FER1L4", "IL36G", "NDST1", "RHOV", "SPRR2A", "TUBA1A",
+#   "ADAMTSL4", "CRABP2", "FGF11", "IRF6", "NRCAM", "RNF212B", "SRPX2", "TUBB2A",
+#   "AIM1L", "CRYAB", "FHDC1", "IVL", "NTN1", "RRAD", "SSC4D", "UCP2",
+#   "ALOX15B", "CST6", "FLG", "KIAA0922", "NYNRIN", "S100A4", "STARD5", "ULBP2",
+#   "ANGPTL4", "CTNNBIP1", "FLG-AS1", "KLRC4", "OTUB2", "S100A8", "STC1", "UPK3B",
+#   "ANKRD22", "CUX2", "FRMD8", "KLRK1", "OVOL1", "S100A9", "SUGCT", "VGLL3",
+#   "ANXA4", "CXCL1", "GALNT5", "KRT13", "PAM", "SAA1", "SYNPO", "WDR63",
+#   "ARHGEF4", "CXCL17", "GAS6-AS1", "KRT16", "PAMR1", "SCD5", "SYTL4", "XG",
+#   "ATL1", "CYB5R1", "GBP3", "KRT23", "PAPLN", "SCN4B", "TACSTD2", "ZNF185",
+#   "B4GALNT4", "DAPK1", "GCNT4", "KRT6A", "PAQR7", "SEC14L2", "TAGLN", "ZNF429",
+#   "C1orf74", "DHRS1", "GGT1", "KRT6B", "PCBP4", "SEPT5-GP1BB", "TCEA2", "ZNF488",
+#   "C1QTNF1", "DHRS12", "GJB4", "LAYN", "PDE9A", "SERPINB13", "TENM2", "ZNF702P",
+#   "C1QTNF6", "DIXDC1", "GPX3", "LDLRAD2", "PDLIM1", "SERPINB3", "THSD4", "ZNF704",
+#   "C3", "DKK3", "GRHL3", "LOC100862671", "PGBD5", "SERPINB7", "TLL2", "ZNF750",
+#   "CALML3", "DOCK8", "HEG1", "LOC101928100", "PIK3IP1", "SERPINB9", "TMBIM1",
+#   "CALML3-AS1", "DPYSL4", "HEPHL1", "LOC101928281", "PLA2G4F", "SH3BGRL",
+#   "TMEM132A", "CAPN3", "DTNA", "HES2", "LOC101930241", "PLK2", "SH3TC2",
+#   "TMEM217", "CCND1", "DUOXA1", "HIST1H1C", "LOC103021296", "PLOD2", "SLC15A3",
+#   "TMEM229B", "CCND2", "ECM1", "HIST1H2AC", "LRP1", "PORCN", "SLC16A2", "TMEM40",
+#   "CCRN4L", "EDN1", "HIST1H2BD", "LY6D", "PPP2R2C", "SLC1A1", "TMEM63C", "CD24",
+#   "EHD3", "HIST1H2BK", "LYPD3", "PROM2", "SLC31A2", "TMEM79",
+#   "CD82", "ELFN2", "HIST2H2BE", "MAGED1", "PRR5L", "SLC39A11", "TMPRSS13",
+#   "CEACAM6", "ENC1", "HSPG2", "MATN2", "PRSS22", "SLC44A2", "TMPRSS4",
+#   "CHST2", "ENTPD3", "ID3", "MFI2", "PRSS23", "SLC46A3", "TNFSF10",
+#   "CKB", "EPHA4", "IGFBP2", "MMP28", "PTGES", "SLC6A11", "TOM1L2",
+#   "CLCA2", "EPHB3", "IKZF2", "MXRA5", "RAB7B", "SLC9A3", "TP53I3",
+#   "CLDN1", "ESPN", "IL12RB2", "MYH14", "REC", "SNCG", "TPM1"
+# )
 
-depianto_s2_ids <- depianto_s2_ids <- c(
-  "ABCA3", "CYB5D2", "LYNX1", "RRM2B",
-  "ABCA7", "DHRS3", "MANSC1", "SCG50",
-  "ABCA8", "DPP4", "MGARP", "SECTM1",
-  "AC007388.1", "DRAM1", "MGP", "SERPING1",
-  "ACSS3", "DYNC2LI1", "MGST2", "SLC1A1",
-  "ADAMTS5", "FAM162A", "MORN4", "SLC40A1",
-  "ADGRL1", "FAM198B", "MXI1", "SOD2",
-  "AMPD3", "FAM43A", "NALCN", "SPATA18",
-  "AMZ2P1", "FAXDC2", "NCOA7", "ST3GAL5",
-  "ANK2", "FBXO32", "NEAT1", "SULF1",
-  "AP001972.5", "FER1L4", "NTN4", "SULF2",
-  "ARHGEF37", "FIBIN", "ORAI3", "SVEP1",
-  "ARRB1", "GFRA1", "PAPPA", "TCEA2",
-  "BAMBI", "GPR155", "PCMTD1", "TLCD2",
-  "BMP4", "GPRC5B", "PCSK5", "TM7SF2",
-  "BTG2", "HIST1H1C", "PDGFD", "TMEM170B",
-  "C1QTNF1", "HIST1H2AC", "PIK3IP1", "TMEM176B",
-  "C1S", "HIST1H2BD", "PLD1", "TMEM178B",
-  "C3", "HIST1H3E", "PLXNC1", "TP53INP1",
-  "CAMK1D", "HIST1H4H", "PODN", "TXNIP",
-  "CBLN3", "HIST1H4I", "PPP1R3C", "VSIR",
-  "CCND2", "HNMT", "PRRG1", "WDR63",
-  "CCPG1", "IFI6", "PTCHD4", "WFDC21P",
-  "COL4A5", "IGDCC4", "QPRT", "YPEL2",
-  "CPE", "JAM2", "RARRES2", "ZMAT3",
-  "CPZ", "JMY", "RDH10", "ZNF219",
-  "CREBRF", "KCNJ2", "RGCC", "ZNF667",
-  "CRELD1", "KLHL24", "RHBDL1",
-  "CTSF", "LACC1", "RILP",
-  "CTSO", "LRRK2", "RPS6KA2"
-)
+depianto_s1_ids <- readRDS("data/Fig5/depianto_s1_ids_sags.RDS")
+
+# depianto_s2_ids <- depianto_s2_ids <- c(
+#   "ABCA3", "CYB5D2", "LYNX1", "RRM2B",
+#   "ABCA7", "DHRS3", "MANSC1", "SCG50",
+#   "ABCA8", "DPP4", "MGARP", "SECTM1",
+#   "AC007388.1", "DRAM1", "MGP", "SERPING1",
+#   "ACSS3", "DYNC2LI1", "MGST2", "SLC1A1",
+#   "ADAMTS5", "FAM162A", "MORN4", "SLC40A1",
+#   "ADGRL1", "FAM198B", "MXI1", "SOD2",
+#   "AMPD3", "FAM43A", "NALCN", "SPATA18",
+#   "AMZ2P1", "FAXDC2", "NCOA7", "ST3GAL5",
+#   "ANK2", "FBXO32", "NEAT1", "SULF1",
+#   "AP001972.5", "FER1L4", "NTN4", "SULF2",
+#   "ARHGEF37", "FIBIN", "ORAI3", "SVEP1",
+#   "ARRB1", "GFRA1", "PAPPA", "TCEA2",
+#   "BAMBI", "GPR155", "PCMTD1", "TLCD2",
+#   "BMP4", "GPRC5B", "PCSK5", "TM7SF2",
+#   "BTG2", "HIST1H1C", "PDGFD", "TMEM170B",
+#   "C1QTNF1", "HIST1H2AC", "PIK3IP1", "TMEM176B",
+#   "C1S", "HIST1H2BD", "PLD1", "TMEM178B",
+#   "C3", "HIST1H3E", "PLXNC1", "TP53INP1",
+#   "CAMK1D", "HIST1H4H", "PODN", "TXNIP",
+#   "CBLN3", "HIST1H4I", "PPP1R3C", "VSIR",
+#   "CCND2", "HNMT", "PRRG1", "WDR63",
+#   "CCPG1", "IFI6", "PTCHD4", "WFDC21P",
+#   "COL4A5", "IGDCC4", "QPRT", "YPEL2",
+#   "CPE", "JAM2", "RARRES2", "ZMAT3",
+#   "CPZ", "JMY", "RDH10", "ZNF219",
+#   "CREBRF", "KCNJ2", "RGCC", "ZNF667",
+#   "CRELD1", "KLHL24", "RHBDL1",
+#   "CTSF", "LACC1", "RILP",
+#   "CTSO", "LRRK2", "RPS6KA2"
+# )
+
+depianto_s2_ids <- readRDS("data/Fig5/depianto_s2_ids_sags.RDS")
 
 #check overlap with my all_genes excluding lowly-expressed genes
 cat("depianto_s1_ids:", sum(depianto_s1_ids %in% all_symb_genes), "of", length(depianto_s1_ids), "\n")
@@ -807,502 +814,297 @@ cat("depianto_s2_ids:", sum(depianto_s2_ids %in% all_symb_genes), "of", length(d
 
 
 #now translate these genes into Entrez_ID so I can make accurate comparisons
-to_entrez <- function(symbols, annotation_df) {
-  annotation_df %>%
-    dplyr::filter(SYMBOL %in% symbols) %>%
-    dplyr::pull(Entrez_ID) %>%
-    as.character() %>%
-    unique() %>%
-    na.omit()
-}
+# to_entrez <- function(symbols, annotation_df) {
+#   annotation_df %>%
+#     dplyr::filter(SYMBOL %in% symbols) %>%
+#     dplyr::pull(Entrez_ID) %>%
+#     as.character() %>%
+#     unique() %>%
+#     na.omit()
+# }
 
-PDL1pos_HCA2_entrez <- to_entrez(distefano_s8_ids$Gene_symbol, filcpm_mat_genes)
-Lung_Epi_entrez   <- to_entrez(depianto_s1_ids, filcpm_mat_genes)
-Fibro_entrez      <- to_entrez(depianto_s2_ids, filcpm_mat_genes)
+# PDL1pos_HCA2_entrez <- to_entrez(distefano_s8_ids$Gene_symbol, filcpm_mat_genes)
+PDL1pos_HCA2_entrez <- readRDS("data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS")
+# Lung_Epi_entrez   <- to_entrez(depianto_s1_ids, filcpm_mat_genes)
+Lung_Epi_entrez <- readRDS("data/Fig5/Lung_epi_SAGs_entrezid.RDS")
+# Fibro_entrez      <- to_entrez(depianto_s2_ids, filcpm_mat_genes)
+Fibro_entrez <- readRDS("data/Fig5/Lung_fibro_SAGs_entrezid.RDS")
 
-cat("PDL1+_HCA2:", length(PDL1pos_HCA2_entrez), "of", length(unique(distefano_s8_ids$Gene_symbol)), "\n")
-cat("Lung_Epi:",   length(Lung_Epi_entrez),   "of", length(depianto_s1_ids), "\n")
-cat("Fibro:",      length(Fibro_entrez),       "of", length(depianto_s2_ids), "\n")
+cat("PDL1+ HCA2 cells:", length(PDL1pos_HCA2_entrez), "of", length(unique(distefano_s8_ids$Gene_symbol)), "expressed \n")
+cat("Lung epithelial cells:",   length(Lung_Epi_entrez),   "of", length(depianto_s1_ids), "expressed \n")
+cat("Lung fibroblasts:",      length(Fibro_entrez),       "of", length(depianto_s2_ids), "expressed \n")
 
 ```
 
-# Test for enrichment
+## Forest Plot of Senescence-Associated Genes in Chronic vs Acute
 
-```{r enrichment between chronic and acute revisions, warning=FALSE}
+```{r forest plot sags cell types revised, message=FALSE, warning=FALSE}
 
-#read in my chronic and acute cluster gene lists
-final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
-final_genes_2_RUV <- readRDS("data/Fig3/final_genes_2_RUV.RDS")
-
-acute_set <- unique(na.omit(final_genes_1_RUV))
-chronic_set <- unique(na.omit(final_genes_2_RUV))
-
-comp_celltype_genes <- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
-)
-
-#start with the PDL1+ HCA2 cells
-pdl1pos_hca2 <- unique(na.omit(PDL1pos_HCA2_entrez))
-
-#pld1 sags inside each motif
-in_motif1_pdl1 <- sum(final_genes_1_RUV %in% pdl1pos_hca2)
-in_motif2_pdl1 <- sum(final_genes_2_RUV %in% pdl1pos_hca2)
-
-#non-pdl1 senescence-associated genes inside each motif
-in_motif1_nonpdl1 <- length(final_genes_1_RUV) - in_motif1_pdl1
-in_motif2_nonpdl1 <- length(final_genes_2_RUV) - in_motif2_pdl1
-
-#make contingency tables for fishers exact tests
-contingency_motifs_pdl1 <- matrix(c(
-  in_motif1_pdl1, in_motif1_nonpdl1,
-  in_motif2_pdl1, in_motif2_nonpdl1),
-  nrow = 2, byrow = TRUE
-  )
-
-#print the contingency tables
-print(contingency_motifs_pdl1)
-
-#perform a fisher's exact test
-fisher_test_motifs_pdl1 <- fisher.test(contingency_motifs_pdl1)
-#print fisher's exact test results
-print(fisher_test_motifs_pdl1)
-
-#make a summary table of all of these data to plot
-motif_summary_pdl1 <- tibble(
-  Motif = c("Acute", "Chronic"),
-  PDL1pos = c(in_motif1_pdl1, in_motif2_pdl1),
-  non_PDL1pos = c(in_motif1_nonpdl1, in_motif2_nonpdl1)
-) %>% 
-  pivot_longer(cols = c(PDL1pos, non_PDL1pos), 
-               names_to = "Category", 
-               values_to = "Count") %>% 
-  mutate(
-    Category = ifelse(Category == "PDL1pos", "Yes", "No"),
-    Fraction = Count /ave(Count, Motif, FUN = sum),
-    Significant = ifelse(Category == "Yes" & 
-                           fisher_test_motifs_pdl1$p.value < 0.05, "*", "")
-  )
-
-#position significance stars just above bars
-label_positions_pdl1 <- motif_summary_pdl1 %>% 
-  filter(Category == "Yes") %>% 
-  mutate(y_pos = Fraction + 1.01)
-
-#change the ordering so that yes is on the top
-motif_summary_pdl1$Category <- factor(motif_summary_pdl1$Category, 
-                                      levels = c("Yes", "No"))
-
-#plot the proportions in a barplot
-PDL1_barplot <- ggplot(motif_summary_pdl1, aes(x = Motif,
-                                               y = Fraction,
-                                               fill = Category)) +
-  geom_bar(stat = "identity", position = "stack") +
-  geom_text(
-    data = label_positions_pdl1 %>% 
-      filter(Significant != ""),
-    aes(x = Motif,y = y_pos, label = Significant),
-    size = 6,
-    color = "black"
-  ) +
-  scale_y_continuous(labels = scales::label_number(scale = 1), 
-                     limits = c(0, 1.08)) +
-  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
-  labs(
-    title = "Proportion of Senescence-Associated Genes (PDL1+ HCA2) in Acute vs Chronic",
-    x = "Cluster",
-    y = "Percentage",
-    fill = "PDL1+ HCA2 SAG"
-  ) +
-  theme_custom()
-
-print(PDL1_barplot)
-  
-```
-
-
-
-## Senescence Gene Proportions in Acute vs Chronic
-
-```{r Look at senesence associated genes, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-#now further assess these senescence-associated genes to determine their proportions in chronic and acute clusters
-
-final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
-final_genes_2_RUV <- readRDS("data/Fig3/final_genes_2_RUV.RDS")
-
-acute_set <- unique(na.omit(final_genes_1_RUV))
+#read in my gene sets made above
+acute_set   <- unique(na.omit(final_genes_1_RUV))
 chronic_set <- unique(na.omit(final_genes_2_RUV))
 
 SAG_sets <- list(
   PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
+  Lung_Epi     = Lung_Epi_entrez,
+  Fibro        = Fibro_entrez
 )
 
 celltype_order <- c("PDL1pos_HCA2", "Lung_Epi", "Fibro")
 
-motif_cols <- c("Acute" = "#83C67C", "Chronic" = "#C499C6")
-
-#compute statistics using a fishers exact test for each set
-motif_summary_sags <- purrr::map_dfr(names(SAG_sets), function(gs_name) {
-  gs <- unique(na.omit(SAG_sets[[gs_name]]))
+#perform a fisher's exact test on these data
+fisher_test_overlap <- function(acute, chronic, degs) {
+  #ensure this is chronic vs acute
+  c1 <- sum(chronic %in% degs)
+  c2 <- length(chronic) - c1
+  a1 <- sum(acute %in% degs)
+  a2 <- length(acute) - a1
   
-  in_motif1     <- sum(acute_set %in% gs)
-  in_motif2     <- sum(chronic_set %in% gs)
-  in_motif1_not <- length(acute_set) - in_motif1
-  in_motif2_not <- length(chronic_set) - in_motif2
-  
-  contingency <- matrix(
-    c(in_motif1, in_motif1_not,
-      in_motif2, in_motif2_not),
-    nrow = 2, byrow = TRUE
-  )
-  
-  fisher_res <- fisher.test(contingency)
-  p_val      <- fisher_res$p.value
-  
-  cat(sprintf("\n--- %s ---\n", gs_name))
-  cat(sprintf("  Acute:   %.2f%% (%d/%d)\n",
-              100 * in_motif1 / length(acute_set), in_motif1, length(acute_set)))
-  cat(sprintf("  Chronic: %.2f%% (%d/%d)\n",
-              100 * in_motif2 / length(chronic_set), in_motif2, length(chronic_set)))
-  cat(sprintf("  Fisher p = %.5f | OR = %.3f\n", p_val, unname(fisher_res$estimate)))
+  mat <- matrix(c(c1, c2, a1, a2), nrow = 2, byrow = TRUE)
+  res <- fisher.test(mat)
   
   tibble(
-    GeneSet   = gs_name,
-    Motif     = c("Acute", "Chronic"),
-    In        = c(in_motif1, in_motif2),
-    Total     = c(length(acute_set), length(chronic_set)),
-    P_Value   = p_val
-  ) %>%
-    mutate(
-      Fraction  = In / Total,
-      Bar_Label = sprintf("%.1f%%\n(%d/%d)", 100 * Fraction, In, Total)
+    OR = unname(res$estimate),
+    CI_low = res$conf.int[1],
+    CI_high = res$conf.int[2],
+    p_value = res$p.value,
+    Significant = case_when(
+      res$p.value < 0.001 ~ "***",
+      res$p.value < 0.01  ~ "**",
+      res$p.value < 0.05  ~ "*",
+      TRUE ~ "ns"
     )
+  )
+}
+
+#create a summary table with these stats
+forest_summary_celltype <- map_dfr(names(SAG_sets), function(gs_name) {
+  fisher_test_overlap(acute = acute_set, 
+                      chronic = chronic_set, 
+                      degs = SAG_sets[[gs_name]]) %>% 
+    mutate(Gene_Set = gs_name)
+}) %>%
+  mutate(Gene_Set = factor(Gene_Set, levels = rev(celltype_order)))
+
+#plot 
+forest_celltype <- ggplot(forest_summary_celltype,
+                          aes(y = Gene_Set, x = OR, xmin = CI_low, xmax = CI_high)) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+  geom_errorbarh(height = 0.2, linewidth = 0.6, color = "black") +
+  geom_point(size = 4, color = "black") +
+  geom_text(aes(label = Significant), position = position_nudge(y = 0.3), fontface = "bold") +
+  scale_x_continuous(limits = c(0, 20), breaks = c(1, 5, 10, 15, 20)) +
+  labs(
+    title = "Enrichment of cell-type Senescence-associated genes in Chronic vs Acute",
+    x = "Odds Ratio (95% confidence interval)",
+    y = NULL
+  ) +
+  theme_custom()
+
+forest_celltype
+
+# save_plot(forest_celltype,
+#           filename = "ForestPlot_OddsRatio_SAG_ChronicvAcute_EMP",
+#           folder = output_folder)
+
+forest_summary_celltype
+
+```
+
+## Proportion of SAGs in Acute vs Chronic
+
+```{r make proportion barplots for sags in acute vs chronic motifs, warning=FALSE, message=FALSE}
+
+#define my gene sets
+SAG_sets <- list(
+  PDL1pos_HCA2 = unique(na.omit(PDL1pos_HCA2_entrez)),
+  Lung_Epi     = unique(na.omit(Lung_Epi_entrez)),
+  Fibro        = unique(na.omit(Fibro_entrez))
+)
+
+#iterate through these gene sets to make three plots, one per set
+plots_list <- map(names(SAG_sets), function(set_name) {
+  
+  current_set <- SAG_sets[[set_name]]
+  
+  #calculate counts for each motif
+  in_acute   <- sum(final_genes_1_RUV %in% current_set)
+  in_chronic <- sum(final_genes_2_RUV %in% current_set)
+  
+  out_acute   <- length(final_genes_1_RUV) - in_acute
+  out_chronic <- length(final_genes_2_RUV) - in_chronic
+  
+  contingency <- matrix(c(in_chronic, out_chronic, 
+                          in_acute, out_acute), 
+                        nrow = 2, byrow = TRUE)
+  
+  fisher_res <- fisher.test(contingency)
+  pval <- fisher_res$p.value
+  
+  #summary table of stats
+  motif_summary <- tibble(
+    Motif = factor(c("Chronic", "Acute"), levels = c("Acute", "Chronic")),
+    Overlap   = c(in_chronic, in_acute),
+    NonOverlap    = c(out_chronic, out_acute)
+  ) %>% 
+    pivot_longer(cols = c(Overlap, NonOverlap), 
+                 names_to = "Category", 
+                 values_to = "Count") %>% 
+    group_by(Motif) %>% 
+    mutate(
+      Fraction = Count / sum(Count),
+      Significant = case_when(
+        Category == "Overlap" & pval < 0.001 ~ "***",
+        Category == "Overlap" & pval < 0.01  ~ "**",
+        Category == "Overlap" & pval < 0.05  ~ "*",
+        TRUE ~ ""
+      )
+    ) %>% 
+    ungroup()
+  
+  #make overlapping genes plot on top for stacking
+  motif_summary$Category <- factor(motif_summary$Category, 
+                                   levels = c("Overlap", "NonOverlap"))
+  
+  #add stars
+  label_pos <- motif_summary %>% filter(Category == "Overlap") %>% 
+    mutate(y_pos = 1.1)
+  
+  #make barplots
+  plt <- ggplot(motif_summary, aes(x = Motif, y = Fraction, fill = Category)) +
+    geom_bar(stat = "identity", position = "stack", color = "black", width = 0.7) +
+    #significance stars
+    geom_text(data = label_pos %>% filter(Significant != ""),
+              aes(x = Motif, y = y_pos, label = Significant),
+              size = 8, color = "black", fontface = "bold", inherit.aes = FALSE) +
+    #labels inside bars (plotting raw count of genes rather than proportion)
+    geom_text(aes(label = Count),
+              position = position_stack(vjust = 0.5), size = 4, 
+              color = "black") +
+    scale_y_continuous(limits = c(0, 1.2), breaks = seq(0, 1, 0.2)) +
+    scale_fill_manual(values = c("Overlap" = "#E41A1C", "NonOverlap" = "#377EB8")) +
+    labs(
+      title = paste("Proportion of", set_name, "SAGs in Motif Clusters"),
+      subtitle = paste0("Fisher's Chronic vs Acute: OR=", 
+                        round(fisher_res$estimate, 2), 
+                        ", p=", signif(pval, 3)),
+      x = "Cluster",
+      y = "Proportion of Overlap",
+      fill = "In Gene Set"
+    ) +
+    theme_custom()
+  
+  return(plt)
 })
 
-motif_summary_sags <- motif_summary_sags %>%
-  mutate(
-    GeneSet = factor(GeneSet, levels = names(SAG_sets)),
-    Motif   = factor(Motif,   levels = c("Acute", "Chronic"))
-  )
+#print the plots
+names(plots_list) <- names(SAG_sets)
+print(plots_list$PDL1pos_HCA2)
+print(plots_list$Lung_Epi)
+print(plots_list$Fibro)
 
-#one significance label per gene set
-sig_labels <- motif_summary_sags %>%
-  group_by(GeneSet, P_Value) %>%
-  summarise(y_pos = max(Fraction) + 0.08, .groups = "drop") %>%
-  mutate(
-    Star = ifelse(P_Value < 0.001, "***",
-           ifelse(P_Value < 0.01,  "**",
-           ifelse(P_Value < 0.05,  "*",  "ns")))
-  )
-
-#make plots faceted by gene set, acute vs chronic bars per facet
-plot_bar_SAGset <- ggplot(motif_summary_sags,
-                          aes(x = Motif, y = Fraction, fill = Motif)) +
-  geom_bar(stat = "identity", width = 0.6) +
-  geom_text(aes(label = Bar_Label, y = Fraction / 2),
-            size = 3.4, color = "white", fontface = "bold",
-            lineheight = 0.9) +
-  geom_text(data = sig_labels,
-            aes(x = 1.5, y = y_pos, label = Star),
-            inherit.aes = FALSE,
-            size = 5, color = "black", fontface = "bold") +
-  geom_segment(data = sig_labels,
-               aes(x = 1, xend = 2,
-                   y = y_pos - 0.02, yend = y_pos - 0.02),
-               inherit.aes = FALSE,
-               color = "black", linewidth = 0.4) +
-  facet_wrap(~ GeneSet, nrow = 1) +
-  scale_y_continuous(
-    labels = scales::percent_format(accuracy = 1),
-    limits = c(0, 1.0),
-    expand = c(0, 0)
-  ) +
-  scale_fill_manual(values = motif_cols) +
-  labs(
-    title = "Proportion of Senescence-Associated Genes in Acute vs Chronic",
-    x     = "Cluster",
-    y     = "Proportion of SAGs in Cluster",
-    fill  = "Cluster"
-  ) +
-  theme_custom() +
-  theme(
-    axis.title       = element_text(size = 14),
-    axis.text        = element_text(size = 12),
-    plot.title       = element_text(size = 15, hjust = 0.5),
-    strip.text       = element_text(size = 12, face = "bold"),
-    legend.position  = "right",
-    panel.spacing    = unit(1.2, "lines")
-  )
-
-print(plot_bar_SAGset)
+# save_plot(plots_list$PDL1pos_HCA2,
+#           filename = "PropBarplot_Fin_PDL1pos_HCA2_SAGs_AvC_EMP",
+#           folder = output_folder
+#           )
+# 
+# save_plot(plots_list$Lung_Epi,
+#           filename = "PropBarplot_Fin_LungEpi_SAGs_AvC_EMP",
+#           folder = output_folder
+#           )
+# 
+# save_plot(plots_list$Fibro,
+#           filename = "PropBarplot_Fin_Fibro_SAGs_AvC_EMP",
+#           folder = output_folder
+#           )
 
 ```
 
 
-```{r pdl1 pos barplots, eval=FALSE, include=FALSE}
-motif_summary_pdl1 <- tibble(
-  Motif = c("Acute", "Chronic"),
-  PDL1pos = c(in_motif1_pdl1, in_motif2_pdl1),
-  non_PDL1pos = c(in_motif1_nonpdl1, in_motif2_nonpdl1)
-) %>% 
-  pivot_longer(cols = c(PDL1pos, non_PDL1pos), 
-               names_to = "Category", 
-               values_to = "Count") %>% 
-  mutate(
-    Category = ifelse(Category == "PDL1pos", "Yes", "No"),
-    # Simplified Fraction calculation
-    Fraction = Count / ave(Count, Motif, FUN = sum),
-    Significant = ifelse(Category == "Yes" & 
-                         fisher_test_motifs_pdl1$p.value < 0.05, "*", "")
+## Senescence Gene Proportions in Acute vs Chronic
+
+```{r sags in motifs proportions sep plots, warning=FALSE, message=FALSE}
+#create a function to generate separate plots per cell type for their respective senscence-associated genes - then assess whether they are enriched in Chronic v Acute gene clusters as above in the forest plot
+
+generate_sag_plot <- function(gene_set, set_name) {
+  
+  #calculate counts within clusters
+  count_acute   <- sum(gene_set %in% acute_set)
+  count_chronic <- sum(gene_set %in% chronic_set)
+  total_captured <- count_acute + count_chronic
+  not_in_clusters <- length(gene_set) - total_captured
+  
+  #perform fisher's exact test
+  #background is cluster size vs genes not in cluster
+  mat <- matrix(c(count_chronic, length(chronic_set) - count_chronic,
+                  count_acute,   length(acute_set) - count_acute), 
+                nrow = 2, byrow = TRUE)
+  
+  pval <- fisher.test(mat)$p.value
+  sig_label <- case_when(
+    pval < 0.001 ~ "***", 
+    pval < 0.01 ~ "**", 
+    pval < 0.05 ~ "*", 
+    TRUE ~ "")
+  
+  #form plotting data
+  #denominator is all genes found within one motif (not every gene in sets)
+  plot_df <- tibble(
+    Label = set_name,
+    Motif = factor(c("Acute", "Chronic"), levels = c("Chronic", "Acute")),
+    Percentage = c((count_acute / total_captured) * 100, 
+                   (count_chronic / total_captured) * 100)
   )
+  
+  #generate plots
+  plt <- ggplot(plot_df, 
+                aes(x = Label, y = Percentage, fill = Motif)) +
+    geom_bar(stat = "identity", color = "black", width = 0.6) +
+    geom_text(aes(label = round(Percentage, 1)), 
+              position = position_stack(vjust = 0.5), 
+              size = 5, fontface = "bold") +
+    #add significance stars for Chronic vs Acute enrichment
+    annotate("text", x = 1, y = 105, 
+             label = sig_label, size = 9, fontface = "bold") +
+    scale_fill_manual(values = c("Acute" = "#83C67C", "Chronic" = "#C499C6")) +
+    scale_y_continuous(limits = c(0, 115), breaks = seq(0, 100, 20)) +
+    labs(
+      title = paste("Percentage of SAGs in Chronic vs Acute clusters", set_name),
+      subtitle = paste0("Total Set: ", length(gene_set), 
+                        " | In Motifs: ", total_captured, 
+                        " | Not in Motifs: ", not_in_clusters),
+      x = NULL,
+      y = "Percent (%)",
+      fill = "Cluster"
+    ) +
+    theme_custom()
+  
+  return(plt)
+}
 
-# 2. Fixed Significance Star Positions
-# For a stacked bar where 'Yes' is on top, the height is 1.0 (total proportion)
-label_positions_pdl1 <- motif_summary_pdl1 %>% 
-  filter(Category == "Yes") %>% 
-  mutate(y_pos = 1.01) # Place slightly above the full bar height
-
-# Ensure 'No' is at the bottom and 'Yes' is at the top
-motif_summary_pdl1$Category <- factor(motif_summary_pdl1$Category, 
-                                      levels = c("Yes", "No"))
-
-# 3. Updated Plot
-PDL1_barplot <- ggplot(motif_summary_pdl1, aes(x = Motif,
-                                               y = Fraction,
-                                               fill = Category)) +
-  geom_bar(stat = "identity", position = "stack") +
-  geom_text(
-    data = label_positions_pdl1 %>% filter(Significant != ""),
-    aes(x = Motif, y = y_pos, label = Significant),
-    size = 8, # Made slightly larger for visibility
-    color = "black",
-    inherit.aes = FALSE # Prevents confusion with the 'fill' mapping
-  ) +
-  # Fixed y-axis to show 0.0 to 1.0 proportions
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.1), 
-                     limits = c(0, 1.1),
-                     breaks = seq(0, 1, 0.2)) +
-  # Fixed the comma error in scale_fill_manual
-  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
-  labs(
-    title = "Proportion of SAGs (PDL1+ HCA2)",
-    x = "Cluster",
-    y = "Proportion", # Corrected label
-    fill = "PDL1+ HCA2"
-  ) +
-  theme_custom() # Swapped for standard theme so it runs immediately
-
+#now run my cell type SAG gene sets through to make their respective barplots
+#pdl1+ hca2 cells set
+PDL1_barplot <- generate_sag_plot(SAG_sets$PDL1pos_HCA2, "PDL1+/nHCA2")
 print(PDL1_barplot)
 
-significance_table <- motif_summary_pdl1 %>%
-  filter(Category == "Yes") %>%
-  dplyr::select(Motif, Count, Fraction, Significant) %>%
-  mutate(
-    Total_Genes = c(length(final_genes_1_RUV), length(final_genes_2_RUV)),
-    P_Value = fisher_test_motifs_pdl1$p.value,
-    Significance = Significant
-  )
+# save_plot(PDL1_barplot,
+#           filename = "Barplots_PDL1posHCA2_ChronicvAcute_EMP",
+#           folder = output_folder)
 
-# Print the final table to the console
-print("--- Significance Summary Table ---")
-print(significance_table)
+epi_barplot <- generate_sag_plot(SAG_sets$Lung_Epi, "Epithelial/nCells")
+print(epi_barplot)
 
-```
+# save_plot(epi_barplot,
+#           filename = "Barplots_LungEpi_ChronicvAcute_EMP",
+#           folder = output_folder)
 
-
-```{r lung epi set barplots, eval=FALSE, include=FALSE}
-
-lung_epi <- unique(na.omit(Lung_Epi_entrez))
-
-#epi sags inside each motif
-in_motif1_epi <- sum(final_genes_1_RUV %in% lung_epi)
-in_motif2_epi <- sum(final_genes_2_RUV %in% lung_epi)
-
-#non-pdl1 senescence-associated genes inside each motif
-in_motif1_nonepi <- length(final_genes_1_RUV) - in_motif1_epi
-in_motif2_nonepi <- length(final_genes_2_RUV) - in_motif2_epi
-
-#make contingency tables for fishers exact tests
-contingency_motifs_epi <- matrix(c(
-  in_motif1_epi, in_motif1_nonepi,
-  in_motif2_epi, in_motif2_nonepi),
-  nrow = 2, byrow = TRUE
-  )
-
-#print the contingency tables
-print(contingency_motifs_epi)
-
-#perform a fisher's exact test
-fisher_test_motifs_epi <- fisher.test(contingency_motifs_epi)
-#print fisher's exact test results
-print(fisher_test_motifs_epi)
-
-motif_summary_epi <- tibble(
-  Motif = c("Acute", "Chronic"),
-  epi = c(in_motif1_epi, in_motif2_epi),
-  non_epi = c(in_motif1_nonepi, in_motif2_nonepi)
-) %>% 
-  pivot_longer(cols = c(epi, non_epi), 
-               names_to = "Category", 
-               values_to = "Count") %>% 
-  mutate(
-    Category = ifelse(Category == "Epi", "Yes", "No"),
-    # Simplified Fraction calculation
-    Fraction = Count / ave(Count, Motif, FUN = sum),
-    Significant = ifelse(Category == "Yes" & 
-                         fisher_test_motifs_epi$p.value < 0.05, "*", "")
-  )
-
-# 2. Fixed Significance Star Positions
-# For a stacked bar where 'Yes' is on top, the height is 1.0 (total proportion)
-label_positions_epi <- motif_summary_epi %>% 
-  filter(Category == "Yes") %>% 
-  mutate(y_pos = 1.01) # Place slightly above the full bar height
-
-# Ensure 'No' is at the bottom and 'Yes' is at the top
-motif_summary_epi$Category <- factor(motif_summary_epi$Category, 
-                                      levels = c("Yes", "No"))
-
-# 3. Updated Plot
-Epi_barplot <- ggplot(motif_summary_epi, aes(x = Motif,
-                                               y = Fraction,
-                                               fill = Category)) +
-  geom_bar(stat = "identity", position = "stack") +
-  geom_text(
-    data = label_positions_epi %>% filter(Significant != ""),
-    aes(x = Motif, y = y_pos, label = Significant),
-    size = 8, # Made slightly larger for visibility
-    color = "black",
-    inherit.aes = FALSE # Prevents confusion with the 'fill' mapping
-  ) +
-  # Fixed y-axis to show 0.0 to 1.0 proportions
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.1), 
-                     limits = c(0, 1.1),
-                     breaks = seq(0, 1, 0.2)) +
-  # Fixed the comma error in scale_fill_manual
-  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
-  labs(
-    title = "Proportion of SAGs (Lung Epi)",
-    x = "Cluster",
-    y = "Proportion", # Corrected label
-    fill = "Lung Epi"
-  ) +
-  theme_custom() 
-
-print(Epi_barplot)
-
-significance_table_epi <- motif_summary_epi %>%
-  filter(Category == "Yes") %>%
-  dplyr::select(Motif, Count, Fraction, Significant) %>%
-  mutate(
-    Total_Genes = c(length(final_genes_1_RUV), length(final_genes_2_RUV)),
-    P_Value = fisher_test_motifs_epi$p.value,
-    Significance = Significant
-  )
-
-# Print the final table to the console
-print("--- Significance Summary Table ---")
-print(significance_table_epi)
-```
-
-
-### fibroblasts
-
-```{r fibroblasts barplots, eval=FALSE, include=FALSE}
-fibro <- unique(na.omit(Fibro_entrez))
-
-#epi sags inside each motif
-in_motif1_fibro <- sum(final_genes_1_RUV %in% fibro)
-in_motif2_fibro <- sum(final_genes_2_RUV %in% fibro)
-
-#non-pdl1 senescence-associated genes inside each motif
-in_motif1_nonfibro <- length(final_genes_1_RUV) - in_motif1_fibro
-in_motif2_nonfibro <- length(final_genes_2_RUV) - in_motif2_fibro
-
-#make contingency tables for fishers exact tests
-contingency_motifs_fibro <- matrix(c(
-  in_motif1_fibro, in_motif1_nonfibro,
-  in_motif2_fibro, in_motif2_nonfibro),
-  nrow = 2, byrow = TRUE
-  )
-
-#print the contingency tables
-print(contingency_motifs_fibro)
-
-#perform a fisher's exact test
-fisher_test_motifs_fibro <- fisher.test(contingency_motifs_fibro)
-#print fisher's exact test results
-print(fisher_test_motifs_fibro)
-
-motif_summary_fibro <- tibble(
-  Motif = c("Acute", "Chronic"),
-  fibro = c(in_motif1_fibro, in_motif2_fibro),
-  non_fibro = c(in_motif1_nonfibro, in_motif2_nonfibro)
-) %>% 
-  pivot_longer(cols = c(fibro, non_fibro), 
-               names_to = "Category", 
-               values_to = "Count") %>% 
-  mutate(
-    Category = ifelse(Category == "fibro", "Yes", "No"),
-    # Simplified Fraction calculation
-    Fraction = Count / ave(Count, Motif, FUN = sum),
-    Significant = ifelse(Category == "Yes" & 
-                         fisher_test_motifs_fibro$p.value < 0.05, "*", "")
-  )
-
-# 2. Fixed Significance Star Positions
-# For a stacked bar where 'Yes' is on top, the height is 1.0 (total proportion)
-label_positions_fibro <- motif_summary_fibro %>% 
-  filter(Category == "Yes") %>% 
-  mutate(y_pos = 1.01) # Place slightly above the full bar height
-
-# Ensure 'No' is at the bottom and 'Yes' is at the top
-motif_summary_fibro$Category <- factor(motif_summary_fibro$Category, 
-                                      levels = c("Yes", "No"))
-
-# 3. Updated Plot
-fibro_barplot <- ggplot(motif_summary_fibro, aes(x = Motif,
-                                               y = Fraction,
-                                               fill = Category)) +
-  geom_bar(stat = "identity", position = "stack") +
-  geom_text(
-    data = label_positions_fibro %>% filter(Significant != ""),
-    aes(x = Motif, y = y_pos, label = Significant),
-    size = 8, # Made slightly larger for visibility
-    color = "black",
-    inherit.aes = FALSE # Prevents confusion with the 'fill' mapping
-  ) +
-  # Fixed y-axis to show 0.0 to 1.0 proportions
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.1), 
-                     limits = c(0, 1.1),
-                     breaks = seq(0, 1, 0.2)) +
-  # Fixed the comma error in scale_fill_manual
-  scale_fill_manual(values = c("Yes" = "#E41A1C", "No" = "#377EB8")) +
-  labs(
-    title = "Proportion of SAGs (Fibroblasts)",
-    x = "Cluster",
-    y = "Proportion", # Corrected label
-    fill = "Fibroblasts"
-  ) +
-  theme_custom() 
-
+fibro_barplot <- generate_sag_plot(SAG_sets$Fibro, "Fibroblasts")
 print(fibro_barplot)
 
-significance_table_fibro <- motif_summary_fibro %>%
-  filter(Category == "Yes") %>%
-  dplyr::select(Motif, Count, Fraction, Significant) %>%
-  mutate(
-    Total_Genes = c(length(final_genes_1_RUV), length(final_genes_2_RUV)),
-    P_Value = fisher_test_motifs_fibro$p.value,
-    Significance = Significant
-  )
+# save_plot(fibro_barplot,
+#           filename = "Barplots_LungFibro_ChronicvAcute_EMP",
+#           folder = output_folder)
 
-# Print the final table to the console
-print("--- Significance Summary Table ---")
-print(significance_table_fibro)
 ```
 
 
@@ -1393,6 +1195,7 @@ print(plot_forest_sag)
 
 ```
 
+
 ## PDL1+ HCA2 Cells Senescence-Associated Gene Set DEGs vs nonDEGs
 
 ```{r pdl1pos hca2 sags forest plot, warning=FALSE, message=FALSE}
@@ -1408,7 +1211,7 @@ SAG_sets <- list(
   Fibro      = Fibro_entrez
 )
 
-# PDL1pos_HCA2_entrez
+#PDL1pos_HCA2_entrez
 
 
 proportion_data_sag_hca2 <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
@@ -1470,12 +1273,12 @@ plot_forest_sag_hca2 <- ggplot(proportion_data_sag_hca2,
 
 print(plot_forest_sag_hca2)
 
-save_plot(
-  plot = plot_forest_sag_hca2,
-  filename = "Forest_SAGs_PDL1posHCA2_OddsRatio_EMP",
-  folder = output_folder,
-  height = 4,
-  width = 6)
+# save_plot(
+#   plot = plot_forest_sag_hca2,
+#   filename = "Forest_SAGs_PDL1posHCA2_OddsRatio_EMP",
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)
 ```
 
 ## Lung Epithelial Cells Senescence-Associated Gene Set DEGs vs nonDEGs
@@ -1493,8 +1296,7 @@ SAG_sets <- list(
   Fibro      = Fibro_entrez
 )
 
-# Lung_Epi_entrez
-
+#Lung_Epi_entrez
 
 proportion_data_sag_epi <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
@@ -1640,10 +1442,10 @@ plot_forest_sag_fibro <- ggplot(proportion_data_sag_fibro,
 
 print(plot_forest_sag_fibro)
 
-save_plot(
-  plot = plot_forest_sag_fibro,
-  filename = "Forest_SAGs_LungFibro_OddsRatio_EMP",
-  folder = output_folder,
-  height = 4,
-  width = 6)
+# save_plot(
+#   plot = plot_forest_sag_fibro,
+#   filename = "Forest_SAGs_LungFibro_OddsRatio_EMP",
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)
 ```

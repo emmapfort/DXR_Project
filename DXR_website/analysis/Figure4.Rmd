@@ -750,14 +750,26 @@ cat("DAPs:   ", length(dox_daps),    "| mapped to Entrez_ID:", length(dox_daps_t
 cat("nonDAPs: ", length(dox_nondaps),  "| mapped to Entrez_ID:", length(dox_nondaps_tr), "\n")
 
 #2. define gene sets of interest (Acute and Chronic clusters)
-comparison_genes <- list(
+comparison_prot <- list(
   DAP = dox_daps_tr,
   nonDAP = dox_nondaps_tr
 )
 
-#3. perform a Fisher's exact test for enrichment in a given gene set
-#we are testing whether DAPs are enriched in Acute vs Chronic sets
+comparison_genes <- list(
+  Acute = acute_set,
+  Chronic = chronic_set
+)
 
+```
+
+```{r daps vs nondaps acute vs chronic sets}
+#bars = Acute and Chronic clusters
+#fill = proportion of genes in each cluster that are DAP vs nonDAP
+#Fisher's test = are DAPs over-represented in Acute vs Chronic?
+#iterate over the two clusters, and for each one ask
+#        "how many of these genes encode a DAP vs a nonDAP?"
+
+#make a function to overlap genes in the fisher's exact test
 fisher_test_overlap_genes <- function(acute, chronic, genes) {
   a <- sum(acute %in% genes)
   b <- length(acute) - a
@@ -779,92 +791,261 @@ fisher_test_overlap_genes <- function(acute, chronic, genes) {
   )
 }
 
-#4. create a summary table for plotting barplots
-plot_summary_genes <- map_dfr(names(comparison_genes), function(gene_set) {
-  genes   <- comparison_genes[[gene_set]]
-  fisher_res <- fisher_test_overlap(acute_set, chronic_set, genes)
-
-  acute_overlap <- sum(acute_set %in% genes)
-  acute_nonoverlap <- length(acute_set) - acute_overlap
-  chronic_overlap <- sum(chronic_set %in% genes)
-  chronic_nonoverlap <- length(chronic_set) - chronic_overlap
-
+plot_summary_plot1 <- map_dfr(c("Acute", "Chronic"), function(cluster) {
+  
+  genes <- if (cluster == "Acute") acute_set else chronic_set
+  
+  #how many genes in this cluster encode a DAP vs nonDAP
+  dap_overlap    <- sum(genes %in% dox_daps_tr)
+  nondap_overlap <- length(genes) - dap_overlap  # everything else is nonDAP
+  
+  fisher_res <- fisher_test_overlap_genes(acute_set, chronic_set, dox_daps_tr)
+  
   tibble(
-    GeneSet  = gene_set,
-    Motif       = rep(c("Acute", "Chronic"), each = 2),
-    Category    = rep(c("DAP", "nonDAP"), 2),
-    Count       = c(acute_overlap,
-                    acute_nonoverlap,
-                    chronic_overlap,
-                    chronic_nonoverlap),
-    Fraction    = c(acute_overlap,
-                    acute_nonoverlap,
-                    chronic_overlap,
-                    chronic_nonoverlap) /
-                  c(length(acute_set),
-                    length(acute_set),
-                    length(chronic_set),
-                    length(chronic_set)),
-    Significant = rep(c(fisher_res$significant, ""), 2)
+    Cluster     = cluster,
+    Category    = c("DAP", "nonDAP"),
+    Count       = c(dap_overlap, nondap_overlap),
+    Fraction    = c(dap_overlap, nondap_overlap) / length(genes),
+    Significant = c(fisher_res$significant, "")
   )
 })
 
-plot_summary_genes$Category <- factor(plot_summary_genes$Category, 
+plot_summary_plot1$Category <- factor(plot_summary_plot1$Category, 
                                       levels = c("DAP", "nonDAP"))
 
-label_positions_genes <- plot_summary_genes %>%
+label_positions_plot1 <- plot_summary_plot1 %>%
   filter(Category == "DAP") %>%
   mutate(y_pos = 1)
 
-#5. create barplots with the results of the fisher's exact test
-#these look at the proportion of DAPs and nonDAPs in Acute and Chronic sets
-dap_barplot_motifs_genes <- ggplot(plot_summary_genes, aes(x = GeneSet, 
-                                                           y = Fraction, 
-                                                           fill = Category)) +
+dap_barplot_plot1 <- ggplot(plot_summary_plot1, 
+                            aes(x = Cluster, y = Fraction, fill = Category)) +
   geom_bar(stat = "identity", position = "stack") +
-  geom_text(data = label_positions_genes %>% 
-              filter(Significant != ""),
-            aes(x = GeneSet, 
-                y = y_pos, 
-                label = Significant),
-            inherit.aes = FALSE, 
-            size = 6, fontface = "bold", color = "black") +
+  geom_text(data = label_positions_plot1 %>% filter(Significant != ""),
+            aes(x = Cluster, y = y_pos, label = Significant),
+            inherit.aes = FALSE, size = 6, fontface = "bold", color = "black") +
   geom_text(aes(label = paste0(round(Fraction * 100, 1), "")),
-            position = position_stack(vjust = 0.5), 
-            size = 5, color = "white") +
+            position = position_stack(vjust = 0.5), size = 5, color = "white") +
   scale_y_continuous(limits = c(0, 1)) +
   scale_fill_manual(values = c("DAP" = "#0f9eff", "nonDAP" = "#19aa99")) +
-  facet_wrap(~Motif) +
   labs(
-    title = "Percentage of DAPs vs nonDAPs mapping to Acute and Chronic gene clusters",
-    x     = "Protein Set",
-    y     = "Percentage of Cluster Genes (%)",
+    title = "Proportion of Acute and Chronic cluster genes encoding DAPs vs nonDAPs",
+    x     = "Gene Cluster",
+    y     = "Proportion of Cluster Genes",
     fill  = ""
   ) +
   theme_custom()
 
-print(dap_barplot_motifs_genes)
+print(dap_barplot_plot1)
 
-save_plot(dap_barplot_motifs_genes, 
-          filename = "DAPvnonDAP_AcutevChronic_Barplots_EMP",
-          folder = output_folder)
+# save_plot(dap_barplot_plot1,
+#           filename = "DAPvnonDAP_inChronicvAcute_Barplot_Proportion_EMP",
+#           folder = output_folder)
 
-#print the summary table for statistics
-for (gene_set in names(comparison_genes)) {
-  genes           <- comparison_genes[[gene_set]]
-  acute_overlap   <- sum(acute_set %in% genes)
-  chronic_overlap <- sum(chronic_set %in% genes)
-  prop_ac         <- acute_overlap   / length(acute_set)
-  prop_ch         <- chronic_overlap / length(chronic_set)
-  fisher_res      <- fisher_test_overlap(acute_set, chronic_set, genes)
+#print summary statistics for plot 1
+fisher_res <- fisher_test_overlap_genes(acute_set, chronic_set, dox_daps_tr)
 
-  cat(sprintf("%s - Acute: %.2f%% (%d/%d), Chronic: %.2f%% (%d/%d),
+for (cluster in c("Acute", "Chronic")) {
+  genes       <- if (cluster == "Acute") acute_set else chronic_set
+  dap_overlap <- sum(genes %in% dox_daps_tr)
+  prop_dap    <- dap_overlap / length(genes)
+
+  cat(sprintf("%s - DAP: %.2f%% (%d/%d), 
+              nonDAP: %.2f%% (%d/%d), 
               Fisher p = %.5f\n",
-              gene_set,
-              100 * prop_ac, acute_overlap, length(acute_set),
-              100 * prop_ch, chronic_overlap, length(chronic_set),
+              cluster,
+              100 * prop_dap, dap_overlap,
+              length(genes),
+              100 * (1 - prop_dap), 
+              length(genes) - dap_overlap, 
+              length(genes),
               fisher_res$p_value))
 }
+```
 
+```{r comparing proportion of daps and nondaps, message=FALSE, warning=FALSE}
+#bars = DAPs and nonDAPs
+#fill = proportion of each protein set whose genes fall in Acute vs Chronic
+#fisher's test = are Acute genes over-represented among DAPs vs nonDAPs?
+#logic: iterate over the two PROTEIN SETS, and for each one ask
+#        "how many of these proteins come from Acute vs Chronic genes?"
+
+plot_summary_plot2 <- map_dfr(c("DAP", "nonDAP"), function(prot_set) {
+  
+  genes <- if (prot_set == "DAP") dox_daps_tr else dox_nondaps_tr
+  
+  acute_overlap   <- sum(genes %in% acute_set)
+  chronic_overlap <- sum(genes %in% chronic_set)
+  #denominator is only genes that map to a cluster
+  total_mapped    <- acute_overlap + chronic_overlap
+  
+  fisher_res <- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+  
+  tibble(
+    ProteinSet  = prot_set,
+    Category    = c("Acute", "Chronic"),
+    Count       = c(acute_overlap, chronic_overlap),
+    Fraction    = c(acute_overlap, chronic_overlap) / total_mapped,
+    Significant = c(fisher_res$significant, "")
+  )
+})
+
+plot_summary_plot2$Category <- factor(plot_summary_plot2$Category, 
+                                      levels = c("Chronic", "Acute"))
+
+label_positions_plot2 <- plot_summary_plot2 %>%
+  filter(Category == "Acute") %>%
+  mutate(y_pos = 1)
+
+dap_barplot_plot2 <- ggplot(plot_summary_plot2, 
+                            aes(x = ProteinSet, y = Fraction,
+                                fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  geom_text(data = label_positions_plot2 %>% filter(Significant != ""),
+            aes(x = ProteinSet, y = y_pos, label = Significant),
+            inherit.aes = FALSE, size = 6, fontface = "bold", color = "black") +
+  geom_text(aes(label = paste0(round(Fraction * 100, 1), "")),
+            position = position_stack(vjust = 0.5), size = 5, color = "white") +
+  scale_y_continuous(limits = c(0, 1)) +
+  scale_fill_manual(values = c("Acute" = "#83C67C", "Chronic" = "#C499C6")) +
+  labs(
+    title = "Proportion of cluster-mapping DAPs and nonDAPs in Acute vs Chronic",
+    x     = "Protein Set",
+    y     = "Proportion of Cluster-Mapped Proteins",
+    fill  = ""
+  ) +
+  theme_custom()
+
+print(dap_barplot_plot2)
+
+# save_plot(dap_barplot_plot2,
+#           filename = "AcutevChronic_inDAPvnonDAP_Barplot_Proportion_EMP",
+#           folder = output_folder)
+
+#summary table
+fisher_res <- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+
+for (prot_set in c("DAP", "nonDAP")) {
+  genes           <- if (prot_set == "DAP") dox_daps_tr else dox_nondaps_tr
+  acute_overlap   <- sum(genes %in% acute_set)
+  chronic_overlap <- sum(genes %in% chronic_set)
+  total_mapped    <- acute_overlap + chronic_overlap
+
+  cat(sprintf("%s - Acute: %.2f%% (%d/%d), 
+              Chronic: %.2f%% (%d/%d), 
+              Fisher p = %.5f\n",
+              prot_set,
+              100 * acute_overlap / total_mapped,   
+              acute_overlap,   total_mapped,
+              100 * chronic_overlap / total_mapped, 
+              chronic_overlap, total_mapped,
+              fisher_res$p_value))
+}
+```
+
+### Add a category for DAPs/nonDAPs not present in either motif
+
+```{r revised DAPs non DAPs chronic v acute plots, warning=FALSE, message=FALSE}
+#bars = DAPs and nonDAPs
+#fill = proportion of each protein set whose genes fall in Acute vs Chronic (vs Neither)
+#fisher's test = are Acute genes over-represented among DAPs vs nonDAPs?
+#logic: iterate over the two PROTEIN SETS, and for each one ask
+#        "how many of these proteins come from Acute vs Chronic genes?"
+
+#pre-calculate counts for the subtitle
+dap_counts <- list(
+  A = sum(dox_daps_tr %in% acute_set),
+  C = sum(dox_daps_tr %in% chronic_set),
+  N = length(dox_daps_tr) - (sum(dox_daps_tr %in% acute_set) + sum(dox_daps_tr %in% chronic_set))
+)
+
+nondap_counts <- list(
+  A = sum(dox_nondaps_tr %in% acute_set),
+  C = sum(dox_nondaps_tr %in% chronic_set),
+  N = length(dox_nondaps_tr) - (sum(dox_nondaps_tr %in% acute_set) + sum(dox_nondaps_tr %in% chronic_set))
+)
+
+dynamic_subtitle <- paste0(
+  "DAP Counts: | ACute ", dap_counts$A, " | Chronic: ", dap_counts$C, " | Neither: ", dap_counts$N,
+  " \nnonDAP Counts: | Acute ", nondap_counts$A, " | Chronic: ", nondap_counts$C, " | Neither: ", nondap_counts$N
+)
+
+plot_summary_plot2 <- map_dfr(c("DAP", "nonDAP"), function(prot_set) {
+  
+  genes <- if (prot_set == "DAP") dox_daps_tr else dox_nondaps_tr
+  
+  acute_overlap   <- sum(genes %in% acute_set)
+  chronic_overlap <- sum(genes %in% chronic_set)
+  # Calculate genes that are in the protein set but neither motif
+  neither_overlap <- length(genes) - (acute_overlap + chronic_overlap)
+  #denominator is now the full set to account for "Neither"
+  total_genes     <- length(genes)
+  
+  fisher_res <- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+  
+  tibble(
+    ProteinSet  = prot_set,
+    Category    = c("Acute", "Chronic", "Neither"),
+    Count       = c(acute_overlap, chronic_overlap, neither_overlap),
+    Fraction    = c(acute_overlap, chronic_overlap, neither_overlap) / total_genes,
+    Significant = c(fisher_res$significant, "", "")
+  )
+})
+
+plot_summary_plot2$Category <- factor(plot_summary_plot2$Category, 
+                                      levels = c("Chronic", "Acute", "Neither"))
+
+label_positions_plot2 <- plot_summary_plot2 %>%
+  filter(Category == "Acute") %>%
+  mutate(y_pos = 1)
+
+dap_barplot_plot2 <- ggplot(plot_summary_plot2, 
+                            aes(x = ProteinSet, y = Fraction,
+                                fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  geom_text(data = label_positions_plot2 %>% filter(Significant != ""),
+            aes(x = ProteinSet, y = y_pos, label = Significant),
+            inherit.aes = FALSE, size = 6, fontface = "bold", color = "black") +
+  geom_text(aes(label = paste0(round(Fraction * 100, 1), "")),
+            position = position_stack(vjust = 0.5), size = 5, color = "black") +
+  scale_y_continuous(limits = c(0, 1.1), breaks = seq(0, 1, 0.2)) +
+  scale_fill_manual(values = c("Acute" = "#83C67C", "Chronic" = "#C499C6", "Neither" = "#D3D3D3")) +
+  labs(
+    title = "Proportion of cluster-mapping DAPs and nonDAPs in Acute vs Chronic",
+    subtitle = dynamic_subtitle,
+    x     = "Protein Set",
+    y     = "Proportion of Total Proteins",
+    fill  = ""
+  ) +
+  theme_custom()
+
+print(dap_barplot_plot2)
+
+# save_plot(dap_barplot_plot2,
+#            filename = "AcutevChronic_inDAPvnonDAP_Barplot_Proportion_v2_EMP",
+#            folder = output_folder)
+
+#summary table
+fisher_res <- fisher_test_overlap_genes(dox_daps_tr, dox_nondaps_tr, acute_set)
+
+for (prot_set in c("DAP", "nonDAP")) {
+  genes           <- if (prot_set == "DAP") dox_daps_tr else dox_nondaps_tr
+  acute_overlap   <- sum(genes %in% acute_set)
+  chronic_overlap <- sum(genes %in% chronic_set)
+  neither_overlap <- length(genes) - (acute_overlap + chronic_overlap)
+  total_genes     <- length(genes)
+
+  cat(sprintf("%s - Acute: %.2f%% (%d/%d), 
+              Chronic: %.2f%% (%d/%d), 
+              Neither: %.2f%% (%d/%d),
+              Fisher p = %.5f\n",
+              prot_set,
+              100 * acute_overlap / total_genes,   
+              acute_overlap,   total_genes,
+              100 * chronic_overlap / total_genes,  
+              chronic_overlap, total_genes,
+              100 * neither_overlap / total_genes,
+              neither_overlap, total_genes,
+              fisher_res$p_value))
+}
 ```
 
