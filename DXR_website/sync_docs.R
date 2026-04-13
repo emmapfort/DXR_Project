@@ -2,6 +2,9 @@
 #purpose: Syncs built HTML/Figure folders from DXR_website to the root docs/
 #usage: Run this script from the DXR_website directory
 
+
+#to use: add source("sync_docs.R") to wflow_build
+
 files_to_copy <- c(
   "QC.Rmd", "RUVs.Rmd",
   "Figure1.Rmd", "Figure2.Rmd",
