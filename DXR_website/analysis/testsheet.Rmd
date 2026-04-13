@@ -10,9 +10,50 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r}
-# 1. Fixed the Summary Table Calculation
+# DOX Proteomics Comparisons
 
+For this comparison, we utilized Supplementary Table 2 from Johnson, O. D., Paul, S., Gutiérrez, J. A., Russell, W. K., & Ward, M. C. (2025). DNA-damage-associated protein co-expression network in cardiomyocytes informs on tolerance to genetic variation and disease. iScience, 28(5). https://doi.org/10.1016/j.isci.2025.112474 
+
+I have taken the differentially abundant proteins (DAPs) identified after DOX treatment for 24 hours, as defined by an adj. p value < 0.05
+
+```{r read in DAPs and nonDAPs from ODJ SP proteomics paper, warning=FALSE, message=FALSE}
+#I have the excel sheet downloaded from the paper mentioned above, which I will read in here and then filter the proteins for DAPs vs nonDAPs
+
+doxprot_supp2 <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/proteomics_supptable2_ODJ_SP_MCW_downloaded_260408.xlsx", 
+    range = "B2:AA4180")
+
+#now go ahead and make two lists, one with DAPs and one with nonDAPs
+dox_daps <- doxprot_supp2 %>% 
+  filter(P.Value.adj < 0.05) %>% 
+  pull(Protein)
+#according to the paper, should be 319 DAPs
+length(dox_daps)
+
+dox_nondaps <- doxprot_supp2 %>%
+  filter(P.Value.adj >= 0.05) %>% 
+  pull(Protein)
+#according to the paper, should be 3,859 DAPs
+length(dox_nondaps)
+
+#now combine these into one list
+doxprot_list <- list(
+  DAPs = dox_daps,
+  nonDAPs = dox_nondaps
+)
+
+#now I'll have to convert these protein names (UniProt IDs) so I can compare with my Entrez_ID genes
+#I will use bitr from the clusterProfiler package as a first attempt to translate between ids
+
+dox_daps_entrez <- 
 
 ```
+
+
+
+
+
+
+
+
+
 

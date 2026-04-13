@@ -6,7 +6,7 @@ navbar:
   - text: About
     href: about.html
   - text: Analysis
-    href: index.html
+    href: dxr_index.html
   - text: License
     href: license.html
   right:
