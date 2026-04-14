@@ -1108,9 +1108,9 @@ print(fibro_barplot)
 ```
 
 
-# Proportion of senescence-associated genes in DEGs vs nonDEGs
+# Supplementary Figure 8C - Senescence-associated genes in DEGs vs nonDEGs
 
-```{r test sags against degs for each gene set and plot together, message=FALSE, warning=FALSE}
+```{r Supp 8C test sags against degs for each gene set and plot together, message=FALSE, warning=FALSE}
 
 timepoint_DEGs_sag <- list(
   "t0"   = DEGs_24T_R,
@@ -1125,6 +1125,8 @@ SAG_sets <- list(
 )
 
 sag_combined_set <- unique(unlist(SAG_sets))
+
+SAG_sets$Combined <- sag_combined_set
 
 
 proportion_data_sag <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
@@ -1154,45 +1156,53 @@ proportion_data_sag <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag
     CI_low = ci_low_sag,
     CI_high = ci_high_sag,
     P_Value = p_val_sag,
-    Significant = p_val_sag < 0.05
-  )
+    Significant = case_when(
+      p_val_sag < 0.001 ~ "***",
+      p_val_sag < 0.01 ~ "**",
+      p_val_sag < 0.05 ~ "*",
+      TRUE ~ "ns"
+  ))
 })
 
-#format Timepoint factor and add significance label/color
+
+#format Timepoint factor and add significance label
 proportion_data_sag <- proportion_data_sag %>%
   mutate(
-    Timepoint = factor(Timepoint, levels = c("t0", "t24", "t144")),
-    Sig_Label = ifelse(Significant, "Significant", "Not Significant")
-  )
+    Timepoint = factor(Timepoint, levels = c("t0", "t24", "t144")))
 
 #plot horizontal forest plot with color by significance
-plot_forest_sag <- ggplot(proportion_data_sag, 
-                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
-  geom_point(size = 3) +
-  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+supp8c_plot_forest_sag <- ggplot(proportion_data_sag, 
+                           aes(y = Timepoint, x = Odds_Ratio)) +
+  geom_point(size = 5) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.3) +
   geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
-  scale_color_manual(values = c("Significant" = "black", "Not Significant" = "pink")) +
-  scale_x_continuous(limits = c(0, 10), 
-                     breaks = c(0, 1, 5, 10)) +
+  geom_text(aes(label = Significant), position = position_nudge(y = 0.3), 
+              fontface = "bold") +
+  scale_x_log10() +
   labs(
     title = "Odds Ratios of Senescence-Assoc. Gene Enrichment by Timepoint",
     y = "Timepoint",
-    x = "Odds Ratio (95% confidence interval)",
-    color = "Significance"
-  ) +
+    x = "log odds ratio (95% confidence interval)"
+    ) +
   scale_y_discrete(limits = rev(levels(proportion_data_sag$Timepoint)))+
-  theme_custom()
+  theme_custom() +
+  theme(legend.position = "none")
 
 
-print(plot_forest_sag)
+print(supp8c_plot_forest_sag)
 
 # save_plot(
-#   plot = plot_forest_sag,
-#   filename = "Forest_SAGs_OddsRatio_EMP",
+#   plot = supp8c_plot_forest_sag,
+#   filename = "Supp8C_Forest_SAGs_OddsRatio_EMP",
 #   folder = output_folder,
 #   height = 4,
 #   width = 6)
 
+proportion_data_sag
+
+#for non log scale I used this:
+  # scale_x_continuous(limits = c(0, 10), 
+  #                    breaks = c(0, 1, 5, 10)) +
 ```
 
 

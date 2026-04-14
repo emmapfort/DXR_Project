@@ -9,7 +9,7 @@ output:
     theme: flatly
     highlight: textmate
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -1209,6 +1209,243 @@ for (p in c(proChronic_up_plots)) print(p)
 #             filename = paste0("ExGene_proChronic_Upreg_", plot_name, "_EMP"),
 #             folder = output_folder)
 # }
+
+```
+
+
+# Senescence-Associated Genes ProChronic & non-ProChronic
+
+
+```{r forest plots proChron and nonproChron, warning=FALSE, message=FALSE}
+
+#I want to compare our senecence-associated genes to our two Chronic classifications - ProChronic and non-ProChronic
+
+#read in SAG sets
+SAG_sets <- list(
+  PDL1pos_HCA2 = readRDS("data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS"),
+  Lung_Epi     = readRDS("data/Fig5/Lung_epi_SAGs_entrezid.RDS"),
+  Fibro        = readRDS("data/Fig5/Lung_fibro_SAGs_entrezid.RDS")
+)
+
+SAG_sets$Combined_SAG <- unique(unlist(SAG_sets))
+
+#read in my acute and chronic sets for bg
+final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
+final_genes_2_RUV <- readRDS("data/Fig3/final_genes_2_RUV.RDS")
+#simplify these
+acute_set   <- unique(na.omit(final_genes_1_RUV))
+chronic_set <- unique(na.omit(final_genes_2_RUV))
+
+#define the comparisons to be made - 
+##ProChronic vs NR and non-ProChronic vs NR
+chronic_list <- list(
+  "ProChronic vs NR"     = proChronic_gene_list,
+  "non-ProChronic vs NR" = nonproChronic_gene_list
+)
+
+#order for factoring
+fisher_test_enrich_new <- function(gene_cats, test_genes, ref_genes) {
+  a <- sum(test_genes %in% gene_cats)
+  b <- length(test_genes) - a
+  c <- sum(ref_genes %in% gene_cats)
+  d <- length(ref_genes) - c
+  
+  mat <- matrix(c(a, b, c, d), nrow = 2, byrow = TRUE)
+  ft  <- fisher.test(mat)
+  
+  tibble(
+    OR = unname(ft$estimate),
+    CI_low = ft$conf.int[1],
+    CI_high = ft$conf.int[2],
+    p_value = ft$p.value,
+    Significant = case_when(
+      ft$p.value < 0.001 ~ "***",
+      ft$p.value < 0.01  ~ "**",
+      ft$p.value < 0.05  ~ "*",
+      TRUE ~ "ns"
+    )
+  )
+}
+
+#compute the comparisons to be made
+comparisons <- map_dfr(names(chronic_list), function(comp_name) {
+  map_dfr(names(SAG_sets), function(gs_name) {
+    fisher_test_enrich_new(SAG_sets[[gs_name]], chronic_list[[comp_name]], acute_set) %>%
+      mutate(Category = gs_name, Comparison = comp_name)
+  })
+})
+
+#define the plot order
+plot_order <- c("Combined_SAG", "PDL1pos_HCA2", "Lung_Epi", "Fibro")
+
+comparisons <- comparisons %>%
+  mutate(
+    Category = factor(Category, levels = rev(plot_order)),
+    Comparison = factor(Comparison, levels = names(chronic_list)),
+    OR_plot = OR,
+    CI_low_plot = CI_low,
+    CI_high_plot = CI_high
+  )
+
+#plot the forest plots
+make_forest_plot_clean <- function(df) {
+  ggplot(df, aes(y = Category, x = OR_plot, xmin = CI_low_plot, xmax = CI_high_plot)) +
+    geom_point(size = 4) +
+    geom_errorbarh(height = 0.2, linewidth = 0.8) +
+    geom_text(aes(label = Significant), position = position_nudge(y = 0.2), 
+              size = 5, fontface = "bold") +
+    geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+    labs(x = "Odds Ratio (95% confidence interval)", 
+         y = NULL, 
+         title = "Senescence-Associated Genes Enrichment",
+         subtitle = unique(df$Comparison)) +
+    theme_custom()
+}
+
+plots <- comparisons %>%
+  group_split(Comparison) %>%
+  map(~ make_forest_plot_clean(.x))
+
+comparison_labels <- c("ProChronic_vs_NR", "nonProChronic_vs_NR")
+
+# for (i in seq_along(plots)) {
+#   save_plot(
+#     plot = plots[[i]],
+#     filename = paste0("ForestPlot_CombinedSAG_", comparison_labels[i]),
+#     folder = output_folder
+#   )
+# }
+
+#print the plots
+walk(plots, print)
+
+print(comparisons)
+
+```
+
+## Forest Plots Combined SAG set
+
+```{r combined sag forest plot prochronic nonprochronic, warning=FALSE, message=FALSE}
+
+#compute the comparisons as above
+comparisons <- map_dfr(names(chronic_list), function(comp_name) {
+  map_dfr(names(SAG_sets), function(gs_name) {
+    fisher_test_enrich_new(SAG_sets[[gs_name]], chronic_list[[comp_name]], acute_set) %>%
+      mutate(Category = gs_name, Comparison = comp_name)
+  })
+})
+
+#filter out everything besides the combined SAG set
+comparisons_combined_only <- comparisons %>% 
+  filter(Category == "Combined_SAG") %>%
+  mutate(
+    Comparison = factor(Comparison, levels = names(chronic_list)),
+    OR_plot = OR,
+    CI_low_plot = CI_low,
+    CI_high_plot = CI_high
+  )
+
+#make the plot
+make_forest_plot_combined <- function(df) {
+  ggplot(df, aes(y = Category, x = OR_plot, xmin = CI_low_plot, xmax = CI_high_plot)) +
+    geom_point(size = 5) +
+    geom_errorbarh(height = 0.2, linewidth = 1) +
+    geom_text(aes(label = Significant), position = position_nudge(y = 0.2), 
+              size = 6, fontface = "bold") +
+    geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+    labs(x = "Odds Ratio (95% confidence interval)", 
+         y = NULL, 
+         title = "Combined SAG Enrichment",
+         subtitle = unique(df$Comparison)) +
+    theme_custom()
+}
+
+#plot and save
+plots_combined <- comparisons_combined_only %>%
+  group_split(Comparison) %>%
+  map(~ make_forest_plot_combined(.x))
+
+comparison_labels <- c("ProChronic_vs_NR", "nonProChronic_vs_NR")
+
+iwalk(plots_combined, ~ save_plot(
+  plot = .x,
+  filename = paste0("ForestPlot_CombinedSAG_ONLY_", comparison_labels[.y]),
+  folder = output_folder
+))
+
+walk(plots_combined, print)
+```
+
+### Check Number of Genes Overlapping
+
+```{r check overlap genes prochronic nonprochronic, warning=FALSE, message=FALSE}
+
+#do a quick check to get an idea of the number of genes that overlap with each set
+
+#iterate through each SAG set and find the intersection with Chronic lists
+overlap_stats <- map_dfr(names(SAG_sets), function(gs_name) {
+  current_gs <- SAG_sets[[gs_name]]
+  
+  #check intersection with ProChronic
+  pro_overlap <- intersect(current_gs, proChronic_gene_list)
+  
+  #check intersection with non-ProChronic
+  nonpro_overlap <- intersect(current_gs, nonproChronic_gene_list)
+  
+  tibble(
+    Gene_Set = gs_name,
+    Total_Genes_in_Set = length(current_gs),
+    ProChronic_Overlap = length(pro_overlap),
+    nonPro_Overlap     = length(nonpro_overlap),
+    Shared_by_Both     = length(intersect(pro_overlap, nonpro_overlap))#equal 0
+  )
+})
+
+#print a summary table
+cat("\n--- Gene Overlap Stratification Summary ---\n")
+print(overlap_stats)
+
+
+#how many genes overlap between the three sets when I'm making the combined set?
+lengths <- stack(lapply(SAG_sets, length))
+colnames(lengths) <- c("Gene_Count", "Set_Name")
+cat("Individual Set Sizes:\n")
+print(lengths)
+
+pairwise_overlaps <- data.frame(
+  Comparison = c("PDL1pos vs Lung_Epi", "PDL1pos vs Fibro", "Lung_Epi vs Fibro"),
+  Shared_Genes = c(
+    length(intersect(SAG_sets$PDL1pos_HCA2, SAG_sets$Lung_Epi)),
+    length(intersect(SAG_sets$PDL1pos_HCA2, SAG_sets$Fibro)),
+    length(intersect(SAG_sets$Lung_Epi, SAG_sets$Fibro))
+  )
+)
+
+cat("\nPairwise Overlaps (Shared Genes):\n")
+print(pairwise_overlaps)
+
+triple_overlap <- length(Reduce(intersect, SAG_sets))
+cat("\nGenes Shared Across ALL Three Sets:", triple_overlap, "\n")
+
+#check combined set
+combined_set <- unique(unlist(SAG_sets))
+cat("Final Combined (Unique) Gene Count:", length(combined_set), "\n")
+
+#check the classifications for prochronic and nonproChronic
+chronic_overlaps <- data.frame(
+  Classification = c("ProChronic", "non-ProChronic"),
+  Overlapping_with_Combined = c(
+    length(intersect(combined_set, proChronic_gene_list)),
+    length(intersect(combined_set, nonproChronic_gene_list))
+  )
+)
+
+cat("\nOverlap with Study Classifications:\n")
+print(chronic_overlaps)
+
+#do a quick venn diagram to determine overlap visually
+library(ggVennDiagram)
+ggVennDiagram(SAG_sets)
 
 ```
 

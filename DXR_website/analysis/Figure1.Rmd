@@ -3864,9 +3864,9 @@ plot_dapi_4_filt_stats
 
 sig_table_dapi_4_filt
 
-# save_plot(plot_dapi_4_filt_stats,
-#           filename = "HoechstInt_Step4_3Img_IndLevel_WeightMean_EMP",
-#           folder = output_folder)
+save_plot(plot_dapi_4_filt_stats,
+          filename = "HoechstInt_Step4_3Img_IndLevel_WeightMean_EMP",
+          folder = output_folder)
 
 
 #should I be testing each individual separately? then I only have one point though so I'd have to use statistics from image-level comparisons 

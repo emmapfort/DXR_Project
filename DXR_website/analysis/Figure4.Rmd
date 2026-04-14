@@ -1049,3 +1049,51 @@ for (prot_set in c("DAP", "nonDAP")) {
 }
 ```
 
+
+
+```{r DAPs vs DEGs comparison}
+
+#load in DEGs for all timepoints 
+DOX_24T_R <- read.csv("data/DE/Toptable_RUV_24T_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_24R_R <- read.csv("data/DE/Toptable_RUV_24R_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_144R_R <- read.csv("data/DE/Toptable_RUV_144R_final.csv") %>% 
+  dplyr::select(-(X))
+
+#extract Significant DEGs from these lists
+DEGs_24T_R <- DOX_24T_R$Entrez_ID[DOX_24T_R$adj.P.Val < 0.05]
+DEGs_24R_R <- DOX_24R_R$Entrez_ID[DOX_24R_R$adj.P.Val < 0.05]
+DEGs_144R_R <- DOX_144R_R$Entrez_ID[DOX_144R_R$adj.P.Val < 0.05]
+
+timepoint_DEGs <- list(
+  "tx+0"   = DEGs_24T_R,
+  "tx+24"   = DEGs_24R_R,
+  "tx+144"  = DEGs_144R_R
+)
+
+#read in the DAPs as well
+
+dap_list <- dox_daps_tr
+
+#now I want to compare how many DAPs are DEGs at each respective timepoint
+dap_overlap_summary <- purrr::map_dfr(names(timepoint_DEGs), function(tp) {
+  
+  deg_list <- unique(timepoint_DEGs[[tp]])
+  
+  overlap_count <- sum(deg_list %in% dap_list)
+  deg_count     <- length(deg_list)
+  dap_count     <- length(dap_list)
+  
+  tibble(
+    Timepoint = tp,
+    DAP_in_DEG = overlap_count,
+    Total_DEGs    = deg_count,
+    Total_DAPs    = dap_count
+    )
+})
+
+print(dap_overlap_summary)
+
+```
+
