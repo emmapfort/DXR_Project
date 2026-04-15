@@ -132,6 +132,8 @@ output_folder <- "C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Fig p
 
 I utilized gene sets from two additional studies - a p53 target gene set (Fischer, M., Census and evaluation of p53 target genes. Oncogene, 2017. 36(28): p. 3943-3956) and a DNA damage response (DDR) gene set (Liberzon, A., et al., The Molecular Signatures Database (MSigDB) hallmark gene set collection. Cell Syst, 2015. 1(6): p. 417-425). 
 
+During the process of revisions, we also added a third gene set - senescence-associated genes (SAG) combined from two papers across three cell types. More information is available at the bottom of this page with their analysis.
+
 ```{r Read in Gene Sets, message=FALSE, warning=FALSE}
 #DDR gene set from Liberzon et al.
 
@@ -160,6 +162,14 @@ total_p53_genes <- length(p53_set)
 cat("Total p53 Target genes:", total_p53_genes, "\n")
 
 
+#senescence-associated genes from Distefano et al. & Depianto et al.
+senesc_genes <- readRDS("data/Fig5/sag_combined_set.RDS")
+#pull out only the unique values (should already be unique)
+sag_set <- unique(na.omit(senesc_genes))
+#already in entrez id format
+total_sen_genes <- length(sag_set)
+cat("Total Senescence-Associated genes:", total_sen_genes, "\n")
+
 ```
 
 # Figure 5A - Forest Plot of Odds Ratios
@@ -171,7 +181,7 @@ cat("Total p53 Target genes:", total_p53_genes, "\n")
 final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
 final_genes_2_RUV <- readRDS("data/Fig3/final_genes_2_RUV.RDS")
 
-motifs <- list(
+clusters <- list(
   acute = final_genes_1_RUV,
   chronic = final_genes_2_RUV
 )
@@ -179,20 +189,22 @@ motifs <- list(
 #define the gene sets from above to test with a Fisher's exact test between clusters
 gene_sets <- list(
   DDR = ddr_set,
-  P53 = p53_set
+  P53 = p53_set,
+  SAG = sag_set
 )
 
 #all tested genes as background
 all_genes <- readRDS("data/DE/all_genes.RDS")
 
 #compare between motif clusters for acute and chronic
-compare_motifs <- function(acute, chronic, gene_set, gene_set_name) {
+compare_clusters <- function(acute, chronic, gene_set, gene_set_name) {
   in_chronic <- sum(chronic %in% gene_set)
   out_chronic <- length(chronic) - in_chronic
   in_acute <- sum(acute %in% gene_set)
   out_acute <- length(acute) - in_acute
   
-  mat <- matrix(c(in_chronic, out_chronic, in_acute, out_acute), nrow = 2, byrow = TRUE)
+  mat <- matrix(c(in_chronic, out_chronic, in_acute, out_acute), 
+                nrow = 2, byrow = TRUE)
   rownames(mat) <- c("Chronic", "Acute")
   colnames(mat) <- c("In_Set", "Not_In_Set")
   
@@ -200,7 +212,7 @@ compare_motifs <- function(acute, chronic, gene_set, gene_set_name) {
   
   tibble(
     Gene_Set = gene_set_name,
-    Motif_Comparison = "Chronic_vs_Acute",
+    Cluster_Comparison = "Chronic_vs_Acute",
     In_Set_Chronic = in_chronic,
     In_Set_Acute = in_acute,
     Odds_Ratio = as.numeric(test$estimate),
@@ -212,7 +224,9 @@ compare_motifs <- function(acute, chronic, gene_set, gene_set_name) {
 
 #apply for each gene set
 comparison_results <- map_dfr(names(gene_sets), function(gs_name) {
-  compare_motifs(final_genes_1_RUV, final_genes_2_RUV, gene_sets[[gs_name]], gs_name)
+  compare_clusters(final_genes_1_RUV, 
+                   final_genes_2_RUV, 
+                   gene_sets[[gs_name]], gs_name)
 })
 
 print(comparison_results)
@@ -235,16 +249,17 @@ comparison_results <- comparison_results %>%
   )
 
 #create a final summary table
-summary_table <- comparison_results %>%
+summary_table_5a <- comparison_results %>%
   dplyr::select(
     Gene_Set,
-    In_Set_Chronic, Perc_Chronic,
-    In_Set_Acute, Perc_Acute,
-    Odds_Ratio, CI_Low, CI_High, P_Value, Significance
+    In_Set_Chronic,
+    In_Set_Acute,
+    Odds_Ratio, CI_Low, CI_High, 
+    P_Value, Significance
   )
 
 cat("\n--- Chronic vs Acute Enrichment Summary ---\n")
-print(summary_table)
+summary_table_5a
 
 
 #now create a forest plot
@@ -256,13 +271,13 @@ p_comparison <- ggplot(comparison_results,
   geom_text(aes(label = Significance),
             position = position_nudge(y = 0.2),
             color = "black", fontface = "bold", size = 5) +
-  geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "grey30") +
   # scale_x_log10(limits = c(1, 30), 
   #               breaks = c(1, 10, 20)) +
   labs(
     x = "odds ratio (95% confidence interval)",
     y = NULL,
-    title = "Enrichment of DDR + p53 target genes Chronic vs Acute",
+    title = "Enrichment of DDR, p53, and SAG target genes Chronic vs Acute",
   ) +
   theme_custom()
 
@@ -550,6 +565,130 @@ print(p53_hm_5c)
 
 ```
 
+# Figure 5D - log2FC Heatmap SAG tx+144 DEGs
+
+```{r Figure 5D, fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
+
+#load in DEGs for all timepoints 
+DOX_24T_R <- read.csv("data/DE/Toptable_RUV_24T_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_24R_R <- read.csv("data/DE/Toptable_RUV_24R_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_144R_R <- read.csv("data/DE/Toptable_RUV_144R_final.csv") %>% 
+  dplyr::select(-(X))
+
+#extract Significant DEGs from these lists
+DEGs_24T_R <- DOX_24T_R$Entrez_ID[DOX_24T_R$adj.P.Val < 0.05]
+DEGs_24R_R <- DOX_24R_R$Entrez_ID[DOX_24R_R$adj.P.Val < 0.05]
+DEGs_144R_R <- DOX_144R_R$Entrez_ID[DOX_144R_R$adj.P.Val < 0.05]
+
+#SAG Entrez_IDs
+#these are already listed below in the relevant analysis, so no need to print them multiple times
+#I already consolidated to a unique set of 2,186 genes across the three gene sets from different cell types used below
+entrez_sag <- sag_set
+
+#function to extract relevant data
+extract_data_sag_RUV <- function(df, name) {
+  df %>%
+    filter(Entrez_ID %in% entrez_sag) %>%
+    mutate(Gene = mapIds(org.Hs.eg.db, 
+                         as.character(Entrez_ID),
+                         column = "SYMBOL", 
+                         keytype = "ENTREZID", 
+                         multiVals = "first"),
+           Condition = name,
+           Signif = ifelse(adj.P.Val < 0.05, "*", ""))
+}
+
+#DEG list
+deg_list_RUV <- list("t0" = DOX_24T_R, 
+                 "t24" = DOX_24R_R, 
+                 "t144" = DOX_144R_R
+)
+
+#combine all DEGs and annotate
+all_data_sag_RUV <- bind_rows(mapply(extract_data_sag_RUV, deg_list_RUV, 
+                                     names(deg_list_RUV), SIMPLIFY = FALSE)) 
+
+#now make a filtering step to only include DEGs at tx+144
+sig_genes_t144 <- all_data_sag_RUV %>% 
+  dplyr::filter(Condition == "t144", adj.P.Val < 0.05) %>% 
+  pull(Gene) %>% 
+  unique()
+
+filt_sag_data_t144 <- all_data_sag_RUV %>% 
+  dplyr::filter(Gene %in% sig_genes_t144)
+
+#create matrices
+logFC_sag_RUV <- acast(filt_sag_data_t144, Gene ~ Condition, 
+                          value.var = "logFC")
+signif_sag_RUV <- acast(filt_sag_data_t144, Gene ~ Condition, 
+                           value.var = "Signif")
+
+#desired column order
+desired_order <- c("t0",
+                   "t24",
+                   "t144")
+
+logFC_mat_sag_RUV <- logFC_sag_RUV[, desired_order]
+signif_mat_sag_RUV <- signif_sag_RUV[, desired_order]
+
+#column annotation
+timepoint_annot <- colnames(logFC_mat_sag_RUV)
+
+col_annot_sag_RUV <- HeatmapAnnotation(
+  Timepoint = timepoint_annot,
+  col = list(
+    Timepoint = c("t0" = "#005A4C", 
+             "t24" = "#328477", 
+             "t144" = "#8FB9B1")
+  ),
+  annotation_height = unit(c(1, 1, 1), "cm"),
+  annotation_legend_param = list(
+    Timepoint = list(
+      at = c("t0", "t24", "t144")
+    )
+  )
+)
+
+#draw heatmap
+sag_hm_5d <- Heatmap(
+  logFC_mat_sag_RUV,
+  name = "log2FC",
+  top_annotation = col_annot_sag_RUV,
+  cluster_columns = FALSE,
+  cluster_rows = TRUE,
+  show_row_names = TRUE,
+  row_names_gp = gpar(fontsize = 7),
+  show_column_names = FALSE,
+  column_names_gp = gpar(fontsize = 7), 
+  rect_gp = gpar(col = "black", lwd = 0.5),   
+  border = "black",
+  layer_fun = function(j, i, x, y, width, height, fill) {
+    grid.text(signif_mat_sag_RUV[cbind(i, j)], x, y, gp = gpar(fontsize = 12))
+  },
+  column_title = "SAG gene response (Depianto et al., Distefano et al.)",
+  column_title_gp = gpar(fontsize = 9, fontface = "plain"),
+  heatmap_legend_param = list(
+          title_gp = gpar(fontsize = 8, fontface = "plain"),
+          labels_gp = gpar(fontsize = 7)
+  )
+)
+
+print(sag_hm_5d)
+
+
+#save to PDF in your output folder
+# save_complex_heatmap(
+#   plot = sag_hm_5d,
+#   filename = "Fig5D_logFCHM_RUV_SAG_EMP_260414.pdf",
+#   folder = output_folder,
+#   width = 8,
+#   height = 24
+# )
+
+
+```
 
 # Supplementary Figure 8A - DDR target gene enrichment in DEGs vs nonDEGs
 
@@ -709,16 +848,15 @@ print(supp8_forest_p53_B)
 
 ```
 
-# Figure 5D - cell type comparison of senescense-associated genes
+# Cell type comparisons of senescense-associated genes
 
 We obtained three gene sets for this comparison from various proliferating cell types to compare with our non-proliferating cells. 
 
 
-Set 1: Distefano, R., Ilieva, M., Madsen, J. H., Rennie, S., & Uchida, S. (2023). DoxoDB: A Database for the Expression Analysis of Doxorubicin-Induced lncRNA Genes. Non-Coding RNA, 9(4), 39. https://doi.org/10.3390/ncrna9040039 
+Set 1: Distefano, R., Ilieva, M., Madsen, J. H., Rennie, S., & Uchida, S. (2023). DoxoDB: A Database for the Expression Analysis of Doxorubicin-Induced lncRNA Genes. Non-Coding RNA, 9(4), 39. https://doi.org/10.3390/ncrna9040039 (Tables S7 + S8)
 
 
-Set 2: DePianto DJ, Heiden JAV, Morshead KB, Sun KH, Modrusan Z, Teng G, Wolters PJ, Arron JR. Molecular mapping of interstitial lung disease reveals a phenotypically distinct senescent basal epithelial cell population. JCI Insight. 2021 Apr 22;6(8):e143626. doi: 10.1172/jci.insight.143626. PMID: 33705361; PMCID: PMC8119199.
-
+Sets 2 & 3: DePianto DJ, Heiden JAV, Morshead KB, Sun KH, Modrusan Z, Teng G, Wolters PJ, Arron JR. Molecular mapping of interstitial lung disease reveals a phenotypically distinct senescent basal epithelial cell population. JCI Insight. 2021 Apr 22;6(8):e143626. doi: 10.1172/jci.insight.143626. PMID: 33705361; PMCID: PMC8119199. (Tables S1 + S2)
 
 
 ```{r cell type comparisons as in 4B for 5D, warning=FALSE, message=FALSE}
@@ -726,13 +864,22 @@ Set 2: DePianto DJ, Heiden JAV, Morshead KB, Sun KH, Modrusan Z, Teng G, Wolters
 filcpm_mat_genes <- readRDS("data/QC/filcpm_matrix_genes.RDS")
 all_symb_genes <- filcpm_mat_genes$SYMBOL
 
-#read in the ids for the first gene set
-# distefano_s8_ids <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS8_Distefano_2023_SenescenceGenes.xlsx", 
+#read in the ids for the first gene set + combine for all HCA2 cells 
+#(regardless of PDL1 status)
+# distefano_s7_ids <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS7_Distefano_2023_SenescenceGenes.xlsx",
+#     range = "A3:F3142")
+
+distefano_s7_ids <- readRDS("data/Fig5/distefano_s7_ids_sags.RDS")
+
+# distefano_s8_ids <- read_excel("C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS8_Distefano_2023_SenescenceGenes.xlsx",
 #     range = "A3:F2910")
 
 distefano_s8_ids <- readRDS("data/Fig5/distefano_s8_ids_sags.RDS")
 
-#check how many of these genes (2907) are expressed in our dataset
+#check how many of these genes for TableS7 + S8 are expressed in our dataset
+
+cat("distefano_s7_ids:", sum(distefano_s7_ids$Gene_symbol %in% all_symb_genes), "of", length(distefano_s7_ids$Gene_symbol), "\n")
+#2,082 of 3,139 are expressed in my dataset
 
 cat("distefano_s8_ids:", sum(distefano_s8_ids$Gene_symbol %in% all_symb_genes), "of", length(distefano_s8_ids$Gene_symbol), "\n")
 #2,053 of 2,907 are expressed in my dataset
@@ -823,14 +970,32 @@ cat("depianto_s2_ids:", sum(depianto_s2_ids %in% all_symb_genes), "of", length(d
 #     na.omit()
 # }
 
-# PDL1pos_HCA2_entrez <- to_entrez(distefano_s8_ids$Gene_symbol, filcpm_mat_genes)
-PDL1pos_HCA2_entrez <- readRDS("data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS")
+# PDL1pos_HCA2_entrez <- to_entrez(distefano_s7_ids$Gene_symbol, 
+#                                  filcpm_mat_genes)
+PDL1pos_entrez <- readRDS("data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS") #S7
+# PDL1neg_HCA2_entrPDL1neg_HCA2_entrez <- to_entrez(distefano_s8_ids$Gene_symbol,
+#                                                   filcpm_mat_genes)
+PDL1neg_entrez <- readRDS("data/Fig5/PDL1neg_HCA2_SAGs_entrezid.RDS") #S8 
+
+#now combine PDL1 pos and neg since I don't care about their PDL1 status
+# HCA2_entrez <- c(PDL1pos_entrez, PDL1neg_entrez)
+#this has 4,135 genes which combined both expressed sets in my data
+#genes not expressed in my data not included
+
+#now I want to ensure that the set is unique with no genes being double-counted
+# HCA2_entrez <- unique(na.omit(HCA2_entrez))
+# length(HCA2_entrez)
+#total length of unique genes = 2,372 genes
+
+#save + read back in so I can only use the fully unique set
+HCA2_entrez <- readRDS("data/Fig5/HCA2_entrez.RDS")
+
 # Lung_Epi_entrez   <- to_entrez(depianto_s1_ids, filcpm_mat_genes)
 Lung_Epi_entrez <- readRDS("data/Fig5/Lung_epi_SAGs_entrezid.RDS")
 # Fibro_entrez      <- to_entrez(depianto_s2_ids, filcpm_mat_genes)
 Fibro_entrez <- readRDS("data/Fig5/Lung_fibro_SAGs_entrezid.RDS")
 
-cat("PDL1+ HCA2 cells:", length(PDL1pos_HCA2_entrez), "of", length(unique(distefano_s8_ids$Gene_symbol)), "expressed \n")
+cat("HCA2 cells:", length(HCA2_entrez), "of", length(unique(distefano_s7_ids$Gene_symbol, distefano_s8_ids$Gene_symbol)), "expressed \n")
 cat("Lung epithelial cells:",   length(Lung_Epi_entrez),   "of", length(depianto_s1_ids), "expressed \n")
 cat("Lung fibroblasts:",      length(Fibro_entrez),       "of", length(depianto_s2_ids), "expressed \n")
 
@@ -845,12 +1010,12 @@ acute_set   <- unique(na.omit(final_genes_1_RUV))
 chronic_set <- unique(na.omit(final_genes_2_RUV))
 
 SAG_sets <- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi     = Lung_Epi_entrez,
-  Fibro        = Fibro_entrez
+  HCA2 = HCA2_entrez,
+  Epi = Lung_Epi_entrez,
+  Fibro = Fibro_entrez
 )
 
-celltype_order <- c("PDL1pos_HCA2", "Lung_Epi", "Fibro")
+celltype_order <- c("HCA2", "Epi", "Fibro")
 
 #perform a fisher's exact test on these data
 fisher_test_overlap <- function(acute, chronic, degs) {
@@ -888,7 +1053,8 @@ forest_summary_celltype <- map_dfr(names(SAG_sets), function(gs_name) {
 
 #plot 
 forest_celltype <- ggplot(forest_summary_celltype,
-                          aes(y = Gene_Set, x = OR, xmin = CI_low, xmax = CI_high)) +
+                          aes(y = Gene_Set, x = OR, 
+                              xmin = CI_low, xmax = CI_high)) +
   geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
   geom_errorbarh(height = 0.2, linewidth = 0.6, color = "black") +
   geom_point(size = 4, color = "black") +
@@ -917,9 +1083,9 @@ forest_summary_celltype
 
 #define my gene sets
 SAG_sets <- list(
-  PDL1pos_HCA2 = unique(na.omit(PDL1pos_HCA2_entrez)),
-  Lung_Epi     = unique(na.omit(Lung_Epi_entrez)),
-  Fibro        = unique(na.omit(Fibro_entrez))
+  HCA2 = HCA2_entrez,
+  Epi = Lung_Epi_entrez,
+  Fibro = Fibro_entrez
 )
 
 #iterate through these gene sets to make three plots, one per set
@@ -999,17 +1165,17 @@ plots_list <- map(names(SAG_sets), function(set_name) {
 
 #print the plots
 names(plots_list) <- names(SAG_sets)
-print(plots_list$PDL1pos_HCA2)
-print(plots_list$Lung_Epi)
+print(plots_list$HCA2)
+print(plots_list$Epi)
 print(plots_list$Fibro)
 
-# save_plot(plots_list$PDL1pos_HCA2,
-#           filename = "PropBarplot_Fin_PDL1pos_HCA2_SAGs_AvC_EMP",
+# save_plot(plots_list$HCA2,
+#           filename = "PropBarplot_Fin_HCA2_SAGs_AvC_EMP",
 #           folder = output_folder
 #           )
 # 
-# save_plot(plots_list$Lung_Epi,
-#           filename = "PropBarplot_Fin_LungEpi_SAGs_AvC_EMP",
+# save_plot(plots_list$Epi,
+#           filename = "PropBarplot_Fin_Epi_SAGs_AvC_EMP",
 #           folder = output_folder
 #           )
 # 
@@ -1017,93 +1183,6 @@ print(plots_list$Fibro)
 #           filename = "PropBarplot_Fin_Fibro_SAGs_AvC_EMP",
 #           folder = output_folder
 #           )
-
-```
-
-
-## Senescence Gene Proportions in Acute vs Chronic
-
-```{r sags in motifs proportions sep plots, warning=FALSE, message=FALSE}
-#create a function to generate separate plots per cell type for their respective senscence-associated genes - then assess whether they are enriched in Chronic v Acute gene clusters as above in the forest plot
-
-generate_sag_plot <- function(gene_set, set_name) {
-  
-  #calculate counts within clusters
-  count_acute   <- sum(gene_set %in% acute_set)
-  count_chronic <- sum(gene_set %in% chronic_set)
-  total_captured <- count_acute + count_chronic
-  not_in_clusters <- length(gene_set) - total_captured
-  
-  #perform fisher's exact test
-  #background is cluster size vs genes not in cluster
-  mat <- matrix(c(count_chronic, length(chronic_set) - count_chronic,
-                  count_acute,   length(acute_set) - count_acute), 
-                nrow = 2, byrow = TRUE)
-  
-  pval <- fisher.test(mat)$p.value
-  sig_label <- case_when(
-    pval < 0.001 ~ "***", 
-    pval < 0.01 ~ "**", 
-    pval < 0.05 ~ "*", 
-    TRUE ~ "")
-  
-  #form plotting data
-  #denominator is all genes found within one motif (not every gene in sets)
-  plot_df <- tibble(
-    Label = set_name,
-    Motif = factor(c("Acute", "Chronic"), levels = c("Chronic", "Acute")),
-    Percentage = c((count_acute / total_captured) * 100, 
-                   (count_chronic / total_captured) * 100)
-  )
-  
-  #generate plots
-  plt <- ggplot(plot_df, 
-                aes(x = Label, y = Percentage, fill = Motif)) +
-    geom_bar(stat = "identity", color = "black", width = 0.6) +
-    geom_text(aes(label = round(Percentage, 1)), 
-              position = position_stack(vjust = 0.5), 
-              size = 5, fontface = "bold") +
-    #add significance stars for Chronic vs Acute enrichment
-    annotate("text", x = 1, y = 105, 
-             label = sig_label, size = 9, fontface = "bold") +
-    scale_fill_manual(values = c("Acute" = "#83C67C", "Chronic" = "#C499C6")) +
-    scale_y_continuous(limits = c(0, 115), breaks = seq(0, 100, 20)) +
-    labs(
-      title = paste("Percentage of SAGs in Chronic vs Acute clusters", set_name),
-      subtitle = paste0("Total Set: ", length(gene_set), 
-                        " | In Motifs: ", total_captured, 
-                        " | Not in Motifs: ", not_in_clusters),
-      x = NULL,
-      y = "Percent (%)",
-      fill = "Cluster"
-    ) +
-    theme_custom()
-  
-  return(plt)
-}
-
-#now run my cell type SAG gene sets through to make their respective barplots
-#pdl1+ hca2 cells set
-PDL1_barplot <- generate_sag_plot(SAG_sets$PDL1pos_HCA2, "PDL1+/nHCA2")
-print(PDL1_barplot)
-
-# save_plot(PDL1_barplot,
-#           filename = "Barplots_PDL1posHCA2_ChronicvAcute_EMP",
-#           folder = output_folder)
-
-epi_barplot <- generate_sag_plot(SAG_sets$Lung_Epi, "Epithelial/nCells")
-print(epi_barplot)
-
-# save_plot(epi_barplot,
-#           filename = "Barplots_LungEpi_ChronicvAcute_EMP",
-#           folder = output_folder)
-
-fibro_barplot <- generate_sag_plot(SAG_sets$Fibro, "Fibroblasts")
-print(fibro_barplot)
-
-# save_plot(fibro_barplot,
-#           filename = "Barplots_LungFibro_ChronicvAcute_EMP",
-#           folder = output_folder)
 
 ```
 
@@ -1119,15 +1198,16 @@ timepoint_DEGs_sag <- list(
 )
 
 SAG_sets <- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
+  HCA2 = HCA2_entrez,
+  Epi = Lung_Epi_entrez,
+  Fibro = Fibro_entrez
 )
 
 sag_combined_set <- unique(unlist(SAG_sets))
+# saveRDS(sag_combined_set, "data/Fig5/sag_combined_set.RDS")
+#use this one above
 
 SAG_sets$Combined <- sag_combined_set
-
 
 proportion_data_sag <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
@@ -1206,32 +1286,18 @@ proportion_data_sag
 ```
 
 
-## PDL1+ HCA2 Cells Senescence-Associated Gene Set DEGs vs nonDEGs
+## HCA2 Cells Senescence-Associated Gene Set DEGs vs nonDEGs
 
-```{r pdl1pos hca2 sags forest plot, warning=FALSE, message=FALSE}
-timepoint_DEGs_sag <- list(
-  "t0"   = DEGs_24T_R,
-  "t24"   = DEGs_24R_R,
-  "t144"  = DEGs_144R_R
-)
-
-SAG_sets <- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
-)
-
-#PDL1pos_HCA2_entrez
-
+```{r hca2 sags forest plot, warning=FALSE, message=FALSE}
 
 proportion_data_sag_hca2 <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
   nondegs_sag <- setdiff(all_genes, degs_sag)
   
-  in_deg_sag <- sum(degs_sag %in% PDL1pos_HCA2_entrez)
+  in_deg_sag <- sum(degs_sag %in% HCA2_entrez)
   in_deg_nonsag <- length(degs_sag) - in_deg_sag
   
-  in_nondeg_sag <- sum(nondegs_sag %in% PDL1pos_HCA2_entrez)
+  in_nondeg_sag <- sum(nondegs_sag %in% HCA2_entrez)
   in_nondeg_nonsag <- length(nondegs_sag) - in_nondeg_sag
   
   contingency_degs_sag <- matrix(c(in_deg_sag, in_deg_nonsag,
@@ -1268,11 +1334,12 @@ plot_forest_sag_hca2 <- ggplot(proportion_data_sag_hca2,
   geom_point(size = 3) +
   geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
   geom_vline(xintercept = 1, linetype = "dashed", color = "red") +
-  scale_color_manual(values = c("Significant" = "black", "Not Significant" = "pink")) +
+  scale_color_manual(values = c("Significant" = "black",
+                                "Not Significant" = "pink")) +
   scale_x_continuous(limits = c(0, 10), 
                      breaks = c(0, 1, 5, 10)) +
   labs(
-    title = "Odds Ratios of PDL1+ HCA2 SAG Enrichment by Timepoint",
+    title = "Odds Ratios of HCA2 SAG Enrichment by Timepoint",
     y = "Timepoint",
     x = "Odds Ratio (95% confidence interval)",
     color = "Significance"
@@ -1282,10 +1349,11 @@ plot_forest_sag_hca2 <- ggplot(proportion_data_sag_hca2,
 
 
 print(plot_forest_sag_hca2)
+print(proportion_data_sag_hca2)
 
 # save_plot(
 #   plot = plot_forest_sag_hca2,
-#   filename = "Forest_SAGs_PDL1posHCA2_OddsRatio_EMP",
+#   filename = "Forest_SAGs_HCA2_OddsRatio_EMP",
 #   folder = output_folder,
 #   height = 4,
 #   width = 6)
@@ -1294,19 +1362,6 @@ print(plot_forest_sag_hca2)
 ## Lung Epithelial Cells Senescence-Associated Gene Set DEGs vs nonDEGs
 
 ```{r lung epi sags forest plot, warning=FALSE, message=FALSE}
-timepoint_DEGs_sag <- list(
-  "t0"   = DEGs_24T_R,
-  "t24"   = DEGs_24R_R,
-  "t144"  = DEGs_144R_R
-)
-
-SAG_sets <- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
-)
-
-#Lung_Epi_entrez
 
 proportion_data_sag_epi <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
@@ -1366,6 +1421,7 @@ plot_forest_sag_epi <- ggplot(proportion_data_sag_epi,
 
 
 print(plot_forest_sag_epi)
+print(proportion_data_sag_epi)
 
 # save_plot(
 #   plot = plot_forest_sag_epi,
@@ -1378,20 +1434,6 @@ print(plot_forest_sag_epi)
 ## Lung Fibroblast Senescence-Associated Gene Set DEGs vs nonDEGs
 
 ```{r lung fibro sags forest plot, warning=FALSE, message=FALSE}
-timepoint_DEGs_sag <- list(
-  "t0"   = DEGs_24T_R,
-  "t24"   = DEGs_24R_R,
-  "t144"  = DEGs_144R_R
-)
-
-SAG_sets <- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
-)
-
-# Fibro_entrez
-
 
 proportion_data_sag_fibro <- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag <- unique(timepoint_DEGs_sag[[tp_sag]])
@@ -1451,6 +1493,7 @@ plot_forest_sag_fibro <- ggplot(proportion_data_sag_fibro,
 
 
 print(plot_forest_sag_fibro)
+print(proportion_data_sag_fibro)
 
 # save_plot(
 #   plot = plot_forest_sag_fibro,

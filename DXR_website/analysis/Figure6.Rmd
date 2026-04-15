@@ -1215,19 +1215,17 @@ for (p in c(proChronic_up_plots)) print(p)
 
 # Senescence-Associated Genes ProChronic & non-ProChronic
 
-
 ```{r forest plots proChron and nonproChron, warning=FALSE, message=FALSE}
 
 #I want to compare our senecence-associated genes to our two Chronic classifications - ProChronic and non-ProChronic
 
 #read in SAG sets
 SAG_sets <- list(
-  PDL1pos_HCA2 = readRDS("data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS"),
-  Lung_Epi     = readRDS("data/Fig5/Lung_epi_SAGs_entrezid.RDS"),
-  Fibro        = readRDS("data/Fig5/Lung_fibro_SAGs_entrezid.RDS")
+  HCA2 = readRDS("data/Fig5/HCA2_entrez.RDS"),
+  Epi  = readRDS("data/Fig5/Lung_epi_SAGs_entrezid.RDS"),
+  Fibro  = readRDS("data/Fig5/Lung_fibro_SAGs_entrezid.RDS"),
+  Combined_SAG = readRDS("data/Fig5/sag_combined_set.RDS")
 )
-
-SAG_sets$Combined_SAG <- unique(unlist(SAG_sets))
 
 #read in my acute and chronic sets for bg
 final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")
@@ -1276,9 +1274,9 @@ comparisons <- map_dfr(names(chronic_list), function(comp_name) {
 })
 
 #define the plot order
-plot_order <- c("Combined_SAG", "PDL1pos_HCA2", "Lung_Epi", "Fibro")
+plot_order <- c("Combined_SAG", "HCA2", "Epi", "Fibro")
 
-comparisons <- comparisons %>%
+comparisons_sags <- comparisons %>%
   mutate(
     Category = factor(Category, levels = rev(plot_order)),
     Comparison = factor(Comparison, levels = names(chronic_list)),
@@ -1289,7 +1287,8 @@ comparisons <- comparisons %>%
 
 #plot the forest plots
 make_forest_plot_clean <- function(df) {
-  ggplot(df, aes(y = Category, x = OR_plot, xmin = CI_low_plot, xmax = CI_high_plot)) +
+  ggplot(df, aes(y = Category, x = OR_plot, 
+                 xmin = CI_low_plot, xmax = CI_high_plot)) +
     geom_point(size = 4) +
     geom_errorbarh(height = 0.2, linewidth = 0.8) +
     geom_text(aes(label = Significant), position = position_nudge(y = 0.2), 
@@ -1302,24 +1301,24 @@ make_forest_plot_clean <- function(df) {
     theme_custom()
 }
 
-plots <- comparisons %>%
+plots_sags <- comparisons_sags %>%
   group_split(Comparison) %>%
   map(~ make_forest_plot_clean(.x))
 
 comparison_labels <- c("ProChronic_vs_NR", "nonProChronic_vs_NR")
 
-# for (i in seq_along(plots)) {
+# for (i in seq_along(plots_sags)) {
 #   save_plot(
-#     plot = plots[[i]],
+#     plot = plots_sags[[i]],
 #     filename = paste0("ForestPlot_CombinedSAG_", comparison_labels[i]),
 #     folder = output_folder
 #   )
 # }
 
 #print the plots
-walk(plots, print)
+walk(plots_sags, print)
 
-print(comparisons)
+print(comparisons_sags)
 
 ```
 
@@ -1347,7 +1346,8 @@ comparisons_combined_only <- comparisons %>%
 
 #make the plot
 make_forest_plot_combined <- function(df) {
-  ggplot(df, aes(y = Category, x = OR_plot, xmin = CI_low_plot, xmax = CI_high_plot)) +
+  ggplot(df, aes(y = Category, x = OR_plot, 
+                 xmin = CI_low_plot, xmax = CI_high_plot)) +
     geom_point(size = 5) +
     geom_errorbarh(height = 0.2, linewidth = 1) +
     geom_text(aes(label = Significant), position = position_nudge(y = 0.2), 
@@ -1374,6 +1374,7 @@ iwalk(plots_combined, ~ save_plot(
 ))
 
 walk(plots_combined, print)
+print(comparisons_combined_only)
 ```
 
 ### Check Number of Genes Overlapping
@@ -1413,11 +1414,11 @@ cat("Individual Set Sizes:\n")
 print(lengths)
 
 pairwise_overlaps <- data.frame(
-  Comparison = c("PDL1pos vs Lung_Epi", "PDL1pos vs Fibro", "Lung_Epi vs Fibro"),
+  Comparison = c("HCA2 vs Epi", "HCA2 vs Fibro", "Epi vs Fibro"),
   Shared_Genes = c(
-    length(intersect(SAG_sets$PDL1pos_HCA2, SAG_sets$Lung_Epi)),
-    length(intersect(SAG_sets$PDL1pos_HCA2, SAG_sets$Fibro)),
-    length(intersect(SAG_sets$Lung_Epi, SAG_sets$Fibro))
+    length(intersect(SAG_sets$HCA2, SAG_sets$Epi)),
+    length(intersect(SAG_sets$HCA2, SAG_sets$Fibro)),
+    length(intersect(SAG_sets$Epi, SAG_sets$Fibro))
   )
 )
 
