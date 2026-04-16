@@ -1450,3 +1450,182 @@ ggVennDiagram(SAG_sets)
 
 ```
 
+## Identify 5 Overlap SAGs between cell types
+
+```{r 5 overlapping SAGs between cell types, warning=FALSE, message=FALSE}
+#There are 5 genes that are shared between all three of the cell types
+#plot the log2cpm of these 5 genes and identify them
+#also identify whether they are DEGs, present in Chronic or Acute clusters
+
+HCA2_entrez <- readRDS("data/Fig5/HCA2_entrez.RDS")
+Lung_Epi_entrez <- readRDS("data/Fig5/Lung_epi_SAGs_entrezid.RDS")
+Fibro_entrez <- readRDS("data/Fig5/Lung_fibro_SAGs_entrezid.RDS")
+
+sag_shared <- Reduce(intersect, 
+                     list(HCA2_entrez, 
+                          Lung_Epi_entrez,
+                          Fibro_entrez))
+print(sag_shared)
+
+#load in DEGs for all timepoints 
+DOX_24T_R <- read.csv("data/DE/Toptable_RUV_24T_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_24R_R <- read.csv("data/DE/Toptable_RUV_24R_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_144R_R <- read.csv("data/DE/Toptable_RUV_144R_final.csv") %>% 
+  dplyr::select(-(X))
+
+#extract Significant DEGs from these lists
+DEGs_24T_R <- DOX_24T_R$Entrez_ID[DOX_24T_R$adj.P.Val < 0.05]
+DEGs_24R_R <- DOX_24R_R$Entrez_ID[DOX_24R_R$adj.P.Val < 0.05]
+DEGs_144R_R <- DOX_144R_R$Entrez_ID[DOX_144R_R$adj.P.Val < 0.05]
+
+
+#sets to check against
+list_of_sets <- list(
+  acute = final_genes_1_RUV,
+  chronic = final_genes_2_RUV,
+  ProChronic = proChronic_gene_list,
+  nonProChronic = nonproChronic_gene_list,
+  deg_tx0 = DEGs_24T_R,
+  deg_tx24 = DEGs_24R_R,
+  deg_tx144 = DEGs_144R_R
+)
+
+#create a summary table to check these 5 genes against these categories
+summary_table_sag_shared <- map_dfr(sag_shared, function(gene) {
+  membership <- map_lgl(list_of_sets, ~ gene %in% .x)
+  
+  tibble(
+    Entrez_ID = gene,
+    SYMBOL = mapIds(org.Hs.eg.db, keys = as.character(gene), 
+                    column = "SYMBOL", 
+                    keytype = "ENTREZID", 
+                    multiVals = "first"),
+    !!!membership
+  )
+})
+
+#print the summary table categorizing these 5 genes
+print(summary_table_sag_shared)
+
+
+#now put together my df for plotting log2cpm genes
+sag_shared_df <- tibble(Entrez_ID = sag_shared) %>%
+  mutate(
+    SYMBOL = mapIds(
+      org.Hs.eg.db,
+      keys = Entrez_ID,
+      column = "SYMBOL",
+      keytype = "ENTREZID",
+      multiVals = "first"
+    ),
+    Category = "SAG_Shared"
+  )
+
+#add color/factor lists (as previously defined)
+txtime_col <- list("DOX_t0" = "#263CA5", 
+                   "VEH_t0" = "#444343", 
+                   "DOX_t24" = "#5B8FD1", 
+                   "VEH_t24" = "#757575", 
+                   "DOX_t144" = "#89C5E5", 
+                   "VEH_t144" = "#AAAAAA")
+
+ind_col <- list("1" = "#FF9F64", 
+                "2" = "#78EBDA", 
+                "3" = "#ADCD77", 
+                "4" = "#E6CC50", 
+                "5" = "#A68AC0", 
+                "6" = "#F16F90", 
+                "6R" = "#C61E4E")
+
+#process the log2cpm data - make a function
+process_cpm_data_sag <- function(gene_id, expr_df) {
+  gene_data <- expr_df %>% filter(Entrez_ID == gene_id)
+  
+  long_data <- gene_data %>%
+    pivot_longer(
+      cols = -c(Entrez_ID, SYMBOL),
+      names_to = "Sample",
+      values_to = "log2CPM"
+    ) %>%
+    mutate(
+      Treatment = case_when(grepl("DOX", Sample) ~ "DOX", 
+                            grepl("VEH", Sample) ~ "VEH", 
+                            TRUE ~ NA_character_),
+      Timepoint = case_when(grepl("t0", Sample) ~ "t0", 
+                            grepl("t24", Sample) ~ "t24", 
+                            grepl("t144", Sample) ~ "t144", 
+                            TRUE ~ NA_character_),
+      Individual = case_when(grepl("1$", Sample) ~ "1", 
+                             grepl("2$", Sample) ~ "2", 
+                             grepl("3$", Sample) ~ "3", 
+                             grepl("4$", Sample) ~ "4", 
+                             grepl("5$", Sample) ~ "5", 
+                             grepl("6$", Sample) ~ "6", 
+                             grepl("6R$", Sample) ~ "6R",
+                             TRUE ~ NA_character_),
+      Condition = paste(Treatment, 
+                        Timepoint, 
+                        sep = "_")
+    )
+  
+  long_data$Condition <- factor(long_data$Condition, 
+                                levels = c("DOX_t0", 
+                                           "VEH_t0", 
+                                           "DOX_t24", 
+                                           "VEH_t24", 
+                                           "DOX_t144",
+                                           "VEH_t144"))
+  
+  return(long_data)
+}
+
+#function to generate plots
+generate_overlap_plots_sag <- function(overlap_df, expr_df, comparison_label) {
+  plots <- list()
+  
+  for (gene_id in overlap_df$Entrez_ID) {
+    gene_data <- process_cpm_data_sag(gene_id, expr_df)
+    
+    gene_symbol <- unique(gene_data$SYMBOL)
+    gene_categories <- overlap_df$Category[overlap_df$Entrez_ID == gene_id]
+    gene_categories <- paste(unique(gene_categories), collapse = ", ")
+    
+    p <- ggplot(gene_data, aes(x = Condition, y = log2CPM, fill = Condition)) +
+      geom_boxplot(outlier.shape = NA) +
+      geom_point(aes(color = Individual), size = 2, alpha = 0.9, position = position_identity()) +
+      scale_fill_manual(values = txtime_col) +
+      scale_color_manual(values = ind_col) +
+      ggtitle(paste0(gene_symbol, 
+                     " (", comparison_label, 
+                     " - ", gene_categories, ") ")) +
+      labs(x = "Condition", y = "log2cpm") +
+      theme_custom()
+    
+    plot_name <- paste0(gene_symbol, "_", 
+                        gene_id, "_", comparison_label)
+    plots[[plot_name]] <- p
+  }
+  return(plots)
+}
+
+#generate plots
+sag_shared_plots <- generate_overlap_plots_sag(sag_shared_df, 
+                                               boxplot_new, 
+                                               "SAG_Shared")
+
+#print plots for viewing
+walk(sag_shared_plots, print)
+
+#save plots
+# for (plot_name in names(sag_shared_plots)) {
+#   save_plot(
+#     sag_shared_plots[[plot_name]],
+#     filename = paste0("SAG_SharedGene_EMP_", plot_name),
+#     folder = output_folder
+#   )
+# }
+
+```
+
