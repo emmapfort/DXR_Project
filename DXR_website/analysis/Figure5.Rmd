@@ -582,10 +582,15 @@ DEGs_24T_R <- DOX_24T_R$Entrez_ID[DOX_24T_R$adj.P.Val < 0.05]
 DEGs_24R_R <- DOX_24R_R$Entrez_ID[DOX_24R_R$adj.P.Val < 0.05]
 DEGs_144R_R <- DOX_144R_R$Entrez_ID[DOX_144R_R$adj.P.Val < 0.05]
 
+Lung_Epi_entrez <- readRDS("data/Fig5/Lung_epi_SAGs_entrezid.RDS")
+Fibro_entrez <- readRDS("data/Fig5/Lung_fibro_SAGs_entrezid.RDS")
+HCA2_entrez <- readRDS("data/Fig5/HCA2_entrez.RDS")
+
+sag_distefano <- unique(Lung_Epi_entrez, Fibro_entrez)
 #SAG Entrez_IDs
 #these are already listed below in the relevant analysis, so no need to print them multiple times
 #I already consolidated to a unique set of 2,186 genes across the three gene sets from different cell types used below
-entrez_sag <- sag_set
+entrez_sag <- sag_distefano
 
 #function to extract relevant data
 extract_data_sag_RUV <- function(df, name) {
@@ -667,7 +672,7 @@ sag_hm_5d <- Heatmap(
   layer_fun = function(j, i, x, y, width, height, fill) {
     grid.text(signif_mat_sag_RUV[cbind(i, j)], x, y, gp = gpar(fontsize = 12))
   },
-  column_title = "SAG gene response (Depianto et al., Distefano et al.)",
+  column_title = "SAG gene response (Epi & Fibro) (Distefano et al.)",
   column_title_gp = gpar(fontsize = 9, fontface = "plain"),
   heatmap_legend_param = list(
           title_gp = gpar(fontsize = 8, fontface = "plain"),
@@ -681,10 +686,10 @@ print(sag_hm_5d)
 #save to PDF in your output folder
 # save_complex_heatmap(
 #   plot = sag_hm_5d,
-#   filename = "Fig5D_logFCHM_RUV_SAG_EMP_260414.pdf",
+#   filename = "Fig5D_logFCHM_EpiFibroCombinedSet_RUV_SAG_EMP_260416.pdf",
 #   folder = output_folder,
 #   width = 8,
-#   height = 24
+#   height = 7
 # )
 
 
