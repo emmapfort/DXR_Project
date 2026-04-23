@@ -128,6 +128,38 @@ output_folder <- "C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Fig p
 
 #save plot function created
 #to use: just define the plot name, filename_base, width, height
+
+#here is a function to save complex heatmaps to pdf and png
+
+save_complex_heatmap <- function(plot, filename, folder, width = 6, height = 8, add_date = TRUE) {
+  if (!dir.exists(folder)) dir.create(folder, recursive = TRUE)
+  
+  #add in the date to the end of the filename
+  #this way I can easily track when each plot was created/saved
+  date_str <- if (add_date) paste0("_", 
+                                   format(Sys.Date(), 
+                                          "%y%m%d")) else ""
+  
+  #add the date to the filename here
+  pdf_path <- file.path(folder, paste0(filename, date_str, ".pdf"))
+  png_path <- file.path(folder, paste0(filename, date_str, ".png"))
+  
+  #save to a pdf file for illustrator
+  pdf(pdf_path, width = width, height = height)
+  draw(plot, heatmap_legend_side = "right")
+  dev.off()
+  
+  #now save the png file for easy visualization
+  png(png_path, width = width, height = height, 
+      units = "in", res = 300)
+  draw(plot, heatmap_legend_side = "right")
+  dev.off()
+  
+  message("Saved heatmap PDF to: ", pdf_path)
+  message("Saved heatmap PNG: ", png_path)
+}
+
+#use this function in the same way as the above for all other plots
 ```
 
 
