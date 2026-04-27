@@ -1477,9 +1477,9 @@ print(plots_list$Fibro)
 ```
 
 
-# Supplementary Figure 8C - Senescence-associated genes in DEGs vs nonDEGs
+# Supplementary Figure 11C - Senescence-associated genes in DEGs vs nonDEGs
 
-```{r Supp 8C test sags against degs for each gene set and plot together, message=FALSE, warning=FALSE}
+```{r Supp 11C test sags against degs for each gene set and plot together, message=FALSE, warning=FALSE}
 
 timepoint_DEGs_sag <- list(
   "t0"   = DEGs_24T_R,

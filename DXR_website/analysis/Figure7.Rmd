@@ -758,3 +758,57 @@ print(candidate_gene_table_long)
 
 
 ```
+
+```{r version 2 logFC only}
+
+candidate_gene_table_logFC <- proChronic_df_all %>% 
+  dplyr::filter(SYMBOL %in% candidate_genes_short) %>% 
+  dplyr::mutate(
+    HF_gene = ifelse(Entrez_ID %in% hf_gwas_genes_list, "yes", "no"),
+    Biomarker_candidate = ifelse(Entrez_ID %in% proChronic_up_genes, "yes", "no"),
+    SYMBOL = factor(SYMBOL, levels = candidate_genes_short),
+    
+    # Logic for log2FC directionality across three timepoints
+    Direction = paste(
+      ifelse(logFC_t0 > 0,   "up", "down"),
+      ifelse(logFC_t24 > 0,  "up", "down"),
+      ifelse(logFC_t144 > 0, "up", "down"),
+      sep = "_"
+    )
+  ) %>% 
+  dplyr::arrange(SYMBOL) %>% 
+  dplyr::select(SYMBOL, Response, Direction, Biomarker_candidate, HF_gene)
+
+print(candidate_gene_table_logFC)
+
+# saveRDS(candidate_gene_table_logFC, "data/Fig7/candidate_gene_table_logFC_short.RDS")
+
+# write.csv(candidate_gene_table_logFC, "data/Fig7/Table1_Candidate_gene_table_logFC_short_EMP_260312.csv")
+
+#now make one with the long gene set
+
+candidate_gene_table_logFC_long <- proChronic_df_all %>% 
+  dplyr::filter(SYMBOL %in% candidate_genes_long) %>% 
+  dplyr::mutate(
+    HF_gene = ifelse(Entrez_ID %in% hf_gwas_genes_list, "yes", "no"),
+    Biomarker_candidate = ifelse(Entrez_ID %in% proChronic_up_genes, "yes", "no"),
+    SYMBOL = factor(SYMBOL, levels = candidate_genes_long),
+    
+    # Logic for log2FC directionality across three timepoints
+    Direction = paste(
+      ifelse(logFC_t0 > 0,   "up", "down"),
+      ifelse(logFC_t24 > 0,  "up", "down"),
+      ifelse(logFC_t144 > 0, "up", "down"),
+      sep = "_"
+    )
+  ) %>% 
+  dplyr::arrange(SYMBOL) %>% 
+  dplyr::select(SYMBOL, Response, Direction, Biomarker_candidate, HF_gene)
+
+print(candidate_gene_table_logFC_long)
+
+# saveRDS(candidate_gene_table_logFC_long, "data/Fig7/candidate_gene_table_logFC_long.RDS")
+
+# write.csv(candidate_gene_table_logFC_long, "data/Fig7/Table1_Candidate_gene_table_logFC_long_EMP_260312.csv")
+```
+
