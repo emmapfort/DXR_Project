@@ -2187,6 +2187,8 @@ ttest_untx_results %>%
 
 ```
 
+# Figure S1 - yH2AX and P53 Protein Quantification (no code)
+
 # Figure 1D - DNA Damage Quantification
 
 yH2AX Quantification (Immunofluorescence Staining).
@@ -4043,6 +4045,8 @@ ttest_table_dox_time_dapi
 
 ## Step 5 - Vehicle-Level Comparisons
 
+## Figure S2b
+
 ```{r compare between vehicle timepoints too, warning=FALSE, message=FALSE}
 
 #now I want to do the same as above but test between vehicle timepoints
@@ -4501,6 +4505,8 @@ plot_nuc_counts_ind_med_std
 ## Nuclei Count Assessment - Testing between timepoints within DOX or VEH
 
 ### Mean Nuclei Counts - DOX timepoints tests
+
+## Figure S2a
 
 ```{r nuclei counts testing between timepoints within condition mean dox, warning=FALSE, message=FALSE}
 #define the condition levels

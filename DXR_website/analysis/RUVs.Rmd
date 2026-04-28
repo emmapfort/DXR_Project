@@ -216,11 +216,11 @@ save_complex_heatmap <- function(plot, filename, folder, width = 6, height = 8, 
 #use this function in the same way as the above for all other plots
 ```
 
-# Principal Component Analysis
+# Figure S4 - Principal Component Analysis
 
 Identify principal components contributing to variation in the data.
 
-```{r PCA Analysis S2, message=FALSE, warning=FALSE}
+```{r PCA Analysis S4, message=FALSE, warning=FALSE}
 #Now I want to check if my data is as expected on a PCA plot
 counts_cpm_unfilt <- readRDS("data/QC/counts_cpm_unfilt.RDS")
 filcpm_matrix <- readRDS("data/QC/filcpm_final_matrix_newind.RDS")
@@ -1255,9 +1255,9 @@ for (tp in cor_time_sp) {
 ```
 
 
-# Supplementary Figure 3 - Spearman Correlation Heatmap RUVs log2cpm
+# Figure S5 - Spearman Correlation Heatmap RUVs log2cpm
 
-```{r Supp Fig 3 Spearman Cor HM, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+```{r Supp Fig 5 Spearman Cor HM, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
 
 #Make your supplement heatmap 
 

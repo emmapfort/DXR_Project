@@ -979,7 +979,7 @@ print(sag_combined_hm_sort)
 ```
 
 
-# Supplementary Figure 8A - DDR target gene enrichment in DEGs vs nonDEGs
+# Figure S11a - DDR target gene enrichment in DEGs vs nonDEGs
 
 ```{r Supp8A, message=FALSE, warning=FALSE}
 
@@ -1059,7 +1059,7 @@ print(supp8_forest_ddr_A)
 ```
 
 
-# Supplementary Figure 8B - p53 target gene enrichment in DEGs vs nonDEGs
+# Figure S11b - p53 target gene enrichment in DEGs vs nonDEGs
 
 ```{r Supp 8B, message=FALSE, warning=FALSE}
 
@@ -1477,7 +1477,7 @@ print(plots_list$Fibro)
 ```
 
 
-# Supplementary Figure 11C - Senescence-associated genes in DEGs vs nonDEGs
+# Figure S11c - Senescence-associated genes in DEGs vs nonDEGs
 
 ```{r Supp 11C test sags against degs for each gene set and plot together, message=FALSE, warning=FALSE}
 

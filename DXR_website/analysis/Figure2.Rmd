@@ -722,7 +722,9 @@ plot(venn_prop_RUV,
 
 ```
 
-## Figure 2C Revised 
+# Revised Figure 2C
+
+The above version was missing 85 shared genes between tx+0 and tx+144 due to shape constraints.
 
 ```{r revised fig2c, message=FALSE, warning=FALSE}
 venn_prop_RUV_rev <- euler(list(
@@ -967,7 +969,7 @@ scatterplot_fig2d_tall
 ```
 
 
-# Supplementary Figure 4 - Volcano Plots of RUVs DEGs
+# Figure S6 - Volcano Plots of RUVs DEGs
 
 ```{r Volcano Plots RUVs Corrected k1, warning=FALSE, message=FALSE}
 #make a function to generate volcano plots + add gene numbers

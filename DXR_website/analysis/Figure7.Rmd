@@ -759,7 +759,26 @@ print(candidate_gene_table_long)
 
 ```
 
-```{r version 2 logFC only}
+```{r version 2 logFC only degs}
+
+#load in DEGs for all timepoints 
+DOX_24T_R <- read.csv("data/DE/Toptable_RUV_24T_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_24R_R <- read.csv("data/DE/Toptable_RUV_24R_final.csv") %>% 
+  dplyr::select(-(X))
+DOX_144R_R <- read.csv("data/DE/Toptable_RUV_144R_final.csv") %>% 
+  dplyr::select(-(X))
+
+#extract Significant DEGs from these lists
+DEGs_24T_R <- DOX_24T_R$Entrez_ID[DOX_24T_R$adj.P.Val < 0.05]
+DEGs_24R_R <- DOX_24R_R$Entrez_ID[DOX_24R_R$adj.P.Val < 0.05]
+DEGs_144R_R <- DOX_144R_R$Entrez_ID[DOX_144R_R$adj.P.Val < 0.05]
+
+timepoint_DEGs <- list(
+  "t0"   = DEGs_24T_R,
+  "t24"   = DEGs_24R_R,
+  "t144"  = DEGs_144R_R
+)
 
 candidate_gene_table_logFC <- proChronic_df_all %>% 
   dplyr::filter(SYMBOL %in% candidate_genes_short) %>% 
@@ -767,6 +786,11 @@ candidate_gene_table_logFC <- proChronic_df_all %>%
     HF_gene = ifelse(Entrez_ID %in% hf_gwas_genes_list, "yes", "no"),
     Biomarker_candidate = ifelse(Entrez_ID %in% proChronic_up_genes, "yes", "no"),
     SYMBOL = factor(SYMBOL, levels = candidate_genes_short),
+    
+    # Logic for DEG status at each timepoint
+    `tx+0_DEG`   = ifelse(Entrez_ID %in% timepoint_DEGs$t0, "DEG", "nonDEG"),
+    `tx+24_DEG`  = ifelse(Entrez_ID %in% timepoint_DEGs$t24, "DEG", "nonDEG"),
+    `tx+144_DEG` = ifelse(Entrez_ID %in% timepoint_DEGs$t144, "DEG", "nonDEG"),
     
     # Logic for log2FC directionality across three timepoints
     Direction = paste(
@@ -777,7 +801,16 @@ candidate_gene_table_logFC <- proChronic_df_all %>%
     )
   ) %>% 
   dplyr::arrange(SYMBOL) %>% 
-  dplyr::select(SYMBOL, Response, Direction, Biomarker_candidate, HF_gene)
+  dplyr::select(
+    SYMBOL, 
+    Response, 
+    Direction, 
+    `tx+0_DEG`, 
+    `tx+24_DEG`, 
+    `tx+144_DEG`, 
+    Biomarker_candidate, 
+    HF_gene
+  )
 
 print(candidate_gene_table_logFC)
 
@@ -785,7 +818,7 @@ print(candidate_gene_table_logFC)
 
 # write.csv(candidate_gene_table_logFC, "data/Fig7/Table1_Candidate_gene_table_logFC_short_EMP_260312.csv")
 
-#now make one with the long gene set
+#now make one with the long gene set - this one doesn't have DEGs
 
 candidate_gene_table_logFC_long <- proChronic_df_all %>% 
   dplyr::filter(SYMBOL %in% candidate_genes_long) %>% 

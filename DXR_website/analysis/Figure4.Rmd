@@ -507,9 +507,9 @@ TOP2i_Combined <- ggplot(plot_df, aes(x = Treatment, y = Fraction, fill = Catego
 ```
 
 
-# Supplementary Figure 7 - TOP2i DEGs Acute vs Chronic Clusters
+# Figure S10 - TOP2i DEGs Acute vs Chronic Clusters
 
-```{r Supp Fig 7 Barplots, message=FALSE, warning=FALSE}
+```{r Supp Fig 10 Barplots, message=FALSE, warning=FALSE}
 
 #read in my chronic and acute cluster gene lists
 final_genes_1_RUV <- readRDS("data/Fig3/final_genes_1_RUV.RDS")

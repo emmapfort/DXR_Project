@@ -977,7 +977,7 @@ motif.fit_RUV_logNC_cpm <- readRDS("data/Fig3/motif.fit_RUVnormcounts_log2cpm_25
 
 ```
 
-# Supplementary Figure 5 - AIC BIC Number of Clusters
+# Figure S7 - AIC BIC Number of Clusters
 
 ```{r Supp Fig 5 BIC AIC, message=FALSE, warning=FALSE}
 
@@ -1566,9 +1566,9 @@ print(median_summary_cpmNC)
 ```
 
 
-# Revisions - mean CPM of each transcript over time
+# Figure S9 - mean CPM of each transcript over time
 
-```{r Revised 3B version to show meanCPM, message=FALSE, warning=FALSE}
+```{r Revised FigS9 version to show meanCPM, message=FALSE, warning=FALSE}
 
 counts_cpm_unfilt <- readRDS("data/QC/counts_cpm_unfilt.RDS")
 
@@ -1706,7 +1706,7 @@ cpm_plot_tall
 ```
 
 
-# Supplementary Figure 6 - Chronic (n=501) Line Plot
+# Figure S8 - Chronic (n=501) Line Plot
 
 ```{r logFC line plot Chronic, message=FALSE, warning=FALSE}
 #I want to plot all of the Chronic Cluster M2 genes in a line plot

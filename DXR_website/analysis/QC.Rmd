@@ -549,7 +549,7 @@ fC_DOXCounts %>%
 
 Assess the number of fragments that were mapped.
 
-## Supplementary Figure 1A: Mapped fragments by sample
+## Figure S3a: Mapped fragments by sample
 
 ```{r QC Mapped Fragments S1A, message=FALSE, warning=FALSE}
 
@@ -580,7 +580,7 @@ map_sample_plot <- fC_DOXCounts %>%
 
 ```
 
-## Supplementary Figure 1B: Mapped Fragments by Treatment
+## Figure S3b: Mapped Fragments by Treatment
 
 ```{r QC Mapped Fragments S1B, message=FALSE, warning=FALSE}
 
@@ -603,7 +603,7 @@ map_tx_bp <- fC_DOXCounts %>%
 ```
 
 
-## Supplementary Figure 1C: Mapped Fragments by Timepoint
+## Figure S3c: Mapped Fragments by Timepoint
 
 ```{r QC Mapped Fragments S1C, message=FALSE, warning=FALSE}
 
