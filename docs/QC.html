@@ -334,7 +334,7 @@ div.tocify {
   <a href="about.html">About</a>
 </li>
 <li>
-  <a href="index.html">Analysis</a>
+  <a href="dxr_index.html">Analysis</a>
 </li>
 <li>
   <a href="license.html">License</a>
@@ -385,7 +385,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-03-18
+<strong>Last updated:</strong> 2026-04-28
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -516,15 +516,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree34943c6c688e4357bd3d13866576a5142d17a8b9targetblank34943c6a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7dtargetblank36d1ff7a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/emmapfort/DXR_Project/tree/34943c6c688e4357bd3d13866576a5142d17a8b9" target="_blank">34943c6</a>
+<a href="https://github.com/emmapfort/DXR_Project/tree/36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7d" target="_blank">36d1ff7</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree34943c6c688e4357bd3d13866576a5142d17a8b9targetblank34943c6a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7dtargetblank36d1ff7a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -534,7 +534,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/emmapfort/DXR_Project/tree/34943c6c688e4357bd3d13866576a5142d17a8b9" target="_blank">34943c6</a>.
+<a href="https://github.com/emmapfort/DXR_Project/tree/36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7d" target="_blank">36d1ff7</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -552,6 +552,8 @@ Ignored files:
     Ignored:    .RData
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    DXR_website/.Rhistory
+    Ignored:    DXR_website/.Rproj.user/
     Ignored:    code/Flow_Purity_Stressor_Boxplots_EMP_250226.R
     Ignored:    data/CDKN1A_geneplot_Dox.RDS
     Ignored:    data/Cormotif_dox.RDS
@@ -665,14 +667,9 @@ Ignored files:
     Ignored:    data/top.table_V.D24_dox.RDS
     Ignored:    data/top.table_V.D24r_dox.RDS
 
-Untracked files:
-    Untracked:  DXR_website/data/
-
 Unstaged changes:
-    Modified:   DXR_website/.gitignore
-    Modified:   analysis/DXR_Project_Analysis.Rmd
-    Modified:   analysis/Figure2.Rmd
-    Modified:   docs/Figure2.html
+    Modified:   DXR_website/data/Fig7/Table1_Candidate_gene_table_logFC_short_EMP_260312.csv
+    Modified:   DXR_website/data/Fig7/candidate_gene_table_logFC_short.RDS
 
 </code></pre>
 <p>
@@ -717,6 +714,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7d/DXR_website/analysis/QC.Rmd" target="_blank">36d1ff7</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-28
+</td>
+<td>
+Updated nomenclature for website 04/28/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/4a53e791a7236ff6560f9bb2dc406167283814c5/DXR_website/analysis/QC.Rmd" target="_blank">4a53e79</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-23
+</td>
+<td>
+all updated analysis 04/23/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/emmapfort/DXR_Project/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/QC.html" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -950,7 +998,39 @@ output_folder &lt;- &quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materia
 
 
 #save plot function created
-#to use: just define the plot name, filename_base, width, height</code></pre>
+#to use: just define the plot name, filename_base, width, height
+
+#here is a function to save complex heatmaps to pdf and png
+
+save_complex_heatmap &lt;- function(plot, filename, folder, width = 6, height = 8, add_date = TRUE) {
+  if (!dir.exists(folder)) dir.create(folder, recursive = TRUE)
+  
+  #add in the date to the end of the filename
+  #this way I can easily track when each plot was created/saved
+  date_str &lt;- if (add_date) paste0(&quot;_&quot;, 
+                                   format(Sys.Date(), 
+                                          &quot;%y%m%d&quot;)) else &quot;&quot;
+  
+  #add the date to the filename here
+  pdf_path &lt;- file.path(folder, paste0(filename, date_str, &quot;.pdf&quot;))
+  png_path &lt;- file.path(folder, paste0(filename, date_str, &quot;.png&quot;))
+  
+  #save to a pdf file for illustrator
+  pdf(pdf_path, width = width, height = height)
+  draw(plot, heatmap_legend_side = &quot;right&quot;)
+  dev.off()
+  
+  #now save the png file for easy visualization
+  png(png_path, width = width, height = height, 
+      units = &quot;in&quot;, res = 300)
+  draw(plot, heatmap_legend_side = &quot;right&quot;)
+  dev.off()
+  
+  message(&quot;Saved heatmap PDF to: &quot;, pdf_path)
+  message(&quot;Saved heatmap PNG: &quot;, png_path)
+}
+
+#use this function in the same way as the above for all other plots</code></pre>
 </div>
 <div id="initial-dataframes" class="section level1">
 <h1>Initial Dataframes</h1>
@@ -1265,6 +1345,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/QC.Rmd/QC Mapping Plots Total Fragments-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/a967d53371f438ab56075182aba23158c81b7c1b/DXR_website/docs/figure/QC.Rmd/QC Mapping Plots Total Fragments-1.png" target="_blank">a967d53</a>
 </td>
 <td>
@@ -1476,9 +1567,8 @@ emmapfort
 <div id="mapped-fragments" class="section level1">
 <h1>Mapped Fragments</h1>
 <p>Assess the number of fragments that were mapped.</p>
-<div id="supplementary-figure-1a-mapped-fragments-by-sample"
-class="section level2">
-<h2>Supplementary Figure 1A: Mapped fragments by sample</h2>
+<div id="figure-s3a-mapped-fragments-by-sample" class="section level2">
+<h2>Figure S3a: Mapped fragments by sample</h2>
 <pre class="r"><code>reads_by_sample &lt;- c(&quot;DOX&quot; = &quot;#5B8FD1&quot;, &quot;VEH&quot; = &quot;#BBBBBC&quot;)
 map_sample_plot &lt;- fC_DOXCounts %&gt;% 
   ggplot(., aes (x = Condition, y = Assigned_Align, fill = Tx,
@@ -1503,9 +1593,9 @@ map_sample_plot &lt;- fC_DOXCounts %&gt;%
 #   width = 8
 # )</code></pre>
 </div>
-<div id="supplementary-figure-1b-mapped-fragments-by-treatment"
+<div id="figure-s3b-mapped-fragments-by-treatment"
 class="section level2">
-<h2>Supplementary Figure 1B: Mapped Fragments by Treatment</h2>
+<h2>Figure S3b: Mapped Fragments by Treatment</h2>
 <pre class="r"><code>map_tx_bp &lt;- fC_DOXCounts %&gt;% 
   ggplot(., aes (x =Tx, y= Assigned_Align, fill = Tx))+
   geom_boxplot()+
@@ -1522,9 +1612,9 @@ class="section level2">
 #           filename = &quot;MappedReads_Treatment_Supp1B_EMP_&quot;,
 #           folder = output_folder)</code></pre>
 </div>
-<div id="supplementary-figure-1c-mapped-fragments-by-timepoint"
+<div id="figure-s3c-mapped-fragments-by-timepoint"
 class="section level2">
-<h2>Supplementary Figure 1C: Mapped Fragments by Timepoint</h2>
+<h2>Figure S3c: Mapped Fragments by Timepoint</h2>
 <pre class="r"><code>reads_by_time &lt;- c(&quot;t0&quot; = &quot;#005A4C&quot;,
                  &quot;t24&quot; = &quot;#328477&quot;,
                  &quot;t144&quot; = &quot;#8FB9B1&quot;)
@@ -1953,6 +2043,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-1.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/a967d53371f438ab56075182aba23158c81b7c1b/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-1.png" target="_blank">a967d53</a>
 </td>
 <td>
@@ -1989,6 +2090,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-2.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/a967d53371f438ab56075182aba23158c81b7c1b/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-2.png" target="_blank">a967d53</a>
@@ -2029,6 +2141,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-3.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/a967d53371f438ab56075182aba23158c81b7c1b/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-3.png" target="_blank">a967d53</a>
 </td>
 <td>
@@ -2065,6 +2188,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-4.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/a967d53371f438ab56075182aba23158c81b7c1b/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-4.png" target="_blank">a967d53</a>
@@ -2105,6 +2239,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-5.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/a967d53371f438ab56075182aba23158c81b7c1b/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-5.png" target="_blank">a967d53</a>
 </td>
 <td>
@@ -2143,6 +2288,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b1b2cefbe75e9b3b813efa627c8a848459e256f0/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-6.png" target="_blank">b1b2cef</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-03-18
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/emmapfort/DXR_Project/blob/a967d53371f438ab56075182aba23158c81b7c1b/DXR_website/docs/figure/QC.Rmd/Check Response Genes log2cpm-6.png" target="_blank">a967d53</a>
 </td>
 <td>
@@ -2167,7 +2323,7 @@ Session information
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.5.2 (2025-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
-Running under: Windows 11 x64 (build 22000)
+Running under: Windows 11 x64 (build 26200)
 
 Matrix products: default
   LAPACK version 3.12.1

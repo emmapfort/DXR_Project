@@ -334,7 +334,7 @@ div.tocify {
   <a href="about.html">About</a>
 </li>
 <li>
-  <a href="index.html">Analysis</a>
+  <a href="dxr_index.html">Analysis</a>
 </li>
 <li>
   <a href="license.html">License</a>
@@ -365,7 +365,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -376,8 +376,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -386,13 +386,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-04-10
+<strong>Last updated:</strong> 2026-04-28
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>DXR_website/</code> <span
@@ -502,30 +502,56 @@ run.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+C:/Users/emmap/RDirectory/Recovery_RNAseq/Recovery_5FU/DXR_website
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree7eeafb877f0b359b3e16eb27b594763e003cbf9atargetblank7eeafb8a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7dtargetblank36d1ff7a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/emmapfort/DXR_Project/tree/7eeafb877f0b359b3e16eb27b594763e003cbf9a" target="_blank">7eeafb8</a>
+<a href="https://github.com/emmapfort/DXR_Project/tree/36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7d" target="_blank">36d1ff7</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree7eeafb877f0b359b3e16eb27b594763e003cbf9atargetblank7eeafb8a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomemmapfortDXRProjecttree36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7dtargetblank36d1ff7a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -535,7 +561,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/emmapfort/DXR_Project/tree/7eeafb877f0b359b3e16eb27b594763e003cbf9a" target="_blank">7eeafb8</a>.
+<a href="https://github.com/emmapfort/DXR_Project/tree/36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7d" target="_blank">36d1ff7</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -553,6 +579,8 @@ Ignored files:
     Ignored:    .RData
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    DXR_website/.Rhistory
+    Ignored:    DXR_website/.Rproj.user/
     Ignored:    code/Flow_Purity_Stressor_Boxplots_EMP_250226.R
     Ignored:    data/CDKN1A_geneplot_Dox.RDS
     Ignored:    data/Cormotif_dox.RDS
@@ -666,16 +694,9 @@ Ignored files:
     Ignored:    data/top.table_V.D24_dox.RDS
     Ignored:    data/top.table_V.D24r_dox.RDS
 
-Untracked files:
-    Untracked:  DXR_website/data/Fig5/Lung_epi_SAGs_entrezid.RDS
-    Untracked:  DXR_website/data/Fig5/Lung_fibro_SAGs_entrezid.RDS
-    Untracked:  DXR_website/data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS
-    Untracked:  DXR_website/data/Fig5/depianto_s1_ids_sags.RDS
-    Untracked:  DXR_website/data/Fig5/depianto_s2_ids_sags.RDS
-    Untracked:  DXR_website/data/Fig5/distefano_s8_ids_sags.RDS
-
 Unstaged changes:
-    Modified:   DXR_website/analysis/testsheet.Rmd
+    Modified:   DXR_website/data/Fig7/Table1_Candidate_gene_table_logFC_short_EMP_260312.csv
+    Modified:   DXR_website/data/Fig7/candidate_gene_table_logFC_short.RDS
 
 </code></pre>
 <p>
@@ -720,6 +741,125 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/36d1ff7ac73e29f49ba5db9178ab72f1d3d43b7d/DXR_website/analysis/Figure5.Rmd" target="_blank">36d1ff7</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-28
+</td>
+<td>
+Updated nomenclature for website 04/28/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/b728cd125fb63b709b8ab0b8191ba61f9242dd15/DXR_website/analysis/Figure5.Rmd" target="_blank">b728cd1</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-27
+</td>
+<td>
+update website 04/27/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/4a53e791a7236ff6560f9bb2dc406167283814c5/DXR_website/analysis/Figure5.Rmd" target="_blank">4a53e79</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-23
+</td>
+<td>
+all updated analysis 04/23/26 EMP
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/34557935f8fa89b814e09fa74e61a3bb9ed42283/DXR_website/analysis/Figure5.Rmd" target="_blank">3455793</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-17
+</td>
+<td>
+updated analysis 04/16/26
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/f509e9b6d894668cb08ab8c77a2199405ae2ada9/DXR_website/analysis/Figure5.Rmd" target="_blank">f509e9b</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-15
+</td>
+<td>
+update analysis 04/15/26
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/bb1dc975a5f932eb651dcd65c41cee6060c7bd6b/DXR_website/analysis/Figure5.Rmd" target="_blank">bb1dc97</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-14
+</td>
+<td>
+updates website 04/14/26
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/emmapfort/DXR_Project/f8f35a260b4090290ad85dfc74e21c0d3ff2d97a/DXR_website/docs/Figure5.html" target="_blank">f8f35a2</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1057,6 +1197,8 @@ library(grid)
 library(stringr)
 library(org.Hs.eg.db)
 library(AnnotationDbi)</code></pre>
+<p>Change my working directory to the correct one</p>
+<pre class="r"><code>setwd(&quot;C:/Users/emmap/RDirectory/Recovery_RNAseq/Recovery_5FU/DXR_website&quot;)</code></pre>
 <p>Define my custom plot theme</p>
 <pre class="r"><code># Define the custom theme
 # plot_theme_custom &lt;- function() {
@@ -1127,7 +1269,39 @@ output_folder &lt;- &quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materia
 
 
 #save plot function created
-#to use: just define the plot name, filename_base, width, height</code></pre>
+#to use: just define the plot name, filename_base, width, height
+
+#here is a function to save complex heatmaps to pdf and png
+
+save_complex_heatmap &lt;- function(plot, filename, folder, width = 6, height = 8, add_date = TRUE) {
+  if (!dir.exists(folder)) dir.create(folder, recursive = TRUE)
+  
+  #add in the date to the end of the filename
+  #this way I can easily track when each plot was created/saved
+  date_str &lt;- if (add_date) paste0(&quot;_&quot;, 
+                                   format(Sys.Date(), 
+                                          &quot;%y%m%d&quot;)) else &quot;&quot;
+  
+  #add the date to the filename here
+  pdf_path &lt;- file.path(folder, paste0(filename, date_str, &quot;.pdf&quot;))
+  png_path &lt;- file.path(folder, paste0(filename, date_str, &quot;.png&quot;))
+  
+  #save to a pdf file for illustrator
+  pdf(pdf_path, width = width, height = height)
+  draw(plot, heatmap_legend_side = &quot;right&quot;)
+  dev.off()
+  
+  #now save the png file for easy visualization
+  png(png_path, width = width, height = height, 
+      units = &quot;in&quot;, res = 300)
+  draw(plot, heatmap_legend_side = &quot;right&quot;)
+  dev.off()
+  
+  message(&quot;Saved heatmap PDF to: &quot;, pdf_path)
+  message(&quot;Saved heatmap PNG: &quot;, png_path)
+}
+
+#use this function in the same way as the above for all other plots</code></pre>
 </div>
 <div id="read-in-gene-lists-from-literature" class="section level1">
 <h1>Read in Gene Lists from Literature</h1>
@@ -1136,6 +1310,10 @@ set (Fischer, M., Census and evaluation of p53 target genes. Oncogene,
 2017. 36(28): p. 3943-3956) and a DNA damage response (DDR) gene set
 (Liberzon, A., et al., The Molecular Signatures Database (MSigDB)
 hallmark gene set collection. Cell Syst, 2015. 1(6): p. 417-425).</p>
+<p>During the process of revisions, we also added a third gene set -
+senescence-associated genes (SAG) combined from two papers across three
+cell types. More information is available at the bottom of this page
+with their analysis.</p>
 <pre class="r"><code>#DDR gene set from Liberzon et al.
 
 #read in my DDR gene set
@@ -1163,6 +1341,14 @@ entrezids_p53 &lt;- unname(p53_set)
 total_p53_genes &lt;- length(p53_set)
 cat(&quot;Total p53 Target genes:&quot;, total_p53_genes, &quot;\n&quot;)</code></pre>
 <pre><code>Total p53 Target genes: 300 </code></pre>
+<pre class="r"><code>#senescence-associated genes from Distefano et al. &amp; Depianto et al.
+senesc_genes &lt;- readRDS(&quot;data/Fig5/sag_combined_set.RDS&quot;)
+#pull out only the unique values (should already be unique)
+sag_set &lt;- unique(na.omit(senesc_genes))
+#already in entrez id format
+total_sen_genes &lt;- length(sag_set)
+cat(&quot;Total Senescence-Associated genes:&quot;, total_sen_genes, &quot;\n&quot;)</code></pre>
+<pre><code>Total Senescence-Associated genes: 2497 </code></pre>
 </div>
 <div id="figure-5a---forest-plot-of-odds-ratios" class="section level1">
 <h1>Figure 5A - Forest Plot of Odds Ratios</h1>
@@ -1171,7 +1357,7 @@ cat(&quot;Total p53 Target genes:&quot;, total_p53_genes, &quot;\n&quot;)</code>
 final_genes_1_RUV &lt;- readRDS(&quot;data/Fig3/final_genes_1_RUV.RDS&quot;)
 final_genes_2_RUV &lt;- readRDS(&quot;data/Fig3/final_genes_2_RUV.RDS&quot;)
 
-motifs &lt;- list(
+clusters &lt;- list(
   acute = final_genes_1_RUV,
   chronic = final_genes_2_RUV
 )
@@ -1179,20 +1365,22 @@ motifs &lt;- list(
 #define the gene sets from above to test with a Fisher&#39;s exact test between clusters
 gene_sets &lt;- list(
   DDR = ddr_set,
-  P53 = p53_set
+  P53 = p53_set,
+  SAG = sag_set
 )
 
 #all tested genes as background
 all_genes &lt;- readRDS(&quot;data/DE/all_genes.RDS&quot;)
 
 #compare between motif clusters for acute and chronic
-compare_motifs &lt;- function(acute, chronic, gene_set, gene_set_name) {
+compare_clusters &lt;- function(acute, chronic, gene_set, gene_set_name) {
   in_chronic &lt;- sum(chronic %in% gene_set)
   out_chronic &lt;- length(chronic) - in_chronic
   in_acute &lt;- sum(acute %in% gene_set)
   out_acute &lt;- length(acute) - in_acute
   
-  mat &lt;- matrix(c(in_chronic, out_chronic, in_acute, out_acute), nrow = 2, byrow = TRUE)
+  mat &lt;- matrix(c(in_chronic, out_chronic, in_acute, out_acute), 
+                nrow = 2, byrow = TRUE)
   rownames(mat) &lt;- c(&quot;Chronic&quot;, &quot;Acute&quot;)
   colnames(mat) &lt;- c(&quot;In_Set&quot;, &quot;Not_In_Set&quot;)
   
@@ -1200,7 +1388,7 @@ compare_motifs &lt;- function(acute, chronic, gene_set, gene_set_name) {
   
   tibble(
     Gene_Set = gene_set_name,
-    Motif_Comparison = &quot;Chronic_vs_Acute&quot;,
+    Cluster_Comparison = &quot;Chronic_vs_Acute&quot;,
     In_Set_Chronic = in_chronic,
     In_Set_Acute = in_acute,
     Odds_Ratio = as.numeric(test$estimate),
@@ -1212,15 +1400,18 @@ compare_motifs &lt;- function(acute, chronic, gene_set, gene_set_name) {
 
 #apply for each gene set
 comparison_results &lt;- map_dfr(names(gene_sets), function(gs_name) {
-  compare_motifs(final_genes_1_RUV, final_genes_2_RUV, gene_sets[[gs_name]], gs_name)
+  compare_clusters(final_genes_1_RUV, 
+                   final_genes_2_RUV, 
+                   gene_sets[[gs_name]], gs_name)
 })
 
 print(comparison_results)</code></pre>
-<pre><code># A tibble: 2 × 8
-  Gene_Set Motif_Comparison In_Set_Chronic In_Set_Acute Odds_Ratio CI_Low
-  &lt;chr&gt;    &lt;chr&gt;                     &lt;int&gt;        &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;
-1 DDR      Chronic_vs_Acute             16           24      10.4    5.13
-2 P53      Chronic_vs_Acute             28          170       2.59   1.65
+<pre><code># A tibble: 3 × 8
+  Gene_Set Cluster_Comparison In_Set_Chronic In_Set_Acute Odds_Ratio CI_Low
+  &lt;chr&gt;    &lt;chr&gt;                       &lt;int&gt;        &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+1 DDR      Chronic_vs_Acute               16           24      10.4    5.13
+2 P53      Chronic_vs_Acute               28          170       2.59   1.65
+3 SAG      Chronic_vs_Acute              324         1084      11.0    9.03
 # ℹ 2 more variables: CI_High &lt;dbl&gt;, P_Value &lt;dbl&gt;</code></pre>
 <pre class="r"><code>#add sigificance and percent overlap
 comparison_results &lt;- comparison_results %&gt;%
@@ -1240,45 +1431,47 @@ comparison_results &lt;- comparison_results %&gt;%
   )
 
 #create a final summary table
-summary_table &lt;- comparison_results %&gt;%
+summary_table_5a &lt;- comparison_results %&gt;%
   dplyr::select(
     Gene_Set,
-    In_Set_Chronic, Perc_Chronic,
-    In_Set_Acute, Perc_Acute,
-    Odds_Ratio, CI_Low, CI_High, P_Value, Significance
+    In_Set_Chronic,
+    In_Set_Acute,
+    Odds_Ratio, CI_Low, CI_High, 
+    P_Value, Significance
   )
 
 cat(&quot;\n--- Chronic vs Acute Enrichment Summary ---\n&quot;)</code></pre>
 <pre><code>
 --- Chronic vs Acute Enrichment Summary ---</code></pre>
-<pre class="r"><code>print(summary_table)</code></pre>
-<pre><code># A tibble: 2 × 10
-  Gene_Set In_Set_Chronic Perc_Chronic In_Set_Acute Perc_Acute Odds_Ratio CI_Low
-  &lt;chr&gt;             &lt;int&gt;        &lt;dbl&gt;        &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
-1 DDR                  16         3.19           24       0.32      10.4    5.13
-2 P53                  28         5.59          170       2.24       2.59   1.65
-# ℹ 3 more variables: CI_High &lt;dbl&gt;, P_Value &lt;dbl&gt;, Significance &lt;chr&gt;</code></pre>
+<pre class="r"><code>summary_table_5a</code></pre>
+<pre><code># A tibble: 3 × 8
+  Gene_Set In_Set_Chronic In_Set_Acute Odds_Ratio CI_Low CI_High   P_Value
+  &lt;chr&gt;             &lt;int&gt;        &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+1 DDR                  16           24      10.4    5.13   20.6  5.67e- 10
+2 P53                  28          170       2.59   1.65    3.92 3.32e-  5
+3 SAG                 324         1084      11.0    9.02   13.4  1.96e-133
+# ℹ 1 more variable: Significance &lt;chr&gt;</code></pre>
 <pre class="r"><code>#now create a forest plot
 p_comparison &lt;- ggplot(comparison_results,
                    aes(y = Gene_Set, x = Odds_Ratio,
                        xmin = CI_Low, xmax = CI_High)) +
   geom_point(size = 4) +
-  geom_errorbarh(height = 0.1, size = 1, color = &quot;black&quot;) + 
+  geom_errorbarh(height = 0.2, size = 1, color = &quot;black&quot;) + 
   geom_text(aes(label = Significance),
             position = position_nudge(y = 0.2),
             color = &quot;black&quot;, fontface = &quot;bold&quot;, size = 5) +
-  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;grey30&quot;) +
   # scale_x_log10(limits = c(1, 30), 
   #               breaks = c(1, 10, 20)) +
   labs(
     x = &quot;odds ratio (95% confidence interval)&quot;,
     y = NULL,
-    title = &quot;Enrichment of DDR + p53 target genes Chronic vs Acute&quot;,
+    title = &quot;Enrichment of DDR, p53, and SAG target genes Chronic vs Acute&quot;,
   ) +
   theme_custom()
 
 print(p_comparison)</code></pre>
-<p><img src="figure/Figure5.Rmd/Figure%205A-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Figure5.Rmd/Figure%205A-1.png" alt="" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Figure-5A-1">
 Past versions of "Figure 5A-1.png"
@@ -1349,6 +1542,11 @@ emmapfort
 </table>
 </div>
 </div>
+<pre class="r"><code>save_plot(p_comparison,
+          filename = &quot;Fig5A_new_SAG_p53_DDR_forest_CvA_EMP&quot;,
+          folder = output_folder,
+          height = 2,
+          width = 3)</code></pre>
 </div>
 <div id="figure-5b---log2fc-heatmap-ddr-tx144-degs"
 class="section level1">
@@ -1533,20 +1731,10 @@ emmapfort
 </table>
 </div>
 </div>
-<pre class="r"><code>#make a function to save complex heatmaps
-save_complex_heatmap &lt;- function(plot, filename, folder, width = 6, height = 8) {
-  if (!dir.exists(folder)) dir.create(folder, recursive = TRUE)
-    path &lt;- file.path(folder, filename)
-    pdf(path, width = width, height = height)
-    draw(plot, heatmap_legend_side = &quot;right&quot;)
-    dev.off()
-  message(&quot;Saved heatmap to: &quot;, path)
-}
-
-#save to PDF in your output folder
+<pre class="r"><code>#save to PDF in your output folder
 # save_complex_heatmap(
 #   plot = ddr_hm_5b,
-#   filename = &quot;Fig5B_logFCHM_RUV_DDR_EMP.pdf&quot;,
+#   filename = &quot;Fig5B_logFCHM_RUV_DDR_EMP&quot;,
 #   folder = output_folder,
 #   width = 8,
 #   height = 7
@@ -1718,11 +1906,368 @@ emmapfort
 </div>
 </div>
 </div>
-<div
-id="supplementary-figure-8a---ddr-target-gene-enrichment-in-degs-vs-nondegs"
+<div id="log2fc-heatmap-sag-fibro-tx144-degs" class="section level1">
+<h1>log2FC Heatmap SAG (Fibro) tx+144 DEGs</h1>
+<pre class="r"><code>#load in DEGs for all timepoints 
+DOX_24T_R &lt;- read.csv(&quot;data/DE/Toptable_RUV_24T_final.csv&quot;) %&gt;% 
+  dplyr::select(-(X))
+DOX_24R_R &lt;- read.csv(&quot;data/DE/Toptable_RUV_24R_final.csv&quot;) %&gt;% 
+  dplyr::select(-(X))
+DOX_144R_R &lt;- read.csv(&quot;data/DE/Toptable_RUV_144R_final.csv&quot;) %&gt;% 
+  dplyr::select(-(X))
+
+#extract Significant DEGs from these lists
+DEGs_24T_R &lt;- DOX_24T_R$Entrez_ID[DOX_24T_R$adj.P.Val &lt; 0.05]
+DEGs_24R_R &lt;- DOX_24R_R$Entrez_ID[DOX_24R_R$adj.P.Val &lt; 0.05]
+DEGs_144R_R &lt;- DOX_144R_R$Entrez_ID[DOX_144R_R$adj.P.Val &lt; 0.05]
+
+Lung_Epi_entrez &lt;- readRDS(&quot;data/Fig5/Lung_epi_SAGs_entrezid.RDS&quot;)
+Fibro_entrez &lt;- readRDS(&quot;data/Fig5/Lung_fibro_SAGs_entrezid.RDS&quot;)
+HCA2_entrez &lt;- readRDS(&quot;data/Fig5/HCA2_entrez.RDS&quot;)
+
+entrez_fibro &lt;- Fibro_entrez
+
+#function to extract relevant data
+extract_data_fibro_RUV &lt;- function(df, name) {
+  df %&gt;%
+    filter(Entrez_ID %in% entrez_fibro) %&gt;%
+    mutate(Gene = mapIds(org.Hs.eg.db, 
+                         as.character(Entrez_ID),
+                         column = &quot;SYMBOL&quot;, 
+                         keytype = &quot;ENTREZID&quot;, 
+                         multiVals = &quot;first&quot;),
+           Condition = name,
+           Signif = ifelse(adj.P.Val &lt; 0.05, &quot;*&quot;, &quot;&quot;))
+}
+
+#DEG list
+deg_list_RUV &lt;- list(&quot;t0&quot; = DOX_24T_R, 
+                 &quot;t24&quot; = DOX_24R_R, 
+                 &quot;t144&quot; = DOX_144R_R
+)
+
+#combine all DEGs and annotate
+all_data_fibro_RUV &lt;- bind_rows(mapply(extract_data_fibro_RUV, deg_list_RUV, 
+                                     names(deg_list_RUV), SIMPLIFY = FALSE)) 
+
+#now make a filtering step to only include DEGs at tx+144
+sig_genes_t144 &lt;- all_data_fibro_RUV %&gt;% 
+  dplyr::filter(Condition == &quot;t144&quot;, adj.P.Val &lt; 0.05) %&gt;% 
+  pull(Gene) %&gt;% 
+  unique()
+
+filt_fibro_data_t144 &lt;- all_data_fibro_RUV %&gt;% 
+  dplyr::filter(Gene %in% sig_genes_t144)
+
+#create matrices
+logFC_fibro_RUV &lt;- acast(filt_fibro_data_t144, Gene ~ Condition, 
+                          value.var = &quot;logFC&quot;)
+signif_fibro_RUV &lt;- acast(filt_fibro_data_t144, Gene ~ Condition, 
+                           value.var = &quot;Signif&quot;)
+
+#desired column order
+desired_order &lt;- c(&quot;t0&quot;,
+                   &quot;t24&quot;,
+                   &quot;t144&quot;)
+
+logFC_mat_fibro_RUV &lt;- logFC_fibro_RUV[, desired_order]
+signif_mat_fibro_RUV &lt;- signif_fibro_RUV[, desired_order]
+
+#column annotation
+timepoint_annot_fibro &lt;- colnames(logFC_mat_fibro_RUV)
+
+col_annot_fibro_RUV &lt;- HeatmapAnnotation(
+  Timepoint = timepoint_annot_fibro,
+  col = list(
+    Timepoint = c(
+      &quot;t0&quot; = &quot;#005A4C&quot;, 
+      &quot;t24&quot; = &quot;#328477&quot;, 
+      &quot;t144&quot; = &quot;#8FB9B1&quot;)
+  ),
+  annotation_height = unit(c(1, 1, 1), &quot;cm&quot;),
+  annotation_legend_param = list(
+    Timepoint = list(
+      at = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)
+    )
+  )
+)
+
+#draw heatmap
+sag_fibro_5d &lt;- Heatmap(
+  logFC_mat_fibro_RUV,
+  name = &quot;log2FC&quot;,
+  top_annotation = col_annot_fibro_RUV,
+  cluster_columns = FALSE,
+  cluster_rows = TRUE,
+  show_row_names = TRUE,
+  row_names_gp = gpar(fontsize = 7),
+  show_column_names = FALSE,
+  column_names_gp = gpar(fontsize = 7), 
+  rect_gp = gpar(col = &quot;black&quot;, lwd = 0.5),   
+  border = &quot;black&quot;,
+  layer_fun = function(j, i, x, y, width, height, fill) {
+    grid.text(signif_mat_fibro_RUV[cbind(i, j)], x, y, gp = gpar(fontsize = 12))
+  },
+  column_title = &quot;SAG gene response (Fibro) (Distefano et al.)&quot;,
+  column_title_gp = gpar(fontsize = 9, fontface = &quot;plain&quot;),
+  heatmap_legend_param = list(
+          title_gp = gpar(fontsize = 8, fontface = &quot;plain&quot;),
+          labels_gp = gpar(fontsize = 7)
+  )
+)
+
+print(sag_fibro_5d)</code></pre>
+<p><img src="figure/Figure5.Rmd/Fibro%20fig5d%20part%201-1.png" alt="" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#save to PDF in your output folder
+# save_complex_heatmap(
+#   plot = sag_hm_5d,
+#   filename = &quot;Fig5D_logFCHM_EpiFibroCombinedSet_RUV_SAG_EMP_260416.pdf&quot;,
+#   folder = output_folder,
+#   width = 8,
+#   height = 7
+# )</code></pre>
+</div>
+<div id="log2fc-heatmap-sag-epi-tx144-degs" class="section level1">
+<h1>log2FC Heatmap SAG (Epi) tx+144 DEGs</h1>
+<pre class="r"><code>#load in DEGs for all timepoints 
+DOX_24T_R &lt;- read.csv(&quot;data/DE/Toptable_RUV_24T_final.csv&quot;) %&gt;% 
+  dplyr::select(-(X))
+DOX_24R_R &lt;- read.csv(&quot;data/DE/Toptable_RUV_24R_final.csv&quot;) %&gt;% 
+  dplyr::select(-(X))
+DOX_144R_R &lt;- read.csv(&quot;data/DE/Toptable_RUV_144R_final.csv&quot;) %&gt;% 
+  dplyr::select(-(X))
+
+#extract Significant DEGs from these lists
+DEGs_24T_R &lt;- DOX_24T_R$Entrez_ID[DOX_24T_R$adj.P.Val &lt; 0.05]
+DEGs_24R_R &lt;- DOX_24R_R$Entrez_ID[DOX_24R_R$adj.P.Val &lt; 0.05]
+DEGs_144R_R &lt;- DOX_144R_R$Entrez_ID[DOX_144R_R$adj.P.Val &lt; 0.05]
+
+Lung_Epi_entrez &lt;- readRDS(&quot;data/Fig5/Lung_epi_SAGs_entrezid.RDS&quot;)
+Fibro_entrez &lt;- readRDS(&quot;data/Fig5/Lung_fibro_SAGs_entrezid.RDS&quot;)
+HCA2_entrez &lt;- readRDS(&quot;data/Fig5/HCA2_entrez.RDS&quot;)
+
+#start with the epi set from distefano et al.
+entrez_epi &lt;- Lung_Epi_entrez
+
+#function to extract relevant data
+extract_data_epi_RUV &lt;- function(df, name) {
+  df %&gt;%
+    filter(Entrez_ID %in% entrez_epi) %&gt;%
+    mutate(Gene = mapIds(org.Hs.eg.db, 
+                         as.character(Entrez_ID),
+                         column = &quot;SYMBOL&quot;, 
+                         keytype = &quot;ENTREZID&quot;, 
+                         multiVals = &quot;first&quot;),
+           Condition = name,
+           Signif = ifelse(adj.P.Val &lt; 0.05, &quot;*&quot;, &quot;&quot;))
+}
+
+#DEG list
+deg_list_RUV &lt;- list(&quot;t0&quot; = DOX_24T_R, 
+                 &quot;t24&quot; = DOX_24R_R, 
+                 &quot;t144&quot; = DOX_144R_R
+)
+
+#combine all DEGs and annotate
+all_data_epi_RUV &lt;- bind_rows(mapply(extract_data_epi_RUV, deg_list_RUV, 
+                                     names(deg_list_RUV), SIMPLIFY = FALSE)) 
+
+#now make a filtering step to only include DEGs at tx+144
+sig_genes_t144 &lt;- all_data_epi_RUV %&gt;% 
+  dplyr::filter(Condition == &quot;t144&quot;, adj.P.Val &lt; 0.05) %&gt;% 
+  pull(Gene) %&gt;% 
+  unique()
+
+filt_epi_data_t144 &lt;- all_data_epi_RUV %&gt;% 
+  dplyr::filter(Gene %in% sig_genes_t144)
+
+#create matrices
+logFC_epi_RUV &lt;- acast(filt_epi_data_t144, Gene ~ Condition, 
+                          value.var = &quot;logFC&quot;)
+signif_epi_RUV &lt;- acast(filt_epi_data_t144, Gene ~ Condition, 
+                           value.var = &quot;Signif&quot;)
+
+#desired column order
+desired_order &lt;- c(&quot;t0&quot;,
+                   &quot;t24&quot;,
+                   &quot;t144&quot;)
+
+logFC_mat_epi_RUV &lt;- logFC_epi_RUV[, desired_order]
+signif_mat_epi_RUV &lt;- signif_epi_RUV[, desired_order]
+
+#column annotation
+timepoint_annot_epi &lt;- colnames(logFC_mat_epi_RUV)
+
+col_annot_epi_RUV &lt;- HeatmapAnnotation(
+  Timepoint = timepoint_annot_epi,
+  col = list(
+    Timepoint = c(
+      &quot;t0&quot; = &quot;#005A4C&quot;, 
+      &quot;t24&quot; = &quot;#328477&quot;, 
+      &quot;t144&quot; = &quot;#8FB9B1&quot;)
+  ),
+  annotation_height = unit(c(1, 1, 1), &quot;cm&quot;),
+  annotation_legend_param = list(
+    Timepoint = list(
+      at = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)
+    )
+  )
+)
+
+#draw heatmap
+sag_epi_5d &lt;- Heatmap(
+  logFC_mat_epi_RUV,
+  name = &quot;log2FC&quot;,
+  top_annotation = col_annot_epi_RUV,
+  cluster_columns = FALSE,
+  cluster_rows = TRUE,
+  show_row_names = TRUE,
+  row_names_gp = gpar(fontsize = 7),
+  show_column_names = FALSE,
+  column_names_gp = gpar(fontsize = 7), 
+  rect_gp = gpar(col = &quot;black&quot;, lwd = 0.5),   
+  border = &quot;black&quot;,
+  layer_fun = function(j, i, x, y, width, height, fill) {
+    grid.text(signif_mat_epi_RUV[cbind(i, j)], x, y, gp = gpar(fontsize = 12))
+  },
+  column_title = &quot;SAG response (Epi) (Distefano et al.)&quot;,
+  column_title_gp = gpar(fontsize = 9, fontface = &quot;plain&quot;),
+  heatmap_legend_param = list(
+          title_gp = gpar(fontsize = 8, fontface = &quot;plain&quot;),
+          labels_gp = gpar(fontsize = 7)
+  )
+)
+
+print(sag_epi_5d)</code></pre>
+<p><img src="figure/Figure5.Rmd/epi%20fig5d%20part%202-1.png" alt="" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#save to PDF in your output folder
+# save_complex_heatmap(
+#   plot = sag_hm_5d,
+#   filename = &quot;Fig5D_logFCHM_EpiFibroCombinedSet_RUV_SAG_EMP_260416.pdf&quot;,
+#   folder = output_folder,
+#   width = 8,
+#   height = 7
+# )</code></pre>
+</div>
+<div id="figure-5d---log2fc-heatmap-sag-response-epi-fibro-sets"
 class="section level1">
-<h1>Supplementary Figure 8A - DDR target gene enrichment in DEGs vs
-nonDEGs</h1>
+<h1>Figure 5D - log2FC Heatmap SAG response Epi + Fibro sets</h1>
+<pre class="r"><code>#pull in the same dataframes from above used in the non-combined plots
+
+#in order to ensure that all genes are included and unique, add a temporary tag to the end of the gene name
+#this will be removed later to plot the normal gene name (SYMBOL)
+rownames(logFC_mat_epi_RUV) &lt;- paste0(rownames(logFC_mat_epi_RUV), &quot;_Epi&quot;)
+rownames(logFC_mat_fibro_RUV) &lt;- paste0(rownames(logFC_mat_fibro_RUV), &quot;_Fibro&quot;)
+
+#put the matrices together
+logFC_mat_combined &lt;- rbind(logFC_mat_epi_RUV, logFC_mat_fibro_RUV)
+signif_mat_combined &lt;- rbind(signif_mat_epi_RUV, signif_mat_fibro_RUV)
+
+#make clean gene name labels
+#create a display name vector that removes the _Epi and _Fibro tags for gene names
+display_names &lt;- gsub(&quot;_Epi|_Fibro&quot;, &quot;&quot;, rownames(logFC_mat_combined))
+
+#make an annotation dataframe
+row_annot_df &lt;- data.frame(
+  Category = c(rep(&quot;Epi&quot;, nrow(logFC_mat_epi_RUV)), 
+               rep(&quot;Fibro&quot;, nrow(logFC_mat_fibro_RUV)))
+)
+rownames(row_annot_df) &lt;- rownames(logFC_mat_combined)
+
+#create an index to sort the samples by to have Epi on top and Fibro on the bottom
+sort_idx &lt;- order(factor(row_annot_df$Category, levels = c(&quot;Epi&quot;, &quot;Fibro&quot;)))
+
+#now reorder my dataframes with this in mind
+logFC_mat_combined_sorted &lt;- logFC_mat_combined[sort_idx, ]
+signif_mat_combined_sorted &lt;- signif_mat_combined[sort_idx, ]
+display_names_sorted &lt;- display_names[sort_idx]
+row_annot_df_sorted &lt;- row_annot_df[sort_idx, , drop = FALSE]
+
+row_annot_df_sorted$Category &lt;- factor(row_annot_df_sorted$Category, 
+                                       levels = c(&quot;Epi&quot;, &quot;Fibro&quot;))
+
+#make the heatmap with your parameters
+col_fun = colorRamp2(c(-6, 0, 6), c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))
+#the original scale for Epi was 6 to -6 and Fibro 3 to -3, go to the larger scale
+
+sag_combined_hm_unsort &lt;- Heatmap(
+  logFC_mat_combined,
+  name = &quot;log2FC&quot;,
+  col = col_fun,
+  top_annotation = col_annot_epi_RUV,
+  row_labels = display_names, #use normal gene names without duplicate info
+  right_annotation = rowAnnotation(
+    Category = row_annot_df$Category,
+    col = list(Category = c(&quot;Epi&quot; = &quot;#4CAF65&quot;, &quot;Fibro&quot; = &quot;#FE4FE6&quot;)),
+    show_legend = TRUE
+  ),
+  
+  cluster_columns = FALSE,
+  cluster_rows = TRUE,
+  show_row_names = TRUE,
+  row_names_gp = gpar(fontsize = 7),
+  
+  layer_fun = function(j, i, x, y, width, height, fill) {
+    grid.text(ifelse(signif_mat_combined[cbind(i, j)] == &quot;*&quot;, &quot;*&quot;, &quot;&quot;), 
+              x, y, gp = gpar(fontsize = 12))
+  }
+)
+
+print(sag_combined_hm_unsort)</code></pre>
+<p><img src="figure/Figure5.Rmd/Fig5D%20combined%20heatmap%20epi%20fibro-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sag_combined_hm_sort &lt;- Heatmap(
+  logFC_mat_combined,
+  name = &quot;log2FC&quot;,
+  col = col_fun,
+  top_annotation = col_annot_epi_RUV,
+  row_labels = display_names,
+  
+  #keep the clustering for the dendrogram, but split this in two categories
+  row_split = row_annot_df$Category, 
+  cluster_rows = TRUE, 
+  
+  #optionally add a gap, set to 0 if no gap
+  row_gap = unit(0, &quot;mm&quot;),
+  
+  #annotation on the right side for category
+  right_annotation = rowAnnotation(
+    Category = row_annot_df$Category,
+    col = list(Category = c(&quot;Epi&quot; = &quot;#4CAF65&quot;, &quot;Fibro&quot; = &quot;#FE4FE6&quot;)),
+    show_legend = TRUE
+  ),
+  
+  cluster_columns = FALSE,
+  show_row_names = TRUE,
+  row_names_gp = gpar(fontsize = 7),
+  
+  layer_fun = function(j, i, x, y, width, height, fill) {
+    grid.text(ifelse(signif_mat_combined[cbind(i, j)] == &quot;*&quot;, &quot;*&quot;, &quot;&quot;), 
+              x, y, gp = gpar(fontsize = 12))
+  }
+)
+
+print(sag_combined_hm_sort)</code></pre>
+<p><img src="figure/Figure5.Rmd/Fig5D%20combined%20heatmap%20epi%20fibro-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#now save both of these plots as pdfs
+# save_complex_heatmap(
+#   plot = sag_combined_hm_unsort,
+#   filename = &quot;Fig5D_logFCHM_RUV_SAG_EpiFibro_unsort_EMP.pdf&quot;,
+#   folder = output_folder,
+#   width = 8,
+#   height = 7
+# )
+# 
+# save_complex_heatmap(
+#   plot = sag_combined_hm_sort,
+#   filename = &quot;Fig5D_logFCHM_RUV_SAG_EpiFibro_sort_EMP.pdf&quot;,
+#   folder = output_folder,
+#   width = 8,
+#   height = 7
+# )</code></pre>
+</div>
+<div id="figure-s11a---ddr-target-gene-enrichment-in-degs-vs-nondegs"
+class="section level1">
+<h1>Figure S11a - DDR target gene enrichment in DEGs vs nonDEGs</h1>
 <pre class="r"><code>#DEGs list
 timepoint_DEGs_ddr &lt;- list(
   &quot;t0&quot;   = DEGs_24T_R,
@@ -1842,11 +2387,9 @@ emmapfort
 #   height = 4,
 #   width = 6)</code></pre>
 </div>
-<div
-id="supplementary-figure-8b---p53-target-gene-enrichment-in-degs-vs-nondegs"
+<div id="figure-s11b---p53-target-gene-enrichment-in-degs-vs-nondegs"
 class="section level1">
-<h1>Supplementary Figure 8B - p53 target gene enrichment in DEGs vs
-nonDEGs</h1>
+<h1>Figure S11b - p53 target gene enrichment in DEGs vs nonDEGs</h1>
 <pre class="r"><code>timepoint_DEGs_p53 &lt;- list(
   &quot;t0&quot;   = DEGs_24T_R,
   &quot;t24&quot;   = DEGs_24R_R,
@@ -1965,10 +2508,9 @@ emmapfort
 #   height = 4,
 #   width = 6)</code></pre>
 </div>
-<div
-id="figure-5d---cell-type-comparison-of-senescense-associated-genes"
+<div id="cell-type-comparisons-of-senescense-associated-genes"
 class="section level1">
-<h1>Figure 5D - cell type comparison of senescense-associated genes</h1>
+<h1>Cell type comparisons of senescense-associated genes</h1>
 <p>We obtained three gene sets for this comparison from various
 proliferating cell types to compare with our non-proliferating
 cells.</p>
@@ -1976,23 +2518,35 @@ cells.</p>
 Uchida, S. (2023). DoxoDB: A Database for the Expression Analysis of
 Doxorubicin-Induced lncRNA Genes. Non-Coding RNA, 9(4), 39. <a
 href="https://doi.org/10.3390/ncrna9040039"
-class="uri">https://doi.org/10.3390/ncrna9040039</a></p>
-<p>Set 2: DePianto DJ, Heiden JAV, Morshead KB, Sun KH, Modrusan Z, Teng
-G, Wolters PJ, Arron JR. Molecular mapping of interstitial lung disease
-reveals a phenotypically distinct senescent basal epithelial cell
-population. JCI Insight. 2021 Apr 22;6(8):e143626. doi:
-10.1172/jci.insight.143626. PMID: 33705361; PMCID: PMC8119199.</p>
+class="uri">https://doi.org/10.3390/ncrna9040039</a> (Tables S7 +
+S8)</p>
+<p>Sets 2 &amp; 3: DePianto DJ, Heiden JAV, Morshead KB, Sun KH,
+Modrusan Z, Teng G, Wolters PJ, Arron JR. Molecular mapping of
+interstitial lung disease reveals a phenotypically distinct senescent
+basal epithelial cell population. JCI Insight. 2021 Apr 22;6(8):e143626.
+doi: 10.1172/jci.insight.143626. PMID: 33705361; PMCID: PMC8119199.
+(Tables S1 + S2)</p>
 <pre class="r"><code>#read in your genes
 filcpm_mat_genes &lt;- readRDS(&quot;data/QC/filcpm_matrix_genes.RDS&quot;)
 all_symb_genes &lt;- filcpm_mat_genes$SYMBOL
 
-#read in the ids for the first gene set
-# distefano_s8_ids &lt;- read_excel(&quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS8_Distefano_2023_SenescenceGenes.xlsx&quot;, 
+#read in the ids for the first gene set + combine for all HCA2 cells 
+#(regardless of PDL1 status)
+# distefano_s7_ids &lt;- read_excel(&quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS7_Distefano_2023_SenescenceGenes.xlsx&quot;,
+#     range = &quot;A3:F3142&quot;)
+
+distefano_s7_ids &lt;- readRDS(&quot;data/Fig5/distefano_s7_ids_sags.RDS&quot;)
+
+# distefano_s8_ids &lt;- read_excel(&quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS8_Distefano_2023_SenescenceGenes.xlsx&quot;,
 #     range = &quot;A3:F2910&quot;)
 
 distefano_s8_ids &lt;- readRDS(&quot;data/Fig5/distefano_s8_ids_sags.RDS&quot;)
 
-#check how many of these genes (2907) are expressed in our dataset
+#check how many of these genes for TableS7 + S8 are expressed in our dataset
+
+cat(&quot;distefano_s7_ids:&quot;, sum(distefano_s7_ids$Gene_symbol %in% all_symb_genes), &quot;of&quot;, length(distefano_s7_ids$Gene_symbol), &quot;\n&quot;)</code></pre>
+<pre><code>distefano_s7_ids: 2082 of 3139 </code></pre>
+<pre class="r"><code>#2,082 of 3,139 are expressed in my dataset
 
 cat(&quot;distefano_s8_ids:&quot;, sum(distefano_s8_ids$Gene_symbol %in% all_symb_genes), &quot;of&quot;, length(distefano_s8_ids$Gene_symbol), &quot;\n&quot;)</code></pre>
 <pre><code>distefano_s8_ids: 2053 of 2907 </code></pre>
@@ -2074,24 +2628,42 @@ cat(&quot;depianto_s1_ids:&quot;, sum(depianto_s1_ids %in% all_symb_genes), &quo
 <pre class="r"><code>cat(&quot;depianto_s2_ids:&quot;, sum(depianto_s2_ids %in% all_symb_genes), &quot;of&quot;, length(depianto_s2_ids), &quot;\n&quot;)</code></pre>
 <pre><code>depianto_s2_ids: 101 of 117 </code></pre>
 <pre class="r"><code>#now translate these genes into Entrez_ID so I can make accurate comparisons
-# to_entrez &lt;- function(symbols, annotation_df) {
-#   annotation_df %&gt;%
-#     dplyr::filter(SYMBOL %in% symbols) %&gt;%
-#     dplyr::pull(Entrez_ID) %&gt;%
-#     as.character() %&gt;%
-#     unique() %&gt;%
-#     na.omit()
-# }
+to_entrez &lt;- function(symbols, annotation_df) {
+  annotation_df %&gt;%
+    dplyr::filter(SYMBOL %in% symbols) %&gt;%
+    dplyr::pull(Entrez_ID) %&gt;%
+    as.character() %&gt;%
+    unique() %&gt;%
+    na.omit()
+}
 
-# PDL1pos_HCA2_entrez &lt;- to_entrez(distefano_s8_ids$Gene_symbol, filcpm_mat_genes)
-PDL1pos_HCA2_entrez &lt;- readRDS(&quot;data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS&quot;)
+# PDL1pos_HCA2_entrez &lt;- to_entrez(distefano_s7_ids$Gene_symbol, 
+#                                  filcpm_mat_genes)
+PDL1pos_entrez &lt;- readRDS(&quot;data/Fig5/PDL1pos_HCA2_SAGs_entrezid.RDS&quot;) #S7
+# PDL1neg_HCA2_entrPDL1neg_HCA2_entrez &lt;- to_entrez(distefano_s8_ids$Gene_symbol,
+#                                                   filcpm_mat_genes)
+PDL1neg_entrez &lt;- readRDS(&quot;data/Fig5/PDL1neg_HCA2_SAGs_entrezid.RDS&quot;) #S8 
+
+#now combine PDL1 pos and neg since I don&#39;t care about their PDL1 status
+# HCA2_entrez &lt;- c(PDL1pos_entrez, PDL1neg_entrez)
+#this has 4,135 genes which combined both expressed sets in my data
+#genes not expressed in my data not included
+
+#now I want to ensure that the set is unique with no genes being double-counted
+# HCA2_entrez &lt;- unique(na.omit(HCA2_entrez))
+# length(HCA2_entrez)
+#total length of unique genes = 2,372 genes
+
+#save + read back in so I can only use the fully unique set
+HCA2_entrez &lt;- readRDS(&quot;data/Fig5/HCA2_entrez.RDS&quot;)
+
 # Lung_Epi_entrez   &lt;- to_entrez(depianto_s1_ids, filcpm_mat_genes)
 Lung_Epi_entrez &lt;- readRDS(&quot;data/Fig5/Lung_epi_SAGs_entrezid.RDS&quot;)
 # Fibro_entrez      &lt;- to_entrez(depianto_s2_ids, filcpm_mat_genes)
 Fibro_entrez &lt;- readRDS(&quot;data/Fig5/Lung_fibro_SAGs_entrezid.RDS&quot;)
 
-cat(&quot;PDL1+ HCA2 cells:&quot;, length(PDL1pos_HCA2_entrez), &quot;of&quot;, length(unique(distefano_s8_ids$Gene_symbol)), &quot;expressed \n&quot;)</code></pre>
-<pre><code>PDL1+ HCA2 cells: 2053 of 2907 expressed </code></pre>
+cat(&quot;HCA2 cells:&quot;, length(HCA2_entrez), &quot;of&quot;, length(unique(distefano_s7_ids$Gene_symbol, distefano_s8_ids$Gene_symbol)), &quot;expressed \n&quot;)</code></pre>
+<pre><code>HCA2 cells: 2372 of 3139 expressed </code></pre>
 <pre class="r"><code>cat(&quot;Lung epithelial cells:&quot;,   length(Lung_Epi_entrez),   &quot;of&quot;, length(depianto_s1_ids), &quot;expressed \n&quot;)</code></pre>
 <pre><code>Lung epithelial cells: 148 of 227 expressed </code></pre>
 <pre class="r"><code>cat(&quot;Lung fibroblasts:&quot;,      length(Fibro_entrez),       &quot;of&quot;, length(depianto_s2_ids), &quot;expressed \n&quot;)</code></pre>
@@ -2104,19 +2676,19 @@ acute_set   &lt;- unique(na.omit(final_genes_1_RUV))
 chronic_set &lt;- unique(na.omit(final_genes_2_RUV))
 
 SAG_sets &lt;- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi     = Lung_Epi_entrez,
-  Fibro        = Fibro_entrez
+  HCA2 = HCA2_entrez,
+  Epi = Lung_Epi_entrez,
+  Fibro = Fibro_entrez
 )
 
-celltype_order &lt;- c(&quot;PDL1pos_HCA2&quot;, &quot;Lung_Epi&quot;, &quot;Fibro&quot;)
+celltype_order &lt;- c(&quot;HCA2&quot;, &quot;Epi&quot;, &quot;Fibro&quot;)
 
 #perform a fisher&#39;s exact test on these data
-fisher_test_overlap &lt;- function(acute, chronic, degs) {
+fisher_test_overlap &lt;- function(acute, chronic, clust) {
   #ensure this is chronic vs acute
-  c1 &lt;- sum(chronic %in% degs)
+  c1 &lt;- sum(chronic %in% clust)
   c2 &lt;- length(chronic) - c1
-  a1 &lt;- sum(acute %in% degs)
+  a1 &lt;- sum(acute %in% clust)
   a2 &lt;- length(acute) - a1
   
   mat &lt;- matrix(c(c1, c2, a1, a2), nrow = 2, byrow = TRUE)
@@ -2140,18 +2712,20 @@ fisher_test_overlap &lt;- function(acute, chronic, degs) {
 forest_summary_celltype &lt;- map_dfr(names(SAG_sets), function(gs_name) {
   fisher_test_overlap(acute = acute_set, 
                       chronic = chronic_set, 
-                      degs = SAG_sets[[gs_name]]) %&gt;% 
+                      clust = SAG_sets[[gs_name]]) %&gt;% 
     mutate(Gene_Set = gs_name)
 }) %&gt;%
   mutate(Gene_Set = factor(Gene_Set, levels = rev(celltype_order)))
 
 #plot 
 forest_celltype &lt;- ggplot(forest_summary_celltype,
-                          aes(y = Gene_Set, x = OR, xmin = CI_low, xmax = CI_high)) +
+                          aes(y = Gene_Set, x = OR, 
+                              xmin = CI_low, xmax = CI_high)) +
   geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
   geom_errorbarh(height = 0.2, linewidth = 0.6, color = &quot;black&quot;) +
   geom_point(size = 4, color = &quot;black&quot;) +
-  geom_text(aes(label = Significant), position = position_nudge(y = 0.3), fontface = &quot;bold&quot;) +
+  geom_text(aes(label = Significant), position = position_nudge(y = 0.3), 
+            fontface = &quot;bold&quot;) +
   scale_x_continuous(limits = c(0, 20), breaks = c(1, 5, 10, 15, 20)) +
   labs(
     title = &quot;Enrichment of cell-type Senescence-associated genes in Chronic vs Acute&quot;,
@@ -2162,25 +2736,63 @@ forest_celltype &lt;- ggplot(forest_summary_celltype,
 
 forest_celltype</code></pre>
 <p><img src="figure/Figure5.Rmd/forest%20plot%20sags%20cell%20types%20revised-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-forest-plot-sags-cell-types-revised-1">
+Past versions of "forest plot sags cell types revised-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-forest-plot-sags-cell-types-revised-1"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/f8f35a260b4090290ad85dfc74e21c0d3ff2d97a/DXR_website/docs/figure/Figure5.Rmd/forest plot sags cell types revised-1.png" target="_blank">f8f35a2</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># save_plot(forest_celltype,
 #           filename = &quot;ForestPlot_OddsRatio_SAG_ChronicvAcute_EMP&quot;,
 #           folder = output_folder)
 
 forest_summary_celltype</code></pre>
 <pre><code># A tibble: 3 × 6
-     OR CI_low CI_high   p_value Significant Gene_Set    
-  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;fct&gt;       
-1 12.2   9.98    14.8  6.83e-140 ***         PDL1pos_HCA2
-2  2.02  0.924    3.95 4.27e-  2 *           Lung_Epi    
-3  3.07  1.31     6.41 5.39e-  3 **          Fibro       </code></pre>
+     OR CI_low CI_high   p_value Significant Gene_Set
+  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;fct&gt;   
+1 10.9   8.94    13.3  2.63e-131 ***         HCA2    
+2  2.02  0.924    3.95 4.27e-  2 *           Epi     
+3  3.07  1.31     6.41 5.39e-  3 **          Fibro   </code></pre>
 </div>
 <div id="proportion-of-sags-in-acute-vs-chronic" class="section level2">
 <h2>Proportion of SAGs in Acute vs Chronic</h2>
 <pre class="r"><code>#define my gene sets
 SAG_sets &lt;- list(
-  PDL1pos_HCA2 = unique(na.omit(PDL1pos_HCA2_entrez)),
-  Lung_Epi     = unique(na.omit(Lung_Epi_entrez)),
-  Fibro        = unique(na.omit(Fibro_entrez))
+  HCA2 = HCA2_entrez,
+  Epi = Lung_Epi_entrez,
+  Fibro = Fibro_entrez
 )
 
 #iterate through these gene sets to make three plots, one per set
@@ -2260,19 +2872,139 @@ plots_list &lt;- map(names(SAG_sets), function(set_name) {
 
 #print the plots
 names(plots_list) &lt;- names(SAG_sets)
-print(plots_list$PDL1pos_HCA2)</code></pre>
+print(plots_list$HCA2)</code></pre>
 <p><img src="figure/Figure5.Rmd/make%20proportion%20barplots%20for%20sags%20in%20acute%20vs%20chronic%20motifs-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>print(plots_list$Lung_Epi)</code></pre>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-make-proportion-barplots-for-sags-in-acute-vs-chronic-motifs-1">
+Past versions of "make proportion barplots for sags in acute vs chronic
+motifs-1.png"
+</button>
+</p>
+<div
+id="fig-no-spaces-make-proportion-barplots-for-sags-in-acute-vs-chronic-motifs-1"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/f8f35a260b4090290ad85dfc74e21c0d3ff2d97a/DXR_website/docs/figure/Figure5.Rmd/make proportion barplots for sags in acute vs chronic motifs-1.png" target="_blank">f8f35a2</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>print(plots_list$Epi)</code></pre>
 <p><img src="figure/Figure5.Rmd/make%20proportion%20barplots%20for%20sags%20in%20acute%20vs%20chronic%20motifs-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-make-proportion-barplots-for-sags-in-acute-vs-chronic-motifs-2">
+Past versions of "make proportion barplots for sags in acute vs chronic
+motifs-2.png"
+</button>
+</p>
+<div
+id="fig-no-spaces-make-proportion-barplots-for-sags-in-acute-vs-chronic-motifs-2"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/f8f35a260b4090290ad85dfc74e21c0d3ff2d97a/DXR_website/docs/figure/Figure5.Rmd/make proportion barplots for sags in acute vs chronic motifs-2.png" target="_blank">f8f35a2</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>print(plots_list$Fibro)</code></pre>
 <p><img src="figure/Figure5.Rmd/make%20proportion%20barplots%20for%20sags%20in%20acute%20vs%20chronic%20motifs-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># save_plot(plots_list$PDL1pos_HCA2,
-#           filename = &quot;PropBarplot_Fin_PDL1pos_HCA2_SAGs_AvC_EMP&quot;,
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-make-proportion-barplots-for-sags-in-acute-vs-chronic-motifs-3">
+Past versions of "make proportion barplots for sags in acute vs chronic
+motifs-3.png"
+</button>
+</p>
+<div
+id="fig-no-spaces-make-proportion-barplots-for-sags-in-acute-vs-chronic-motifs-3"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/emmapfort/DXR_Project/blob/f8f35a260b4090290ad85dfc74e21c0d3ff2d97a/DXR_website/docs/figure/Figure5.Rmd/make proportion barplots for sags in acute vs chronic motifs-3.png" target="_blank">f8f35a2</a>
+</td>
+<td>
+emmapfort
+</td>
+<td>
+2026-04-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code># save_plot(plots_list$HCA2,
+#           filename = &quot;PropBarplot_Fin_HCA2_SAGs_AvC_EMP&quot;,
 #           folder = output_folder
 #           )
 # 
-# save_plot(plots_list$Lung_Epi,
-#           filename = &quot;PropBarplot_Fin_LungEpi_SAGs_AvC_EMP&quot;,
+# save_plot(plots_list$Epi,
+#           filename = &quot;PropBarplot_Fin_Epi_SAGs_AvC_EMP&quot;,
 #           folder = output_folder
 #           )
 # 
@@ -2281,94 +3013,10 @@ print(plots_list$PDL1pos_HCA2)</code></pre>
 #           folder = output_folder
 #           )</code></pre>
 </div>
-<div id="senescence-gene-proportions-in-acute-vs-chronic"
-class="section level2">
-<h2>Senescence Gene Proportions in Acute vs Chronic</h2>
-<pre class="r"><code>#create a function to generate separate plots per cell type for their respective senscence-associated genes - then assess whether they are enriched in Chronic v Acute gene clusters as above in the forest plot
-
-generate_sag_plot &lt;- function(gene_set, set_name) {
-  
-  #calculate counts within clusters
-  count_acute   &lt;- sum(gene_set %in% acute_set)
-  count_chronic &lt;- sum(gene_set %in% chronic_set)
-  total_captured &lt;- count_acute + count_chronic
-  not_in_clusters &lt;- length(gene_set) - total_captured
-  
-  #perform fisher&#39;s exact test
-  #background is cluster size vs genes not in cluster
-  mat &lt;- matrix(c(count_chronic, length(chronic_set) - count_chronic,
-                  count_acute,   length(acute_set) - count_acute), 
-                nrow = 2, byrow = TRUE)
-  
-  pval &lt;- fisher.test(mat)$p.value
-  sig_label &lt;- case_when(
-    pval &lt; 0.001 ~ &quot;***&quot;, 
-    pval &lt; 0.01 ~ &quot;**&quot;, 
-    pval &lt; 0.05 ~ &quot;*&quot;, 
-    TRUE ~ &quot;&quot;)
-  
-  #form plotting data
-  #denominator is all genes found within one motif (not every gene in sets)
-  plot_df &lt;- tibble(
-    Label = set_name,
-    Motif = factor(c(&quot;Acute&quot;, &quot;Chronic&quot;), levels = c(&quot;Chronic&quot;, &quot;Acute&quot;)),
-    Percentage = c((count_acute / total_captured) * 100, 
-                   (count_chronic / total_captured) * 100)
-  )
-  
-  #generate plots
-  plt &lt;- ggplot(plot_df, 
-                aes(x = Label, y = Percentage, fill = Motif)) +
-    geom_bar(stat = &quot;identity&quot;, color = &quot;black&quot;, width = 0.6) +
-    geom_text(aes(label = round(Percentage, 1)), 
-              position = position_stack(vjust = 0.5), 
-              size = 5, fontface = &quot;bold&quot;) +
-    #add significance stars for Chronic vs Acute enrichment
-    annotate(&quot;text&quot;, x = 1, y = 105, 
-             label = sig_label, size = 9, fontface = &quot;bold&quot;) +
-    scale_fill_manual(values = c(&quot;Acute&quot; = &quot;#83C67C&quot;, &quot;Chronic&quot; = &quot;#C499C6&quot;)) +
-    scale_y_continuous(limits = c(0, 115), breaks = seq(0, 100, 20)) +
-    labs(
-      title = paste(&quot;Percentage of SAGs in Chronic vs Acute clusters&quot;, set_name),
-      subtitle = paste0(&quot;Total Set: &quot;, length(gene_set), 
-                        &quot; | In Motifs: &quot;, total_captured, 
-                        &quot; | Not in Motifs: &quot;, not_in_clusters),
-      x = NULL,
-      y = &quot;Percent (%)&quot;,
-      fill = &quot;Cluster&quot;
-    ) +
-    theme_custom()
-  
-  return(plt)
-}
-
-#now run my cell type SAG gene sets through to make their respective barplots
-#pdl1+ hca2 cells set
-PDL1_barplot &lt;- generate_sag_plot(SAG_sets$PDL1pos_HCA2, &quot;PDL1+/nHCA2&quot;)
-print(PDL1_barplot)</code></pre>
-<p><img src="figure/Figure5.Rmd/sags%20in%20motifs%20proportions%20sep%20plots-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># save_plot(PDL1_barplot,
-#           filename = &quot;Barplots_PDL1posHCA2_ChronicvAcute_EMP&quot;,
-#           folder = output_folder)
-
-epi_barplot &lt;- generate_sag_plot(SAG_sets$Lung_Epi, &quot;Epithelial/nCells&quot;)
-print(epi_barplot)</code></pre>
-<p><img src="figure/Figure5.Rmd/sags%20in%20motifs%20proportions%20sep%20plots-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># save_plot(epi_barplot,
-#           filename = &quot;Barplots_LungEpi_ChronicvAcute_EMP&quot;,
-#           folder = output_folder)
-
-fibro_barplot &lt;- generate_sag_plot(SAG_sets$Fibro, &quot;Fibroblasts&quot;)
-print(fibro_barplot)</code></pre>
-<p><img src="figure/Figure5.Rmd/sags%20in%20motifs%20proportions%20sep%20plots-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># save_plot(fibro_barplot,
-#           filename = &quot;Barplots_LungFibro_ChronicvAcute_EMP&quot;,
-#           folder = output_folder)</code></pre>
 </div>
-</div>
-<div id="proportion-of-senescence-associated-genes-in-degs-vs-nondegs"
+<div id="figure-s11c---senescence-associated-genes-in-degs-vs-nondegs"
 class="section level1">
-<h1>Proportion of senescence-associated genes in DEGs vs nonDEGs</h1>
+<h1>Figure S11c - Senescence-associated genes in DEGs vs nonDEGs</h1>
 <pre class="r"><code>timepoint_DEGs_sag &lt;- list(
   &quot;t0&quot;   = DEGs_24T_R,
   &quot;t24&quot;   = DEGs_24R_R,
@@ -2376,13 +3024,16 @@ class="section level1">
 )
 
 SAG_sets &lt;- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
+  HCA2 = HCA2_entrez,
+  Epi = Lung_Epi_entrez,
+  Fibro = Fibro_entrez
 )
 
 sag_combined_set &lt;- unique(unlist(SAG_sets))
+# saveRDS(sag_combined_set, &quot;data/Fig5/sag_combined_set.RDS&quot;)
+#use this one above
 
+SAG_sets$Combined &lt;- sag_combined_set
 
 proportion_data_sag &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
@@ -2411,110 +3062,69 @@ proportion_data_sag &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_
     CI_low = ci_low_sag,
     CI_high = ci_high_sag,
     P_Value = p_val_sag,
-    Significant = p_val_sag &lt; 0.05
-  )
+    Significant = case_when(
+      p_val_sag &lt; 0.001 ~ &quot;***&quot;,
+      p_val_sag &lt; 0.01 ~ &quot;**&quot;,
+      p_val_sag &lt; 0.05 ~ &quot;*&quot;,
+      TRUE ~ &quot;ns&quot;
+  ))
 })
 
-#format Timepoint factor and add significance label/color
+
+#format Timepoint factor and add significance label
 proportion_data_sag &lt;- proportion_data_sag %&gt;%
   mutate(
-    Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)),
-    Sig_Label = ifelse(Significant, &quot;Significant&quot;, &quot;Not Significant&quot;)
-  )
+    Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)))
 
 #plot horizontal forest plot with color by significance
-plot_forest_sag &lt;- ggplot(proportion_data_sag, 
-                           aes(y = Timepoint, x = Odds_Ratio, color = Sig_Label)) +
-  geom_point(size = 3) +
-  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
+supp8c_plot_forest_sag &lt;- ggplot(proportion_data_sag, 
+                           aes(y = Timepoint, x = Odds_Ratio)) +
+  geom_point(size = 5) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.3) +
   geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
-  scale_color_manual(values = c(&quot;Significant&quot; = &quot;black&quot;, &quot;Not Significant&quot; = &quot;pink&quot;)) +
-  scale_x_continuous(limits = c(0, 10), 
-                     breaks = c(0, 1, 5, 10)) +
+  geom_text(aes(label = Significant), position = position_nudge(y = 0.3), 
+              fontface = &quot;bold&quot;) +
+  scale_x_log10() +
   labs(
     title = &quot;Odds Ratios of Senescence-Assoc. Gene Enrichment by Timepoint&quot;,
     y = &quot;Timepoint&quot;,
-    x = &quot;Odds Ratio (95% confidence interval)&quot;,
-    color = &quot;Significance&quot;
-  ) +
+    x = &quot;log odds ratio (95% confidence interval)&quot;
+    ) +
   scale_y_discrete(limits = rev(levels(proportion_data_sag$Timepoint)))+
-  theme_custom()
+  theme_custom() +
+  theme(legend.position = &quot;none&quot;)
 
 
-print(plot_forest_sag)</code></pre>
-<p><img src="figure/Figure5.Rmd/test%20sags%20against%20degs%20for%20each%20gene%20set%20and%20plot%20together-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-test-sags-against-degs-for-each-gene-set-and-plot-together-1">
-Past versions of "test sags against degs for each gene set and plot
-together-1.png"
-</button>
-</p>
-<div
-id="fig-no-spaces-test-sags-against-degs-for-each-gene-set-and-plot-together-1"
-class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/emmapfort/DXR_Project/blob/673be5d03cfecf67bd156a2ab9a4a7075f714dd1/DXR_website/docs/figure/Figure5.Rmd/test sags against degs for each gene set and plot together-1.png" target="_blank">673be5d</a>
-</td>
-<td>
-emmapfort
-</td>
-<td>
-2026-04-09
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+print(supp8c_plot_forest_sag)</code></pre>
+<p><img src="figure/Figure5.Rmd/Supp%2011C%20test%20sags%20against%20degs%20for%20each%20gene%20set%20and%20plot%20together-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># save_plot(
-#   plot = plot_forest_sag,
-#   filename = &quot;Forest_SAGs_OddsRatio_EMP&quot;,
+#   plot = supp8c_plot_forest_sag,
+#   filename = &quot;Supp8C_Forest_SAGs_OddsRatio_EMP&quot;,
 #   folder = output_folder,
 #   height = 4,
-#   width = 6)</code></pre>
-<div id="pdl1-hca2-cells-senescence-associated-gene-set-degs-vs-nondegs"
+#   width = 6)
+
+proportion_data_sag</code></pre>
+<pre><code># A tibble: 3 × 6
+  Timepoint Odds_Ratio CI_low CI_high   P_Value Significant
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      
+1 t0             0.940  0.858    1.03 1.86e-  1 ns         
+2 t24            1.62   1.48     1.77 4.43e- 27 ***        
+3 t144           6.47   5.49     7.62 1.79e-109 ***        </code></pre>
+<pre class="r"><code>#for non log scale I used this:
+  # scale_x_continuous(limits = c(0, 10), 
+  #                    breaks = c(0, 1, 5, 10)) +</code></pre>
+<div id="hca2-cells-senescence-associated-gene-set-degs-vs-nondegs"
 class="section level2">
-<h2>PDL1+ HCA2 Cells Senescence-Associated Gene Set DEGs vs nonDEGs</h2>
-<pre class="r"><code>timepoint_DEGs_sag &lt;- list(
-  &quot;t0&quot;   = DEGs_24T_R,
-  &quot;t24&quot;   = DEGs_24R_R,
-  &quot;t144&quot;  = DEGs_144R_R
-)
-
-SAG_sets &lt;- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
-)
-
-#PDL1pos_HCA2_entrez
-
-
-proportion_data_sag_hca2 &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+<h2>HCA2 Cells Senescence-Associated Gene Set DEGs vs nonDEGs</h2>
+<pre class="r"><code>proportion_data_sag_hca2 &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
   nondegs_sag &lt;- setdiff(all_genes, degs_sag)
   
-  in_deg_sag &lt;- sum(degs_sag %in% PDL1pos_HCA2_entrez)
+  in_deg_sag &lt;- sum(degs_sag %in% HCA2_entrez)
   in_deg_nonsag &lt;- length(degs_sag) - in_deg_sag
   
-  in_nondeg_sag &lt;- sum(nondegs_sag %in% PDL1pos_HCA2_entrez)
+  in_nondeg_sag &lt;- sum(nondegs_sag %in% HCA2_entrez)
   in_nondeg_nonsag &lt;- length(nondegs_sag) - in_nondeg_sag
   
   contingency_degs_sag &lt;- matrix(c(in_deg_sag, in_deg_nonsag,
@@ -2551,11 +3161,12 @@ plot_forest_sag_hca2 &lt;- ggplot(proportion_data_sag_hca2,
   geom_point(size = 3) +
   geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.1) +
   geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
-  scale_color_manual(values = c(&quot;Significant&quot; = &quot;black&quot;, &quot;Not Significant&quot; = &quot;pink&quot;)) +
+  scale_color_manual(values = c(&quot;Significant&quot; = &quot;black&quot;,
+                                &quot;Not Significant&quot; = &quot;pink&quot;)) +
   scale_x_continuous(limits = c(0, 10), 
                      breaks = c(0, 1, 5, 10)) +
   labs(
-    title = &quot;Odds Ratios of PDL1+ HCA2 SAG Enrichment by Timepoint&quot;,
+    title = &quot;Odds Ratios of HCA2 SAG Enrichment by Timepoint&quot;,
     y = &quot;Timepoint&quot;,
     x = &quot;Odds Ratio (95% confidence interval)&quot;,
     color = &quot;Significance&quot;
@@ -2565,48 +3176,17 @@ plot_forest_sag_hca2 &lt;- ggplot(proportion_data_sag_hca2,
 
 
 print(plot_forest_sag_hca2)</code></pre>
-<p><img src="figure/Figure5.Rmd/pdl1pos%20hca2%20sags%20forest%20plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-pdl1pos-hca2-sags-forest-plot-1">
-Past versions of "pdl1pos hca2 sags forest plot-1.png"
-</button>
-</p>
-<div id="fig-no-spaces-pdl1pos-hca2-sags-forest-plot-1"
-class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/emmapfort/DXR_Project/blob/673be5d03cfecf67bd156a2ab9a4a7075f714dd1/DXR_website/docs/figure/Figure5.Rmd/pdl1pos hca2 sags forest plot-1.png" target="_blank">673be5d</a>
-</td>
-<td>
-emmapfort
-</td>
-<td>
-2026-04-09
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/Figure5.Rmd/hca2%20sags%20forest%20plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>print(proportion_data_sag_hca2)</code></pre>
+<pre><code># A tibble: 3 × 7
+  Timepoint Odds_Ratio CI_low CI_high   P_Value Significant Sig_Label      
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;lgl&gt;       &lt;chr&gt;          
+1 t0             0.938  0.855    1.03 1.77e-  1 FALSE       Not Significant
+2 t24            1.61   1.47     1.76 2.16e- 25 TRUE        Significant    
+3 t144           6.50   5.52     7.65 1.67e-108 TRUE        Significant    </code></pre>
 <pre class="r"><code># save_plot(
 #   plot = plot_forest_sag_hca2,
-#   filename = &quot;Forest_SAGs_PDL1posHCA2_OddsRatio_EMP&quot;,
+#   filename = &quot;Forest_SAGs_HCA2_OddsRatio_EMP&quot;,
 #   folder = output_folder,
 #   height = 4,
 #   width = 6)</code></pre>
@@ -2616,21 +3196,7 @@ id="lung-epithelial-cells-senescence-associated-gene-set-degs-vs-nondegs"
 class="section level2">
 <h2>Lung Epithelial Cells Senescence-Associated Gene Set DEGs vs
 nonDEGs</h2>
-<pre class="r"><code>timepoint_DEGs_sag &lt;- list(
-  &quot;t0&quot;   = DEGs_24T_R,
-  &quot;t24&quot;   = DEGs_24R_R,
-  &quot;t144&quot;  = DEGs_144R_R
-)
-
-SAG_sets &lt;- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
-)
-
-#Lung_Epi_entrez
-
-proportion_data_sag_epi &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+<pre class="r"><code>proportion_data_sag_epi &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
   nondegs_sag &lt;- setdiff(all_genes, degs_sag)
   
@@ -2726,6 +3292,13 @@ emmapfort
 </table>
 </div>
 </div>
+<pre class="r"><code>print(proportion_data_sag_epi)</code></pre>
+<pre><code># A tibble: 3 × 7
+  Timepoint Odds_Ratio CI_low CI_high P_Value Significant Sig_Label      
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;       &lt;chr&gt;          
+1 t0             0.829  0.587    1.18 0.296   FALSE       Not Significant
+2 t24            1.72   1.22     2.46 0.00160 TRUE        Significant    
+3 t144           2.19   1.16     3.83 0.00934 TRUE        Significant    </code></pre>
 <pre class="r"><code># save_plot(
 #   plot = plot_forest_sag_epi,
 #   filename = &quot;Forest_SAGs_LungEpi_OddsRatio_EMP&quot;,
@@ -2736,22 +3309,7 @@ emmapfort
 <div id="lung-fibroblast-senescence-associated-gene-set-degs-vs-nondegs"
 class="section level2">
 <h2>Lung Fibroblast Senescence-Associated Gene Set DEGs vs nonDEGs</h2>
-<pre class="r"><code>timepoint_DEGs_sag &lt;- list(
-  &quot;t0&quot;   = DEGs_24T_R,
-  &quot;t24&quot;   = DEGs_24R_R,
-  &quot;t144&quot;  = DEGs_144R_R
-)
-
-SAG_sets &lt;- list(
-  PDL1pos_HCA2 = PDL1pos_HCA2_entrez,
-  Lung_Epi   = Lung_Epi_entrez,
-  Fibro      = Fibro_entrez
-)
-
-# Fibro_entrez
-
-
-proportion_data_sag_fibro &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
+<pre class="r"><code>proportion_data_sag_fibro &lt;- purrr::map_dfr(names(timepoint_DEGs_sag), function(tp_sag) {
   degs_sag &lt;- unique(timepoint_DEGs_sag[[tp_sag]])
   nondegs_sag &lt;- setdiff(all_genes, degs_sag)
   
@@ -2847,12 +3405,670 @@ emmapfort
 </table>
 </div>
 </div>
+<pre class="r"><code>print(proportion_data_sag_fibro)</code></pre>
+<pre><code># A tibble: 3 × 7
+  Timepoint Odds_Ratio CI_low CI_high P_Value Significant Sig_Label      
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;       &lt;chr&gt;          
+1 t0             0.981  0.640    1.52 0.917   FALSE       Not Significant
+2 t24            1.71   1.12     2.64 0.00928 TRUE        Significant    
+3 t144           2.04   0.900    4.07 0.0516  FALSE       Not Significant</code></pre>
 <pre class="r"><code># save_plot(
 #   plot = plot_forest_sag_fibro,
 #   filename = &quot;Forest_SAGs_LungFibro_OddsRatio_EMP&quot;,
 #   folder = output_folder,
 #   height = 4,
 #   width = 6)</code></pre>
+</div>
+</div>
+<div id="cdk4dox-shared-genes" class="section level1">
+<h1>CDK4/DOX Shared Genes</h1>
+<p>I have obtained a set of CDK4/DOX shared genes from the following
+preprint on bioRxiv:</p>
+<p>Joanna Lan-Hing Yeung, Justin Rendleman, Lauren Anderson, Matthew
+Pressler, Nicole Pagane, Irene Duba, Ria Hosuru, Bat-Ider Tumenbayar,
+Andrew Koff, Viviana I. Risca bioRxiv 2025.08.25.672139; doi: <a
+href="https://doi.org/10.1101/2025.08.25.672139"
+class="uri">https://doi.org/10.1101/2025.08.25.672139</a></p>
+<pre class="r"><code>#I want to import this Supplementary Table 2 from Yeung et al., and group the DOX and CDK4 up/down genes together to make one gene set
+
+#read in the supplementary table from the manuscript (bioRxiv)
+yeung_s2 &lt;- read_excel(&quot;C:/Users/emmap/OneDrive/Desktop/DXR Manuscript Materials/Gene Tables/TableS2_Yeung_2026_biorxiv.xlsx&quot;, 
+    range = &quot;A1:AE22331&quot;)
+
+#now I want to pull out only those genes that are Shared upregulated or Shared downregulated in the dataset (RNA_Cluster_Description column)
+#Palbo is the CDK inhibitor
+#Cycling are the untreated cycling cells
+
+shared_up_s2 &lt;- yeung_s2 %&gt;% 
+  dplyr::filter(RNA_Cluster_Description == &quot;Shared upregulated&quot;)
+dim(shared_up_s2)</code></pre>
+<pre><code>[1] 480  31</code></pre>
+<pre class="r"><code>#480 genes found
+
+shared_down_s2 &lt;- yeung_s2 %&gt;% 
+  dplyr::filter(RNA_Cluster_Description == &quot;Shared downregulated&quot;)
+dim(shared_down_s2)</code></pre>
+<pre><code>[1] 739  31</code></pre>
+<pre class="r"><code>#739 genes found
+
+
+#now pull the CDK only set both up and downregulated
+cdk_up &lt;- yeung_s2 %&gt;% 
+  dplyr::filter(RNA_Cluster_Description == &quot;Palbo upregulated&quot;)
+dim(cdk_up)</code></pre>
+<pre><code>[1] 1017   31</code></pre>
+<pre class="r"><code>#1,071 genes found
+
+dox_up_yeung &lt;- yeung_s2 %&gt;% 
+  dplyr::filter(RNA_Cluster_Description == &quot;Doxo upregulated&quot;)
+dim(dox_up_yeung)</code></pre>
+<pre><code>[1] 1477   31</code></pre>
+<pre class="r"><code>#1,477 genes found
+
+#these are using ensembl id and gene symbol, so filter based on gene symbol
+#make the shared set with both of these classifications
+#(we don&#39;t care about directionality here)
+CDK_DOX_shared &lt;- rbind(shared_up_s2, shared_down_s2)
+#now save this set so I can read it in later as needed
+
+# saveRDS(CDK_DOX_shared, &quot;data/Fig5/CDK_DOX_shared_genes_Yeung_TableS2.RDS&quot;)
+
+#convert these to entrez_id so I can make comparisons
+# cdkdox_set &lt;- to_entrez(CDK_DOX_shared$gene_symbol, filcpm_mat_genes)
+# cdk_set_yeung &lt;- to_entrez(cdk_up$gene_symbol, filcpm_mat_genes)
+# dox_set_yeung &lt;- to_entrez(dox_up_yeung$gene_symbol, filcpm_mat_genes)
+#read it back in after saving it
+cdkdox_set &lt;- readRDS(&quot;data/Fig5/cdkdox_set_entrez.RDS&quot;)
+cat(&quot;CDK/DOX Shared Genes:&quot;, sum(CDK_DOX_shared$gene_symbol %in% all_symb_genes), &quot;of&quot;, length(CDK_DOX_shared$gene_symbol), &quot;\n&quot;)</code></pre>
+<pre><code>CDK/DOX Shared Genes: 686 of 1219 </code></pre>
+<pre class="r"><code>#this cut it down to 686 expressed genes in our dataset vs the 1,219 previous
+
+cdk_set_yeung &lt;- readRDS(&quot;data/Fig5/cdk_set_yeung_entrez.RDS&quot;)
+cat(&quot;CDK/DOX Shared Genes:&quot;, sum(cdk_up$gene_symbol %in% all_symb_genes), &quot;of&quot;, length(cdk_up$gene_symbol), &quot;\n&quot;)</code></pre>
+<pre><code>CDK/DOX Shared Genes: 503 of 1017 </code></pre>
+<pre class="r"><code>#503 genes of 1,017 are expressed in our dataset
+
+dox_set_yeung &lt;- readRDS(&quot;data/Fig5/dox_set_yeung_entrez.RDS&quot;)
+cat(&quot;DOX Genes:&quot;, sum(dox_up_yeung$gene_symbol %in% all_symb_genes), &quot;of&quot;, length(dox_up_yeung$gene_symbol), &quot;\n&quot;)</code></pre>
+<pre><code>DOX Genes: 473 of 1477 </code></pre>
+<pre class="r"><code>#473 genes of 1,477 are expressed in our data</code></pre>
+<div id="cdkdox-shared-odds-ratios-chronic-vs-acute-clusters-enrichment"
+class="section level2">
+<h2>CDK/DOX Shared Odds Ratios Chronic vs Acute Clusters Enrichment</h2>
+<pre class="r"><code>#now I want to assess the enrichment of this gene set in my motif clusters
+#I will be testing Chronic vs Acute for enrichment
+
+#read in my gene sets from above just in case
+acute_set   &lt;- unique(na.omit(final_genes_1_RUV))
+chronic_set &lt;- unique(na.omit(final_genes_2_RUV))
+
+yeung_sets &lt;- list(
+  &quot;CDK DOX Shared&quot; = cdkdox_set,
+  &quot;CDK&quot; = cdk_set_yeung,
+  &quot;DOX&quot; = dox_set_yeung
+)
+
+# #calculate proportions, odds ratios, and Fisher&#39;s test results per response cluster
+# fisher_test_overlap &lt;- function(acute, chronic, clust, bg) {
+#   #c1: chronic genes that ARE in the set
+#   c1 &lt;- sum(chronic %in% clust)
+#   #c2: chronic genes that are NOT in the set (Background - Set)
+#   c2 &lt;- length(intersect(chronic, bg)) - c1
+#   
+#   #a1: acute genes that ARE in the set
+#   a1 &lt;- sum(acute %in% clust)
+#   #a2: acute genes that are NOT in the set (Background - Set)
+#   a2 &lt;- length(intersect(acute, bg)) - a1
+#   
+#   mat &lt;- matrix(c(c1, c2, a1, a2), nrow = 2, byrow = TRUE)
+#   res &lt;- fisher.test(mat)
+#   
+#   tibble(
+#     Set = &quot;CDK/DOX Shared&quot;,
+#     OR = unname(res$estimate),
+#     CI_low = res$conf.int[1],
+#     CI_high = res$conf.int[2],
+#     p_value = res$p.value,
+#     Significant = case_when(
+#       res$p.value &lt; 0.001 ~ &quot;***&quot;,
+#       res$p.value &lt; 0.01  ~ &quot;**&quot;,
+#       res$p.value &lt; 0.05  ~ &quot;*&quot;,
+#       TRUE ~ &quot;ns&quot;
+#     )
+#   )
+# }
+# 
+# #run the test for cdkdox_set
+# forest_summary_cdkdox &lt;- fisher_test_overlap(
+#   acute = acute_set, 
+#   chronic = chronic_set, 
+#   clust = cdkdox_set, 
+#   bg = all_genes
+# )
+# 
+# #plot
+# forest_cdkdox &lt;- ggplot(forest_summary_cdkdox,
+#                           aes(y = Set, x = OR, 
+#                               xmin = CI_low, xmax = CI_high)) +
+#   geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+#   geom_errorbarh(height = 0.2, linewidth = 0.6, color = &quot;black&quot;) +
+#   geom_point(size = 4, color = &quot;black&quot;) +
+#   geom_text(aes(label = Significant), position = position_nudge(y = 0.3), 
+#             fontface = &quot;bold&quot;) +
+#   scale_x_discrete(limits = c(0, max(forest_summary_cdkdox$CI_high) + 1)) +
+#   labs(
+#     title = &quot;Enrichment of CDK &amp; DOX Shared senescence genes in Chronic vs Acute&quot;,
+#     x = &quot;Odds Ratio (95% confidence interval)&quot;,
+#     y = NULL
+#   ) +
+#   theme_custom()
+# 
+# print(forest_cdkdox)
+# print(forest_summary_cdkdox)
+# 
+# # save_plot(
+# #   plot = forest_cdkdox,
+# #   filename = &quot;Forest_CDK_DOX_Shared_ChronicvAcute_EMP&quot;,
+# #   folder = output_folder,
+# #   height = 4,
+# #   width = 6)
+
+
+#test this one and if it works use this instead
+#calculate proportions, odds ratios, and Fisher&#39;s test results per response cluster
+fisher_test_overlap &lt;- function(acute, chronic, clust, bg, set_name) {
+  #c1: chronic genes that ARE in the set
+  c1 &lt;- sum(chronic %in% clust)
+  #c2: chronic genes that are NOT in the set (Background - Set)
+  c2 &lt;- length(intersect(chronic, bg)) - c1
+  
+  #a1: acute genes that ARE in the set
+  a1 &lt;- sum(acute %in% clust)
+  #a2: acute genes that are NOT in the set (Background - Set)
+  a2 &lt;- length(intersect(acute, bg)) - a1
+  
+  mat &lt;- matrix(c(c1, c2, a1, a2), nrow = 2, byrow = TRUE)
+  res &lt;- fisher.test(mat)
+  
+  tibble(
+    Set = set_name,
+    OR = unname(res$estimate),
+    CI_low = res$conf.int[1],
+    CI_high = res$conf.int[2],
+    p_value = res$p.value,
+    Significant = case_when(
+      res$p.value &lt; 0.001 ~ &quot;***&quot;,
+      res$p.value &lt; 0.01  ~ &quot;**&quot;,
+      res$p.value &lt; 0.05  ~ &quot;*&quot;,
+      TRUE ~ &quot;ns&quot;
+    )
+  )
+}
+
+#run the test for all sets in yeung_sets
+forest_summary_cdkdox &lt;- purrr::imap_dfr(yeung_sets, function(clust, name) {
+  fisher_test_overlap(
+    acute = acute_set, 
+    chronic = chronic_set, 
+    clust = clust, 
+    bg = all_genes,
+    set_name = name
+  )
+})
+
+#plot
+forest_cdkdox &lt;- ggplot(forest_summary_cdkdox,
+                          aes(y = Set, x = OR, 
+                              xmin = CI_low, xmax = CI_high)) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  geom_errorbarh(height = 0.2, linewidth = 0.6, color = &quot;black&quot;) +
+  geom_point(size = 4, color = &quot;black&quot;) +
+  geom_text(aes(label = Significant), position = position_nudge(y = 0.3), 
+            fontface = &quot;bold&quot;) +
+  scale_x_continuous(limits = c(0, max(forest_summary_cdkdox$CI_high) + 0.5)) +
+  labs(
+    title = &quot;Enrichment of CDK &amp; DOX SAG (Yeung et al.) in Chronic vs Acute&quot;,
+    x = &quot;Odds Ratio (95% confidence interval)&quot;,
+    y = NULL
+  ) +
+  theme_custom()
+
+print(forest_cdkdox)</code></pre>
+<p><img src="figure/Figure5.Rmd/cdk%20dox%20shared%20forest%20motifs%20chronic%20v%20acute-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>print(forest_summary_cdkdox)</code></pre>
+<pre><code># A tibble: 3 × 6
+  Set               OR CI_low CI_high   p_value Significant
+  &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      
+1 CDK DOX Shared 32.9  26.3     41.4  2.91e-194 ***        
+2 CDK             1.55  0.953    2.41 6.11e-  2 ns         
+3 DOX             2.50  1.67     3.63 8.40e-  6 ***        </code></pre>
+<pre class="r"><code># save_plot(
+#   plot = forest_cdkdox,
+#   filename = &quot;Forest_Yeung_Sets_ChronicvAcute_EMP&quot;,
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)</code></pre>
+</div>
+<div id="cdkdox-shared-odds-ratios-timepoint-degs-enrichment"
+class="section level2">
+<h2>CDK/DOX Shared Odds Ratios Timepoint DEGs Enrichment</h2>
+<pre class="r"><code>#next, I want to look at the enrichment of these genes in my timepoints
+
+#DEGs list
+timepoint_DEGs &lt;- list(
+  &quot;t0&quot;   = DEGs_24T_R,
+  &quot;t24&quot;   = DEGs_24R_R,
+  &quot;t144&quot;  = DEGs_144R_R
+)
+
+yeung_sets &lt;- list(
+  &quot;CDK/DOX Shared&quot; = cdkdox_set,
+  &quot;CDK&quot; = cdk_set_yeung,
+  &quot;DOX&quot; = dox_set_yeung
+)
+
+#calculate proportions, odds ratios, and Fisher&#39;s test results per timepoint
+proportion_data_cdkdox &lt;- purrr::map_dfr(names(timepoint_DEGs), 
+                                         function(tp_cdkdox) {
+  degs_cdkdox &lt;- unique(timepoint_DEGs[[tp_cdkdox]])
+  nondegs_cdkdox &lt;- setdiff(all_genes, degs_cdkdox)
+  
+  in_deg_cdkdox &lt;- sum(degs_cdkdox %in% cdkdox_set)
+  in_deg_noncdkdox &lt;- length(degs_cdkdox) - in_deg_cdkdox
+  
+  in_nondeg_cdkdox &lt;- sum(nondegs_cdkdox %in% cdkdox_set)
+  in_nondeg_noncdkdox &lt;- length(nondegs_cdkdox) - in_nondeg_cdkdox
+  
+  contingency_degs_cdkdox &lt;- matrix(c(in_deg_cdkdox, in_deg_noncdkdox,
+                                   in_nondeg_cdkdox, in_nondeg_noncdkdox),
+                                 nrow = 2, byrow = TRUE)
+  
+  fisher_res_cdkdox &lt;- fisher.test(contingency_degs_cdkdox)
+  
+  p_val_cdkdox &lt;- fisher_res_cdkdox$p.value
+  odds_ratio_cdkdox &lt;- unname(fisher_res_cdkdox$estimate)
+  ci_low_cdkdox &lt;- fisher_res_cdkdox$conf.int[1]
+  ci_high_cdkdox &lt;- fisher_res_cdkdox$conf.int[2]
+  
+  tibble(
+    Timepoint = tp_cdkdox,
+    Odds_Ratio = odds_ratio_cdkdox,
+    CI_low = ci_low_cdkdox,
+    CI_high = ci_high_cdkdox,
+    P_Value = p_val_cdkdox,
+    Significant = case_when(
+      p_val_cdkdox &lt; 0.001 ~ &quot;***&quot;,
+      p_val_cdkdox &lt; 0.01 ~ &quot;**&quot;,
+      p_val_cdkdox &lt; 0.05 ~ &quot;*&quot;,
+      TRUE ~ &quot;ns&quot;
+  ))
+})
+
+#format timepoint factor
+proportion_data_cdkdox &lt;- proportion_data_cdkdox %&gt;%
+  mutate(
+    Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)),
+  )
+
+#plot horizontal forest plot
+forest_cdkdox_degs &lt;- ggplot(proportion_data_cdkdox, 
+                             aes(y = Timepoint, 
+                                 x = Odds_Ratio)) +
+  geom_point(size = 5) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.3) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;gray50&quot;) +
+  geom_text(aes(label = Significant), position = position_nudge(y = 0.3), 
+            fontface = &quot;bold&quot;) +
+  labs(
+    title = &quot;Odds Ratios of CDK/DOX Shared Gene Enrichment by Timepoint&quot;,
+    y = &quot;Timepoint&quot;,
+    x = &quot;Odds Ratio (95% confidence interval)&quot;,
+    color = &quot;Significance&quot;
+  ) +
+  scale_y_discrete(limits = rev(levels(proportion_data_cdkdox$Timepoint)))+
+  theme_custom()
+
+print(forest_cdkdox_degs)</code></pre>
+<p><img src="figure/Figure5.Rmd/cdk%20dox%20shared%20set%20timepoint%20forest-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#also print the summary tables
+print(proportion_data_cdkdox)</code></pre>
+<pre><code># A tibble: 3 × 6
+  Timepoint Odds_Ratio CI_low CI_high   P_Value Significant
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      
+1 t0             0.965  0.819    1.14 6.80e-  1 ns         
+2 t24            2.39   2.02     2.84 1.64e- 26 ***        
+3 t144          18.8   15.6     22.7  7.39e-172 ***        </code></pre>
+<pre class="r"><code>#save one plot with log OR and the other with standard (standard shown here)
+# save_plot(
+#   plot = forest_cdkdox_degs,
+#   filename = &quot;Forest_CDK_DOX_Shared_Timepoint_DEGs_log&quot;,
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)
+
+# save_plot(
+#   plot = forest_cdkdox_degs,
+#   filename = &quot;Forest_CDK_DOX_Shared_Timepoint_DEGs&quot;,
+#   folder = output_folder,
+#   height = 4,
+#   width = 6)
+
+#test this one to plot three separate plots for these three gene sets
+
+#DEGs list
+timepoint_DEGs &lt;- list(
+  &quot;t0&quot;    = DEGs_24T_R,
+  &quot;t24&quot;    = DEGs_24R_R,
+  &quot;t144&quot;  = DEGs_144R_R
+)
+
+yeung_sets &lt;- list(
+  &quot;CDK DOX Shared&quot; = cdkdox_set,
+  &quot;CDK&quot; = cdk_set_yeung,
+  &quot;DOX&quot; = dox_set_yeung
+)
+
+#iterate through each of the three sets to create separate data and plots
+final_outputs &lt;- purrr::imap(yeung_sets, function(current_set, set_name) {
+  
+  #calculate proportions, odds ratios, and Fisher&#39;s test results per timepoint
+  proportion_data_cdkdox &lt;- purrr::map_dfr(names(timepoint_DEGs), 
+                                           function(tp_cdkdox) {
+    degs_cdkdox &lt;- unique(timepoint_DEGs[[tp_cdkdox]])
+    nondegs_cdkdox &lt;- setdiff(all_genes, degs_cdkdox)
+    
+    in_deg_cdkdox &lt;- sum(degs_cdkdox %in% current_set)
+    in_deg_noncdkdox &lt;- length(degs_cdkdox) - in_deg_cdkdox
+    
+    in_nondeg_cdkdox &lt;- sum(nondegs_cdkdox %in% current_set)
+    in_nondeg_noncdkdox &lt;- length(nondegs_cdkdox) - in_nondeg_cdkdox
+    
+    contingency_degs_cdkdox &lt;- matrix(c(in_deg_cdkdox, in_deg_noncdkdox,
+                                     in_nondeg_cdkdox, in_nondeg_noncdkdox),
+                                   nrow = 2, byrow = TRUE)
+    
+    fisher_res_cdkdox &lt;- fisher.test(contingency_degs_cdkdox)
+    
+    p_val_cdkdox &lt;- fisher_res_cdkdox$p.value
+    odds_ratio_cdkdox &lt;- unname(fisher_res_cdkdox$estimate)
+    ci_low_cdkdox &lt;- fisher_res_cdkdox$conf.int[1]
+    ci_high_cdkdox &lt;- fisher_res_cdkdox$conf.int[2]
+    
+    tibble(
+      Timepoint = tp_cdkdox,
+      Odds_Ratio = odds_ratio_cdkdox,
+      CI_low = ci_low_cdkdox,
+      CI_high = ci_high_cdkdox,
+      P_Value = p_val_cdkdox,
+      Significant = case_when(
+        p_val_cdkdox &lt; 0.001 ~ &quot;***&quot;,
+        p_val_cdkdox &lt; 0.01 ~ &quot;**&quot;,
+        p_val_cdkdox &lt; 0.05 ~ &quot;*&quot;,
+        TRUE ~ &quot;ns&quot;
+    ))
+  })
+  
+  #format timepoint factor
+  proportion_data_cdkdox &lt;- proportion_data_cdkdox %&gt;%
+    mutate(
+      Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)),
+    )
+  
+  #plot horizontal forest plot
+  forest_cdkdox_degs &lt;- ggplot(proportion_data_cdkdox, 
+                               aes(y = Timepoint, 
+                                   x = Odds_Ratio)) +
+    geom_point(size = 5) +
+    geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.3) +
+    geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;gray50&quot;) +
+    geom_text(aes(label = Significant), position = position_nudge(y = 0.3), 
+              fontface = &quot;bold&quot;) +
+    labs(
+      title = paste(&quot;Odds Ratios of&quot;, set_name, &quot;Gene Enrichment by Timepoint&quot;),
+      y = &quot;Timepoint&quot;,
+      x = &quot;Odds Ratio (95% confidence interval)&quot;,
+      color = &quot;Significance&quot;
+    ) +
+    scale_y_discrete(limits = rev(levels(proportion_data_cdkdox$Timepoint)))+
+    theme_custom()
+  
+  print(forest_cdkdox_degs)
+  
+  #also print the summary tables
+  print(paste(&quot;Summary Table for:&quot;, set_name))
+  print(proportion_data_cdkdox)
+  
+  #save each plot with standard OR
+  save_plot(
+    plot = forest_cdkdox_degs,
+    filename = paste0(&quot;Forest_&quot;, set_name, &quot;_Timepoint_DEGs_Standard&quot;),
+    folder = output_folder,
+    height = 4,
+    width = 6)
+  
+  return(list(data = proportion_data_cdkdox, plot = forest_cdkdox_degs))
+})</code></pre>
+<pre><code>[1] &quot;Summary Table for: CDK DOX Shared&quot;
+# A tibble: 3 × 6
+  Timepoint Odds_Ratio CI_low CI_high   P_Value Significant
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      
+1 t0             0.965  0.819    1.14 6.80e-  1 ns         
+2 t24            2.39   2.02     2.84 1.64e- 26 ***        
+3 t144          18.8   15.6     22.7  7.39e-172 ***        </code></pre>
+<p><img src="figure/Figure5.Rmd/cdk%20dox%20shared%20set%20timepoint%20forest-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Summary Table for: CDK&quot;
+# A tibble: 3 × 6
+  Timepoint Odds_Ratio CI_low CI_high    P_Value Significant
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;      
+1 t0             0.642  0.535   0.772 0.00000200 ***        
+2 t24            1.51   1.26    1.83  0.00000662 ***        
+3 t144           1.58   1.08    2.25  0.0165     *          </code></pre>
+<p><img src="figure/Figure5.Rmd/cdk%20dox%20shared%20set%20timepoint%20forest-3.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Summary Table for: DOX&quot;
+# A tibble: 3 × 6
+  Timepoint Odds_Ratio CI_low CI_high  P_Value Significant
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;      
+1 t0              1.06  0.868    1.30 5.88e- 1 ns         
+2 t24             1.82  1.50     2.22 3.90e-10 ***        
+3 t144            2.14  1.51     2.97 2.68e- 5 ***        </code></pre>
+<p><img src="figure/Figure5.Rmd/cdk%20dox%20shared%20set%20timepoint%20forest-4.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#now I want to make a combined version of the above forest plot with the CDK only set, DOX only set, and the CDK &amp; DOX shared set
+
+#combine all the data from the above step here into one set
+combined_proportion_data &lt;- purrr::imap_dfr(yeung_sets, function(current_set, set_name) {
+  
+  purrr::map_dfr(names(timepoint_DEGs), function(tp_cdkdox) {
+    degs_cdkdox &lt;- unique(timepoint_DEGs[[tp_cdkdox]])
+    nondegs_cdkdox &lt;- setdiff(all_genes, degs_cdkdox)
+    
+    in_deg_cdkdox &lt;- sum(degs_cdkdox %in% current_set)
+    in_deg_noncdkdox &lt;- length(degs_cdkdox) - in_deg_cdkdox
+    in_nondeg_cdkdox &lt;- sum(nondegs_cdkdox %in% current_set)
+    in_nondeg_noncdkdox &lt;- length(nondegs_cdkdox) - in_nondeg_cdkdox
+    
+    contingency_degs_cdkdox &lt;- matrix(c(in_deg_cdkdox, in_deg_noncdkdox,
+                                     in_nondeg_cdkdox, in_nondeg_noncdkdox),
+                                   nrow = 2, byrow = TRUE)
+    
+    fisher_res &lt;- fisher.test(contingency_degs_cdkdox)
+    
+    tibble(
+      Timepoint = tp_cdkdox,
+      Set_Group = set_name,
+      Odds_Ratio = unname(fisher_res$estimate),
+      CI_low = fisher_res$conf.int[1],
+      CI_high = fisher_res$conf.int[2],
+      P_Value = fisher_res$p.value,
+      Significant = case_when(
+        P_Value &lt; 0.001 ~ &quot;***&quot;,
+        P_Value &lt; 0.01 ~ &quot;**&quot;,
+        P_Value &lt; 0.05 ~ &quot;*&quot;,
+        TRUE ~ &quot;ns&quot;
+      )
+    )
+  })
+}) %&gt;%
+  mutate(Timepoint = factor(Timepoint, levels = c(&quot;t0&quot;, &quot;t24&quot;, &quot;t144&quot;)))
+
+#plot horizontally with timepoints on y axis
+forest_combined_horiz &lt;- ggplot(combined_proportion_data, 
+                                aes(y = Timepoint,
+                                    x = Odds_Ratio,
+                                    color = Set_Group)) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), 
+                 height = 0.4, position = position_dodge(width = 0.8)) +
+  geom_point(size = 4, position = position_dodge(width = 0.8)) +
+  geom_text(aes(label = Significant), 
+            position = position_dodge(width = 0.8), 
+            vjust = -0.5, show.legend = FALSE) +
+  labs(title = &quot;Enrichment Comparison: CDK, DOX, and CDK DOX Shared Genes by Timepoint&quot;,
+       x = &quot;Odds Ratio (95% confidence interval)&quot;, 
+       y = &quot;Timepoint&quot;, color = &quot;Gene Set&quot;) +
+  scale_y_discrete(limits = rev(levels(combined_proportion_data$Timepoint))) +
+  scale_color_manual(values = c(&quot;CDK&quot; = &quot;#F97990&quot;, 
+                                &quot;DOX&quot; = &quot;#A3C69F&quot;, 
+                                &quot;CDK DOX Shared&quot; = &quot;#BBA6DD&quot;)) +
+  xlim(c(-5, 25)) +
+  theme_custom()
+
+#plot the vertical version with timepoint on the x axis
+forest_combined_vert &lt;- ggplot(combined_proportion_data, 
+                               aes(x = Timepoint, 
+                                   y = Odds_Ratio, 
+                                   color = Set_Group)) +
+  geom_hline(yintercept = 1, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  geom_errorbar(aes(ymin = CI_low, ymax = CI_high), 
+                width = 0.4, position = position_dodge(width = 0.8)) +
+  geom_point(size = 4, position = position_dodge(width = 0.8)) +
+  geom_text(aes(label = Significant), 
+            position = position_dodge(width = 0.8), vjust = -1, show.legend = FALSE) +
+  labs(title = &quot;Enrichment Comparison: CDK, DOX, and CDK DOX Shared Genes by Timepoint&quot;,
+       y = &quot;Odds Ratio (95% confidence interval)&quot;,
+       x = &quot;Timepoint&quot;, color = &quot;Gene Set&quot;) +
+  scale_color_manual(values = c(&quot;CDK&quot; = &quot;#F97990&quot;, 
+                                &quot;DOX&quot; = &quot;#A3C69A&quot;, 
+                                &quot;CDK DOX Shared&quot; = &quot;#BBA6DD&quot;)) +
+  ylim(c(-5, 25)) +
+  theme_custom()
+
+#print and save the plots in both conformations
+print(forest_combined_horiz)</code></pre>
+<p><img src="figure/Figure5.Rmd/CDK%20only%20set%20forest%20degs-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>print(forest_combined_vert)</code></pre>
+<p><img src="figure/Figure5.Rmd/CDK%20only%20set%20forest%20degs-2.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save_plot(plot = forest_combined_horiz,
+#           filename = &quot;CDK_DOX_sets_Forest_Combined_Horiz_EMP&quot;, 
+#           folder = output_folder, 
+#           height = 5, 
+#           width = 8)
+
+# save_plot(plot = forest_combined_vert, 
+#           filename = &quot;CDK_DOX_sets_Forest_Combined_Vert_EMP&quot;, 
+#           folder = output_folder, 
+#           height = 6, 
+#           width = 8)</code></pre>
+</div>
+</div>
+<div id="cdk-dox-sasp-genes-yeung-et-al." class="section level1">
+<h1>CDK &amp; DOX SASP genes Yeung et al.</h1>
+<p>This gene set of SASPs is found in Yeung et al., as above. They are
+located in Figure8B in heatmap form. I want to test the proportions of
+these genes in my Chronic &amp; Acute clusters, while accounting for
+genes found in neither motif (Neither).</p>
+<pre class="r"><code>#read in the gene names from Figure 8B, in SYMBOL
+sasp_sym &lt;- c(&quot;ADAM28&quot;, &quot;ADM&quot;, &quot;ANGPTL4&quot;, &quot;ANXA3&quot;,
+              &quot;BMP2&quot;, &quot;CFB&quot;, &quot;CLCA2&quot;, &quot;CSF1&quot;,
+              &quot;CXCL2&quot;, &quot;CXCL8&quot;, &quot;FCGBP&quot;, &quot;IGFBP3&quot;,
+              &quot;IGFBP5&quot;, &quot;LAMC2&quot;, &quot;LIF&quot;, &quot;LIPH&quot;,
+              &quot;MMP24&quot;, &quot;MYH14&quot;, &quot;P4HA2&quot;, &quot;PCDH1&quot;,
+              &quot;PSAP&quot;, &quot;SAMD4A&quot;, &quot;SEMA3E&quot;)
+
+#these are &quot;induced SASP genes common across treatments and cancer types&quot;
+#the following genes are also NF-kB target genes: 
+#BMP2, CFB, CSF1, CXCL2, CXCL8, LIF
+
+
+#convert SYMBOL to Entrez_ID
+sasp_set &lt;- to_entrez(symbols = sasp_sym, annotation_df = filcpm_mat_genes)
+#17 of these genes are expressed in my gene set
+
+#double check the number of genes and which ones are expressed in my data
+intersect(sasp_sym, all_symb_genes)</code></pre>
+<pre><code> [1] &quot;ADM&quot;     &quot;ANGPTL4&quot; &quot;ANXA3&quot;   &quot;BMP2&quot;    &quot;CSF1&quot;    &quot;IGFBP3&quot;  &quot;IGFBP5&quot; 
+ [8] &quot;LAMC2&quot;   &quot;LIF&quot;     &quot;LIPH&quot;    &quot;MMP24&quot;   &quot;MYH14&quot;   &quot;P4HA2&quot;   &quot;PCDH1&quot;  
+[15] &quot;PSAP&quot;    &quot;SAMD4A&quot;  &quot;SEMA3E&quot; </code></pre>
+<pre class="r"><code>#adds up to 17, all good
+#of the NF-kB target genes, our data expresses BMP2, CSF1, LIF
+
+
+#now, I would like to make proportion barplots with this gene list
+
+#define my gene sets by cluster or lack thereof
+acute_set   &lt;- final_genes_1_RUV
+chronic_set &lt;- final_genes_2_RUV
+neither_set &lt;- setdiff(all_genes, c(acute_set, chronic_set))
+
+in_acute_sasp &lt;- sum(acute_set %in% sasp_set)
+non_acute_sasp &lt;- length(acute_set) - in_acute_sasp
+
+in_chronic_sasp &lt;- sum(chronic_set %in% sasp_set)
+non_chronic_sasp &lt;- length(chronic_set) - in_chronic_sasp
+
+in_neither_sasp &lt;- sum(neither_set %in% sasp_set)
+non_neither_sasp &lt;- length(neither_set) - in_neither_sasp
+
+
+#change the order around to be correct, focus in on sasps in each motif
+sasp_distribution &lt;- tibble(gene = sasp_set) %&gt;%
+  mutate(
+    Location = case_when(
+      gene %in% chronic_set ~ &quot;Chronic&quot;,
+      gene %in% acute_set   ~ &quot;Acute&quot;,
+      TRUE                  ~ &quot;Neither&quot;
+    )
+  ) %&gt;%
+  group_by(Location) %&gt;%
+  summarise(Count = n(), .groups = &quot;drop&quot;) %&gt;%
+  mutate(
+    Fraction = Count / sum(Count),
+    Location = factor(Location, levels = c(&quot;Chronic&quot;, &quot;Acute&quot;, &quot;Neither&quot;))
+  )
+
+contingency_mat &lt;- matrix(c(in_chronic_sasp, non_chronic_sasp, 
+                            in_acute_sasp, non_acute_sasp), 
+                          nrow = 2, byrow = TRUE)
+fisher_res &lt;- fisher.test(contingency_mat)
+pval &lt;- fisher_res$p.value
+
+#single stacked barplot
+sasp_prop_barplot &lt;- ggplot(sasp_distribution, 
+                            aes(x = &quot;SASP Genes&quot;, 
+                                y = Fraction, fill = Location)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;, color = &quot;black&quot;, width = 0.6) +
+  geom_text(aes(label = paste0(Count)), 
+            position = position_stack(vjust = 0.5), 
+            size = 5, color = &quot;black&quot;, fontface = &quot;bold&quot;) +
+  labs(
+    title = &quot;Proportion of SASP Genes Per Cluster&quot;,
+    subtitle = paste0(&quot;Enrichment CvA: p = &quot;, signif(pval, 3), 
+                      &quot; (OR = &quot;, round(fisher_res$estimate, 2), &quot;)&quot;),
+    x = NULL,
+    y = &quot;Proportion of Total SASP Set&quot;,
+    fill = &quot;Cluster Group&quot;
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c(&quot;Chronic&quot; = &quot;#E41A1C&quot;, 
+                               &quot;Acute&quot;   = &quot;#377EB8&quot;, 
+                               &quot;Neither&quot; = &quot;grey80&quot;)) +
+  theme_custom() +
+  theme(axis.text.x = element_text(size = 10))
+
+print(sasp_prop_barplot)</code></pre>
+<p><img src="figure/Figure5.Rmd/cdk%20dox%20sasp%20genes-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>save_plot(sasp_prop_barplot,
+          filename = &quot;SASP_Proportion_Barplot_CvAvN_EMP&quot;,
+          folder = output_folder)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2897,32 +4113,33 @@ loaded via a namespace (and not attached):
  [1] DBI_1.3.0               rlang_1.1.7             magrittr_2.0.4         
  [4] clue_0.3-67             GetoptLong_1.1.0        git2r_0.36.2           
  [7] otel_0.2.0              matrixStats_1.5.0       compiler_4.5.2         
-[10] RSQLite_2.3.9           getPass_0.2-4           png_0.1-8              
-[13] callr_3.7.6             vctrs_0.7.1             pkgconfig_2.0.3        
-[16] shape_1.4.6.1           crayon_1.5.3            fastmap_1.2.0          
-[19] magick_2.9.0            XVector_0.46.0          labeling_0.4.3         
-[22] utf8_1.2.6              promises_1.5.0          rmarkdown_2.30         
-[25] tzdb_0.5.0              UCSC.utils_1.2.0        ps_1.9.1               
-[28] bit_4.6.0               xfun_0.56               zlibbioc_1.52.0        
-[31] cachem_1.1.0            GenomeInfoDb_1.42.3     jsonlite_2.0.0         
-[34] blob_1.3.0              later_1.4.8             parallel_4.5.2         
-[37] cluster_2.1.8.1         R6_2.6.1                bslib_0.10.0           
-[40] stringi_1.8.7           RColorBrewer_1.1-3      jquerylib_0.1.4        
-[43] cellranger_1.1.0        Rcpp_1.1.1              iterators_1.0.14       
-[46] knitr_1.51              httpuv_1.6.16           timechange_0.4.0       
-[49] tidyselect_1.2.1        rstudioapi_0.18.0       yaml_2.3.12            
-[52] doParallel_1.0.17       codetools_0.2-20        processx_3.8.6         
-[55] plyr_1.8.9              withr_3.0.2             KEGGREST_1.46.0        
-[58] S7_0.2.1                evaluate_1.0.5          Biostrings_2.74.0      
-[61] pillar_1.11.1           whisker_0.4.1           foreach_1.5.2          
-[64] rprojroot_2.1.1         hms_1.1.4               scales_1.4.0           
-[67] glue_1.8.0              tools_4.5.2             fs_1.6.7               
-[70] Cairo_1.7-0             colorspace_2.1-2        GenomeInfoDbData_1.2.13
-[73] cli_3.6.5               gtable_0.3.6            sass_0.4.10            
-[76] digest_0.6.39           rjson_0.2.23            farver_2.1.2           
-[79] memoise_2.0.1           htmltools_0.5.9         lifecycle_1.0.5        
-[82] httr_1.4.8              GlobalOptions_0.1.3     bit64_4.6.0-1          </code></pre>
-</div>
+[10] RSQLite_2.3.9           getPass_0.2-4           systemfonts_1.3.2      
+[13] png_0.1-8               callr_3.7.6             vctrs_0.7.1            
+[16] pkgconfig_2.0.3         shape_1.4.6.1           crayon_1.5.3           
+[19] fastmap_1.2.0           magick_2.9.0            XVector_0.46.0         
+[22] labeling_0.4.3          utf8_1.2.6              promises_1.5.0         
+[25] rmarkdown_2.30          tzdb_0.5.0              UCSC.utils_1.2.0       
+[28] ps_1.9.1                ragg_1.5.0              bit_4.6.0              
+[31] xfun_0.56               zlibbioc_1.52.0         cachem_1.1.0           
+[34] GenomeInfoDb_1.42.3     jsonlite_2.0.0          blob_1.3.0             
+[37] later_1.4.8             parallel_4.5.2          cluster_2.1.8.1        
+[40] R6_2.6.1                bslib_0.10.0            stringi_1.8.7          
+[43] RColorBrewer_1.1-3      jquerylib_0.1.4         cellranger_1.1.0       
+[46] Rcpp_1.1.1              iterators_1.0.14        knitr_1.51             
+[49] httpuv_1.6.16           timechange_0.4.0        tidyselect_1.2.1       
+[52] rstudioapi_0.18.0       yaml_2.3.12             doParallel_1.0.17      
+[55] codetools_0.2-20        processx_3.8.6          plyr_1.8.9             
+[58] withr_3.0.2             KEGGREST_1.46.0         S7_0.2.1               
+[61] evaluate_1.0.5          Biostrings_2.74.0       pillar_1.11.1          
+[64] whisker_0.4.1           foreach_1.5.2           rprojroot_2.1.1        
+[67] hms_1.1.4               scales_1.4.0            glue_1.8.0             
+[70] tools_4.5.2             fs_1.6.7                Cairo_1.7-0            
+[73] colorspace_2.1-2        GenomeInfoDbData_1.2.13 cli_3.6.5              
+[76] textshaping_1.0.4       rematch_2.0.0           gtable_0.3.6           
+[79] sass_0.4.10             digest_0.6.39           rjson_0.2.23           
+[82] farver_2.1.2            memoise_2.0.1           htmltools_0.5.9        
+[85] lifecycle_1.0.5         httr_1.4.8              GlobalOptions_0.1.3    
+[88] bit64_4.6.0-1          </code></pre>
 </div>
 </div>
 </div>
